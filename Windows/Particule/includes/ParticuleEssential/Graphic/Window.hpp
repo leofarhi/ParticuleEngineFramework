@@ -1,11 +1,19 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
+#define SDL_MAIN_HANDLED
+#include <ParticuleEssential/Graphic/Color.hpp>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <cstdarg>
 
-#include "./Color.hpp"
+void error_exit(int exitcode, const char* format, ...);
 
 class Window
 {
 private:
+    void* window;
+    void* renderer;
     bool runnig;
 public:
     int width;
