@@ -34,3 +34,5 @@ bin/*
 Demo/bin/*
 *.vscode/*
 /Unity
+/CasioCg/build
+/CasioCg/bin
