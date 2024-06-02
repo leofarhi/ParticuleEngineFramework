@@ -4,31 +4,41 @@
 #include <ParticuleEssential/Types/Vector2Int.hpp>
 #include <ParticuleEssential/Types/List.hpp>
 
-class Mouse
-{
-public:
-    Vector2Int position;
-    bool IsButtonPressed(int button);
-    bool IsButtonDown(int button);
-    bool IsButtonUp(int button);
-};
+#include <SDL2/SDL.h>
 
-class Input
+namespace Particule::Essential::Input
 {
-private:
-    List<void*> *InputEvents;
-    List<void*> *InputEventsHeld;
-public:
-    static Input* Instance;
+    class Mouse
+    {
+    public:
+        Mouse();
+        ~Mouse();
+        Vector2Int position;
+        static bool IsPressed(int button);
+        static bool IsDown(int button);
+        static bool IsUp(int button);
+    };
 
-    static Mouse* mouse;
-    Input();
-    ~Input();
-    void Update();
-    static bool IsKeyPressed(int key);
-    static bool IsKeyDown(int key);
-    static bool IsKeyUp(int key);
-    static Vector2 GetAnalogStick(int stick);
-};
+    class InputManager
+    {
+    private:
+        List<SDL_Event*> *InputEvents;
+        List<SDL_Event*> *InputEventsHeld;
+    public:
+        List<SDL_Event*> *GetInputEvents() const;
+        List<SDL_Event*> *GetInputEventsHeld() const;
+
+        Mouse* mouse;
+        InputManager();
+        ~InputManager();
+        void Update();
+        static bool IsKeyPressed(int key);
+        static bool IsKeyDown(int key);
+        static bool IsKeyUp(int key);
+        static Vector2 GetAnalogStick(int stick);
+    };
+
+    extern InputManager* input;
+}
 
 #endif // INPUT_HPP

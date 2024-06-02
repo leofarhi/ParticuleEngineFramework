@@ -25,4 +25,6 @@ public:
     const T& operator[](char* key) const;
 };
 
+#include "Dict.tpp"
+
 #endif // DICTIONARY_HPP

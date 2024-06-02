@@ -3,26 +3,33 @@
 #include "../Types/Vector2.hpp"
 #include "../Types/Vector2Int.hpp"
 
-class Mouse
+namespace Particule::Essential::Input
 {
-public:
-    Vector2Int position;
-    bool IsButtonPressed(int button);
-    bool IsButtonDown(int button);
-    bool IsButtonUp(int button);
-};
+    class Mouse
+    {
+    public:
+        Mouse();
+        ~Mouse();
+        Vector2Int position;
+        static bool IsButtonPressed(int button);
+        static bool IsButtonDown(int button);
+        static bool IsButtonUp(int button);
+    };
 
-class Input
-{
-public:
-    static Mouse mouse;
-    Input();
-    ~Input();
-    void Update();
-    static bool IsKeyPressed(int key);
-    static bool IsKeyDown(int key);
-    static bool IsKeyUp(int key);
-    static Vector2 GetAnalogStick(int stick);
-};
+    class InputManager
+    {
+    public:
+        static Mouse* mouse;
+        InputManager();
+        ~InputManager();
+        void Update();
+        static bool IsKeyPressed(int key);
+        static bool IsKeyDown(int key);
+        static bool IsKeyUp(int key);
+        static Vector2 GetAnalogStick(int stick);
+    };
+
+    extern InputManager* input;
+}
 
 #endif // INPUT_HPP

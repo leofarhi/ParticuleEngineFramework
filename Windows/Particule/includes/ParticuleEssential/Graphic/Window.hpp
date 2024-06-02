@@ -7,28 +7,34 @@
 #include <string.h>
 #include <cstdarg>
 
+#include <SDL2/SDL.h>
+
 void error_exit(int exitcode, const char* format, ...);
 
-class Window
+namespace Particule::Essential::Graphic
 {
-private:
-    void* window;
-    void* renderer;
-    bool runnig;
-public:
-    int width;
-    int height;
-    Window();
-    Window(int width, int height, const char* title);
-    ~Window();
+    class Window
+    {
+    private:
+        bool runnig;
+    public:
+        SDL_Window* window;
+        SDL_Renderer* renderer;
 
-    void Update();
-    void Clear();
-    void ClearColor(Color color);
-    bool IsRunning();
-    void Close();
-};
+        int width;
+        int height;
+        Window();
+        Window(int width, int height, const char* title);
+        ~Window();
 
-extern Window* window;
+        void Update();
+        void Clear();
+        void ClearColor(Color color);
+        bool IsRunning();
+        void Close();
+    };
+
+    extern Window* window;
+}
 
 #endif // WINDOW_HPP

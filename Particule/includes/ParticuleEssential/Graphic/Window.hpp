@@ -2,25 +2,27 @@
 #define WINDOW_HPP
 
 #include "./Color.hpp"
-
-class Window
+namespace Particule::Essential::Graphic
 {
-private:
-    bool runnig;
-public:
-    int width;
-    int height;
-    Window();
-    Window(int width, int height, const char* title);
-    ~Window();
+    class Window
+    {
+    private:
+        bool runnig;
+    public:
+        int width;
+        int height;
+        Window();
+        Window(int width, int height, const char* title);
+        ~Window();
 
-    void Update();
-    void Clear();
-    void ClearColor(Color color);
-    bool IsRunning();
-    void Close();
-};
+        void Update();
+        void Clear();
+        void ClearColor(Color color);
+        bool IsRunning();
+        void Close();
+    };
 
-extern Window* window;
+    extern Window* window;
+}
 
 #endif // WINDOW_HPP

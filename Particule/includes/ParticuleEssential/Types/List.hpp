@@ -32,22 +32,13 @@ public:
     void RemoveAt(size_t index);
     void Sort(int (*compare)(const T&, const T&));
     bool Contains(const T& data) const;
-    bool ForEach(List<T> *list, ListNode<T> **next, T *data);
+    bool ForEach(ListNode<T> **next);
     // Operator[] for non-const access
     T& operator[](size_t index);
     // Operator[] for const access
     const T& operator[](size_t index) const;
 };
 
-// define FOREACH_LIST to iterate over a list like this:T data; for (ListNode<T>* next = nullptr; ForEach(list, &next, &data);)
-#define FOREACH_LIST(list, next, data) for (ListNode<decltype(list)::T>* next = nullptr; list.ForEach(&next, &data);)
-//exemple of use:
-// List<int> list;
-// list.Append(1);
-// list.Append(2);
-// list.Append(3);
-// int data;
-// FOREACH_LIST(list, next, data) {
-//     std::cout << data << std::endl;
-// }
+#include "List.tpp"
+
 #endif // LIST_HPP

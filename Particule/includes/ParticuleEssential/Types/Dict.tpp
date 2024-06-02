@@ -1,4 +1,4 @@
-#include "../../../includes/ParticuleEssential/Types/Dict.hpp"
+#include "Dict.hpp"
 
 template <typename T>
 Dict<T>::Dict()

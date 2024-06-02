@@ -1,4 +1,4 @@
-#include "../../../includes/ParticuleEssential/Types/List.hpp"
+#include "List.hpp"
 
 template <typename T>
 List<T>::List()
@@ -192,14 +192,13 @@ bool List<T>::Contains(const T& data) const {
 }
 
 template <typename T>
-bool List<T>::ForEach(List<T> *list, ListNode<T> **next, T *data) {
+bool List<T>::ForEach(ListNode<T> **next) {
     if (*next == nullptr) 
-        *next = list->head;
+        *next = this->head;
     else
         *next = (*next)->next;
     if (*next == nullptr)
         return false;
-    *data = (*next)->data;
     return true;
 }
 
