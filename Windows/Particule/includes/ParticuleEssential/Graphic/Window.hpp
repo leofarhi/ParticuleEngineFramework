@@ -18,6 +18,7 @@ private:
 public:
     int width;
     int height;
+    Window();
     Window(int width, int height, const char* title);
     ~Window();
 

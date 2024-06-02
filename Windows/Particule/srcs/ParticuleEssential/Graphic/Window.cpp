@@ -19,11 +19,27 @@ void error_exit(int exitcode, const char* format, ...)
 }
 
 Window* window = nullptr;
+//Calls the constructor with the default values.
+Window::Window()
+{
+    this->width = 800;
+    this->height = 600;
+    this->window = (void *)SDL_CreateWindow("Engine", 50, 50, this->width, this->height, SDL_WINDOW_SHOWN);// | SDL_WINDOW_RESIZABLE);
+    if (this->window == NULL)
+        error_exit(EXIT_FAILURE, "error window %s", SDL_GetError());
+
+    this->renderer = (void *)SDL_CreateRenderer((SDL_Window *)this->window, -1, SDL_RENDERER_ACCELERATED);
+    if (this->renderer == NULL)
+        error_exit(EXIT_FAILURE, "error render %s", SDL_GetError());
+
+    SDL_SetRenderDrawBlendMode((SDL_Renderer *)this->renderer, SDL_BLENDMODE_BLEND);
+    runnig = true;
+}
 
 Window::Window(int width, int height, const char* title)
 {
     // Creates a window.
-    this->window = (void *)SDL_CreateWindow("Engine", 50, 50, width, height, SDL_WINDOW_SHOWN);// | SDL_WINDOW_RESIZABLE);
+    this->window = (void *)SDL_CreateWindow(title, 50, 50, width, height, SDL_WINDOW_SHOWN);// | SDL_WINDOW_RESIZABLE);
     if (this->window == NULL)
         error_exit(EXIT_FAILURE, "error window %s", SDL_GetError());
 

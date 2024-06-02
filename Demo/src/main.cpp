@@ -13,7 +13,7 @@
 int main()
 {
     ParticuleEssentialInit();
-    window = new Window(800, 600, "Demo");
+    window = new Window();//800, 600, "Demo");
     while (window->IsRunning())
     {
         window->Update();
