@@ -90,3 +90,34 @@ bool String::operator!=(const char *data) const
     return strcmp(this->data, data) != 0;
 }
 
+char &String::operator[](size_t index)
+{
+    return data[index];
+}
+
+const char &String::operator[](size_t index) const
+{
+    return data[index];
+}
+
+const char *String::c_str() const
+{
+    return data;
+}
+
+size_t String::size() const
+{
+    return length;
+}
+
+bool String::empty() const
+{
+    return length == 0;
+}
+
+void String::clear()
+{
+    delete[] data;
+    length = 0;
+    data = nullptr;
+}

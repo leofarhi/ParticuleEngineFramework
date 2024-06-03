@@ -9,6 +9,8 @@
 
 #include <SDL2/SDL.h>
 
+#define DIST_WINDOW//Distribution window
+
 void error_exit(int exitcode, const char* format, ...);
 
 namespace Particule::Essential::Graphic

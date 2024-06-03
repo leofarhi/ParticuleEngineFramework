@@ -220,3 +220,23 @@ const T& List<T>::operator[](size_t index) const {
     }
     return current->data;
 }
+
+template <typename T>
+T& List<T>::First() {
+    return head->data;
+}
+
+template <typename T>
+const T& List<T>::First() const {
+    return head->data;
+}
+
+template <typename T>
+T& List<T>::Last() {
+    return tail->data;
+}
+
+template <typename T>
+const T& List<T>::Last() const {
+    return tail->data;
+}

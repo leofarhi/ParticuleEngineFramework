@@ -37,6 +37,10 @@ public:
     T& operator[](size_t index);
     // Operator[] for const access
     const T& operator[](size_t index) const;
+    T& First();
+    const T& First() const;
+    T& Last();
+    const T& Last() const;
 };
 
 #include "List.tpp"

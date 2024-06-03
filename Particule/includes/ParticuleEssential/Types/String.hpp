@@ -21,6 +21,12 @@ public:
     bool operator==(const char *data) const;
     bool operator!=(const String &other) const;
     bool operator!=(const char *data) const;
+    char &operator[](size_t index);
+    const char &operator[](size_t index) const;
+    const char *c_str() const;
+    size_t size() const;
+    bool empty() const;
+    void clear();
 
 };
 

@@ -16,7 +16,13 @@ using namespace Particule::Essential::Input;
 using namespace Particule::Essential::Graphic::Draw;
 using namespace Particule::Essential;
 
-int main()
+#include <ParticuleEngine/ParticuleEngine.hpp>
+using namespace Particule::Core;
+using namespace Particule::Engine;
+
+//https://stackoverflow.com/questions/1997171/why-does-valgrind-say-basic-sdl-program-is-leaking-memory
+
+int main2()
 {
     ParticuleEssentialInit();
     window = new Window();//800, 600, "Demo");
@@ -40,6 +46,24 @@ int main()
         DrawRect(pos.x, pos.y, 50, 50, COLOR_RED);
         window->Update();
     }
+    ParticuleEssentialQuit();
+    return 0;
+}
+
+
+
+int main()
+{
+    ParticuleEssentialInit();
+    ParticuleEngineInit();
+    window = new Window();//800, 600, "Demo");
+    while (window->IsRunning())
+    {
+        window->Clear();
+        input->Update();
+        window->Update();
+    }
+    ParticuleEngineQuit();
     ParticuleEssentialQuit();
     return 0;
 }

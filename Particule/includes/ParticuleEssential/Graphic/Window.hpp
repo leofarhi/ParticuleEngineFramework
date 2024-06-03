@@ -1,6 +1,10 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
+//Replace this directive
+#define DIST_NOT_IMPLEMENTED //Distribution not implemented
+//All distribution start with DIST_
+
 #include "./Color.hpp"
 namespace Particule::Essential::Graphic
 {
