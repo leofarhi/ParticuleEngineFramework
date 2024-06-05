@@ -3,6 +3,7 @@
 
 #include <ParticuleEngine/Core/Component.hpp>
 #include <ParticuleEngine/Core/Types/Mesh.hpp>
+#include <ParticuleEngine/Core/Types/Face.hpp>
 
 namespace Particule::Core
 {

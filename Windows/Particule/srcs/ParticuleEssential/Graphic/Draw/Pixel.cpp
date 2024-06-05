@@ -9,4 +9,10 @@ namespace Particule::Essential::Graphic::Draw
         SDL_SetRenderDrawColor(window->renderer, color.r, color.g, color.b, color.a);
         SDL_RenderDrawPoint(window->renderer, x, y);
     }
+
+    void DrawPixelUnsafe(int x, int y, Color color)
+    {
+        SDL_SetRenderDrawColor(window->renderer, color.r, color.g, color.b, color.a);
+        SDL_RenderDrawPoint(window->renderer, x, y);
+    }
 }

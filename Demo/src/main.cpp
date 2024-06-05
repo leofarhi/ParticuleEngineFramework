@@ -71,8 +71,6 @@ Scene *LoadScene1()
     Scene *scene = new Scene("Scene1");
     GameObject *go = new GameObject(scene);
     go->AddComponent<Camera>();
-    GameObject *go2 = new GameObject(scene);
-    meshrender = go2->AddComponent<MeshRenderer>();
     Mesh *mesh = new Mesh(8,6);
 
     int size = 100;
@@ -99,13 +97,24 @@ Scene *LoadScene1()
                     Vector2Int(0, 0), Vector2Int(w-1, 0), Vector2Int(w-1, h-1), Vector2Int(0, h-1), texture);
     mesh->faces[5] = new Face(&mesh->vertices[5], &mesh->vertices[1], &mesh->vertices[2], &mesh->vertices[6],
                     Vector2Int(0, 0), Vector2Int(w-1, 0), Vector2Int(w-1, h-1), Vector2Int(0, h-1), texture);
-    meshrender->mesh = mesh;
     go->transform()->position.z = -500;
+
+    GameObject *go2 = new GameObject(scene);
+    meshrender = go2->AddComponent<MeshRenderer>();
+    meshrender->mesh = mesh;
     go2->transform()->position.z = 100;
     //go2->transform()->position.x = 800;
     //go2->transform()->position.y -= 200;
     scene->AddGameObject(go);
     scene->AddGameObject(go2);
+
+    /*GameObject *go3 = new GameObject(scene);
+    MeshRenderer *meshrender2 = go3->AddComponent<MeshRenderer>();
+    meshrender2->mesh = mesh;
+    go3->transform()->position.z = 100;
+    go3->transform()->position.x = 200;
+    go3->transform()->position.y = 200;
+    scene->AddGameObject(go3);*/
     return scene;
 }
 
@@ -118,16 +127,16 @@ int main()
     sceneManager->LoadScene(0);
     
     printf("MeshRenderer: %p\n", meshrender);
-    printf("Camera: %p\n", Camera::main);
+    printf("Camera: %p\n", Camera::mainCamera);
     while (window->IsRunning())
     {
         window->Clear();
-        Camera::main->bufferRenderer->Clear();
-        meshrender->CalculateProjection(Camera::main);
-        meshrender->mesh->DrawInBuffer(Camera::main);
-        Camera::main->bufferRenderer->Draw();
-        meshrender->gameObject->transform()->rotation.y += 0.01;
-        meshrender->gameObject->transform()->rotation.z += 0.01;
+        Camera::mainCamera->bufferRenderer->Clear();
+        meshrender->CalculateProjection(Camera::mainCamera);
+        meshrender->mesh->DrawInBuffer(Camera::mainCamera);
+        Camera::mainCamera->bufferRenderer->Draw();
+        meshrender->gameObject->transform()->rotation.y += 0.001;
+        meshrender->gameObject->transform()->rotation.z += 0.001;
         input->Update();
         window->Update();
     }

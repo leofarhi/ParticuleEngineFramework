@@ -75,7 +75,7 @@ namespace Particule::Core
     {
         depth = 0;
         for (int i = 0; i < verticesCount; i++)
-            depth += vertices[i]->position.z;
+            depth += vertices[i]->projected.z;
         depth /= verticesCount;
     }
 
@@ -89,7 +89,7 @@ namespace Particule::Core
         return a > b ? (a > c ? a : c) : (b > c ? b : c);
     }
 
-    static void draw_texture_trapezoid(Vector2Int src[3], Vector3Int dest[3], Texture *texture, bool backfaceCulling)
+    static void draw_texture_trapezoid(Vector2Int src[3], Vector3Int dest[3], Texture *texture, bool doubleSided)
     {
         int src_x0 = src[0].x, src_y0 = src[0].y;
         int src_x1 = src[1].x, src_y1 = src[1].y;
@@ -99,7 +99,7 @@ namespace Particule::Core
         int dest_x2 = dest[2].x, dest_y2 = dest[2].y, dest_z2 = dest[2].z;
         int tex_w = texture->Width();
         int tex_h = texture->Height();
-        if (backfaceCulling && (dest_x1 - dest_x0) * (dest_y2 - dest_y0) - (dest_y1 - dest_y0) * (dest_x2 - dest_x0) < 0)
+        if (!doubleSided && (dest_x1 - dest_x0) * (dest_y2 - dest_y0) - (dest_y1 - dest_y0) * (dest_x2 - dest_x0) < 0)
             return;
         int area = (dest_x2 - dest_x1) * (dest_y0 - dest_y1) - (dest_x0 - dest_x1) * (dest_y2 - dest_y1);
         if (area == 0)
@@ -122,8 +122,8 @@ namespace Particule::Core
                     float v = z * (w0 * src_y0 / dest_z0 + w1 * src_y1 / dest_z1 + w2 * src_y2 / dest_z2);
                     u = (int)u % tex_w;
                     v = (int)v % tex_h;
-                    Color color = texture->GetPixel(u, v);
-                    DrawPixel(x, y, color);
+                    Color color = texture->ReadPixel(u, v);
+                    DrawPixelUnsafe(x, y, color);
                 }
             }
         }
@@ -143,7 +143,7 @@ namespace Particule::Core
                 src[0] = this->uv[0];
                 src[1] = this->uv[2];
                 src[2] = this->uv[3];
-                draw_texture_trapezoid(src, dest, texture, false);
+                draw_texture_trapezoid(src, dest, texture, doubleSided);
             }
         }
     }

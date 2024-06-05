@@ -47,6 +47,10 @@ namespace Particule::Core
     void Mesh::DrawInBuffer(Camera *camera)
     {
         for (int i = 0; i < facesCount; i++)
+        {
+            faces[i]->CalculateDepth();
+            //printf("Depth: %f\n", faces[i]->depth);
             camera->bufferRenderer->AddFace(faces[i]);
+        }
     }
 }

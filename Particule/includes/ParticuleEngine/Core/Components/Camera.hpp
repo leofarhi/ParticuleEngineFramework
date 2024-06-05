@@ -23,7 +23,7 @@ namespace Particule::Core
     class Camera : public Component
     {
     public:
-        static Camera *main;
+        static Camera *mainCamera;
         
         BufferRenderer *bufferRenderer;
         float fieldOfView;

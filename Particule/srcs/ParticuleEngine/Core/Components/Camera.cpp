@@ -3,8 +3,8 @@
 
 namespace Particule::Core
 {
-    Camera *Camera::main = nullptr;
-    
+    Camera *Camera::mainCamera = nullptr;
+
     BufferRenderer::BufferRenderer()
     {
     }
@@ -25,6 +25,7 @@ namespace Particule::Core
         {
             Face *face = this->faces[i];
             face->DrawTextured();
+            //face->DrawWireframe();
         }
     }
 
@@ -55,10 +56,12 @@ namespace Particule::Core
         this->nearClipPlane = 0.3f;
         this->farClipPlane = 1000.0f;
         this->orthographic = false;
-        Camera::main = this;
+        this->bufferRenderer = new BufferRenderer();
+        Camera::mainCamera = this;
     }
 
     Camera::~Camera()
     {
+        delete this->bufferRenderer;
     }
 }
