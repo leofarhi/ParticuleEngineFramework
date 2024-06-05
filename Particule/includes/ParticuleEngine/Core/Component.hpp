@@ -26,6 +26,14 @@ namespace Particule::Core
         virtual void OnDisable() {};
         virtual void OnDestroy() {};
     };
+
+    template <typename T_Component, typename... Args>
+    T_Component *GameObject::AddComponent(Args... args)
+    {
+        T_Component *component = new T_Component(this, args...);
+        components.Append(component);
+        return component;
+    }
 }
 
 #endif // PE_CORE_COMPONENT_HPP

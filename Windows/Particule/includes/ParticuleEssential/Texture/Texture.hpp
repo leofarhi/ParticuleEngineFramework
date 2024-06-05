@@ -4,7 +4,7 @@
 #include <ParticuleEssential/Graphic/Color.hpp>
 #include <SDL2/SDL.h>
 
-namespace Particule::Essential::Texture
+namespace Particule::Essential::Image
 {
     using Particule::Essential::Graphic::Color;
     class Sprite;

@@ -18,13 +18,13 @@ namespace Particule::Essential::Graphic
     class Window
     {
     private:
+        int width;
+        int height;
         bool runnig;
     public:
         SDL_Window* window;
         SDL_Renderer* renderer;
 
-        int width;
-        int height;
         Window();
         Window(int width, int height, const char* title);
         ~Window();
@@ -34,6 +34,8 @@ namespace Particule::Essential::Graphic
         void ClearColor(Color color);
         bool IsRunning();
         void Close();
+        int GetWidth();
+        int GetHeight();
     };
 
     extern Window* window;

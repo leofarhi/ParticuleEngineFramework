@@ -88,4 +88,14 @@ namespace Particule::Essential::Graphic
     {
         runnig = false;
     }
+
+    int Window::GetWidth()
+    {
+        return width;
+    }
+
+    int Window::GetHeight()
+    {
+        return height;
+    }
 }

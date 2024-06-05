@@ -3,7 +3,7 @@
 #include <ParticuleEssential/Texture/Texture.hpp>
 #include <ParticuleEssential/Types/Rect.hpp>
 
-namespace Particule::Essential::Texture
+namespace Particule::Essential::Image
 {
     class Sprite
     {

@@ -3,12 +3,13 @@
 #include <ParticuleEssential/Graphic/Color.hpp>
 #include <ParticuleEssential/Texture/Sprite.hpp>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
-namespace Particule::Essential::Texture
+namespace Particule::Essential::Image
 {
     using namespace Particule::Essential::Graphic;
     using Particule::Essential::Graphic::Color;
-    using Particule::Essential::Texture::Sprite;
+    using Particule::Essential::Image::Sprite;
     Texture::Texture()
     {
         texture = nullptr;
@@ -181,7 +182,7 @@ namespace Particule::Essential::Texture
     Texture* Texture::Load(const char* path)
     {
         Texture* texture = new Texture();
-        SDL_Surface* surface = SDL_LoadBMP(path);
+        SDL_Surface* surface = IMG_Load(path);
         if (surface == nullptr)
             error_exit(1, "Can't load texture %s\n", path);
         texture->texture = SDL_CreateTextureFromSurface(window->renderer, surface);

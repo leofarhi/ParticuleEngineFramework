@@ -9,21 +9,26 @@
 #include <ParticuleEngine/Enum/Tag.hpp>
 #include <cstdarg>
 
+namespace Particule::SceneManagement
+{
+    class Scene;
+}
+
 namespace Particule::Core
 {
     using namespace Particule::Enum;
-    class Scene;
+    using namespace Particule::SceneManagement;
     class Component;
 
     class GameObject : public Object
     {
     private:
         Transform *m_transform;
-    public:
+        bool m_activeSelf;
         Scene *scene;
+    public:
         String name;
         List<Component*> components;
-        bool activeSelf;
         Layer layer;
         Tag tag;
         bool isStatic;
@@ -35,6 +40,8 @@ namespace Particule::Core
 
         bool activeInHierarchy();
         Transform *transform();
+        bool activeSelf();
+        void SetActive(bool value);
 
         template <typename T_Component, typename... Args>
         T_Component *AddComponent(Args... args);

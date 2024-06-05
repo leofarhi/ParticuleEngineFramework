@@ -11,10 +11,10 @@ namespace Particule::Essential::Graphic
     class Window
     {
     private:
-        bool runnig;
-    public:
         int width;
         int height;
+        bool runnig;
+    public:
         Window();
         Window(int width, int height, const char* title);
         ~Window();
@@ -24,6 +24,8 @@ namespace Particule::Essential::Graphic
         void ClearColor(Color color);
         bool IsRunning();
         void Close();
+        int GetWidth();
+        int GetHeight();
     };
 
     extern Window* window;

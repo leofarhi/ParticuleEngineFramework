@@ -14,7 +14,7 @@ namespace Particule::Core
         this->name = "GameObject";
         this->m_transform = new Transform(this);
         this->scene = (Scene *)sceneManager->activeScene();
-        this->activeSelf = true;
+        this->m_activeSelf = true;
     }
 
     GameObject::GameObject(Scene *scene)
@@ -22,7 +22,7 @@ namespace Particule::Core
         this->name = "GameObject";
         this->m_transform = new Transform(this);
         this->scene = scene;
-        this->activeSelf = true;
+        this->m_activeSelf = true;
     }
 
     GameObject::~GameObject()
@@ -36,7 +36,7 @@ namespace Particule::Core
 
     bool GameObject::activeInHierarchy()
     {
-        return this->activeSelf 
+        return this->activeSelf() 
             && (this->m_transform->parent() == nullptr 
                 || this->m_transform->parent()->gameObject->activeInHierarchy());
     }
@@ -46,12 +46,14 @@ namespace Particule::Core
         return this->m_transform;
     }
 
-    template <typename T_Component, typename... Args>
-    T_Component *GameObject::AddComponent(Args... args)
+    bool GameObject::activeSelf()
     {
-        T_Component *component = new T_Component(this, args...);
-        this->components.Append(component);
-        return component;
+        return this->m_activeSelf;
+    }
+
+    void GameObject::SetActive(bool value)
+    {
+        this->m_activeSelf = value;
     }
 
     Component *GameObject::GetComponent(String className)
@@ -65,6 +67,4 @@ namespace Particule::Core
         }
         return nullptr;
     }
-    
-    template Component *GameObject::AddComponent<Component>();
 }
