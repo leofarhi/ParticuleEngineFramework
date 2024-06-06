@@ -12,6 +12,6 @@ namespace Particule::Essential::Graphic::Draw
 
     void DrawPixelUnsafe(int x, int y, Color color)
     {
-        dpixel(x, y, color.color);
+        gint_vram[DWIDTH * y + x] = color.color;
     }
 }

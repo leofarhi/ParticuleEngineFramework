@@ -1,6 +1,7 @@
 #ifndef TEXTURE_HPP
 #define TEXTURE_HPP
 #include <ParticuleEssential/Types/Rect.hpp>
+#include <ParticuleEssential/Types/String.hpp>
 #include <ParticuleEssential/Graphic/Color.hpp>
 #include <gint/gint.h>
 #include <gint/display.h>
@@ -13,7 +14,7 @@ namespace Particule::Essential::Image
     class Texture
     {
         bopti_image_t* texture;
-        char* path;
+        String path;
         int (*__GetPixel)(Texture* texture, int x, int y);
         int (*__DecodePixel)(Texture* texture, int pixel);
         void (*__SetPixel)(Texture* texture, int x, int y, int color);

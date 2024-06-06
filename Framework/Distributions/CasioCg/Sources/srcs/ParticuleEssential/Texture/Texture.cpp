@@ -2,6 +2,7 @@
 #include "../../../includes/ParticuleEssential/Graphic/Window.hpp"
 #include <ParticuleEssential/Graphic/Color.hpp>
 #include <ParticuleEssential/Texture/Sprite.hpp>
+#include <ParticuleEssential/System/VirtualFile.hpp>
 
 
 namespace Particule::Essential::Image
@@ -9,9 +10,16 @@ namespace Particule::Essential::Image
     using namespace Particule::Essential::Graphic;
     using Particule::Essential::Graphic::Color;
     using Particule::Essential::Image::Sprite;
+    using namespace Particule::Essential::System;
     Texture::Texture()
     {
         texture = nullptr;
+        path = nullptr;
+        __GetPixel = nullptr;
+        __DecodePixel = nullptr;
+        __SetPixel = nullptr;
+        _alphaValue = 0;
+        isAllocated = false;
     }
 
     Texture::~Texture()
@@ -258,8 +266,18 @@ namespace Particule::Essential::Image
 
     Texture* Texture::Load(const char* path)
     {
-        //TODO
-        return nullptr;
+        VirtualFile* img = VirtualResources::Instance->GetFile(path);
+        if (img == nullptr)
+            return nullptr;
+        Texture* texture = new Texture();
+        texture->texture = (bopti_image_t*)(img->Data());
+        texture->path = path;
+        texture->__GetPixel = nullptr;
+        texture->__DecodePixel = nullptr;
+        texture->__SetPixel = nullptr;
+        texture->_alphaValue = 0;
+        texture->isAllocated = false;
+        return texture;
     }
 
     Texture* Texture::Create(int width, int height)

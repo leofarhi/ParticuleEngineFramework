@@ -57,7 +57,9 @@ using namespace Particule::SceneManagement;
 #include <ParticuleEngine/Core/Types/Mesh.hpp>
 
 #include <ParticuleEssential/Texture/Texture.hpp>
+#include <ParticuleEssential/System/VirtualFile.hpp>
 using namespace Particule::Essential::Image;
+using namespace Particule::Essential::System;
 
 MeshRenderer *meshrender = nullptr;
 
@@ -115,25 +117,28 @@ Scene *LoadScene1()
     return scene;
 }
 
+extern bopti_image_t IMG_ASSET_texture;
+
 int main()
 {
     ParticuleEssentialInit();
     ParticuleEngineInit();
+    VirtualFile a("../texture.jpg",(void*)&IMG_ASSET_texture);
+    VirtualResources::Instance->AddFile(a);
+    Texture *test = Texture::Load("../texture.jpg");
     window = new Window();//800, 600, "Demo");
     sceneManager->AddScene(LoadScene1);
     sceneManager->LoadScene(0);
     
-    printf("MeshRenderer: %p\n", meshrender);
-    printf("Camera: %p\n", Camera::mainCamera);
-    while (window->IsRunning())
+    while (test && window->IsRunning() && !input->IsKeyPressed(KEY_EXIT))
     {
         window->Clear();
         Camera::mainCamera->bufferRenderer->Clear();
         meshrender->CalculateProjection(Camera::mainCamera);
         meshrender->mesh->DrawInBuffer(Camera::mainCamera);
         Camera::mainCamera->bufferRenderer->Draw();
-        meshrender->gameObject->transform()->rotation.y += 0.001;
-        meshrender->gameObject->transform()->rotation.z += 0.001;
+        meshrender->gameObject->transform()->rotation.y += 0.1;
+        meshrender->gameObject->transform()->rotation.z += 0.1;
         input->Update();
         window->Update();
     }

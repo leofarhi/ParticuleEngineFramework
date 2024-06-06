@@ -120,6 +120,7 @@ def demo(base_path, build_path, output_path, args):
             for item in os.listdir(os.path.join(curent_dir, "Demos")):
                 shutil.rmtree(os.path.join(curent_dir, "Demos", item, "bin"), ignore_errors=True)
                 shutil.rmtree(os.path.join(curent_dir, "Demos", item, "build"), ignore_errors=True)
+                shutil.rmtree(os.path.join(curent_dir, "Demos", item, "lib"), ignore_errors=True)
         else:
             demo = MatchDemo(args[0])
             if demo == None:

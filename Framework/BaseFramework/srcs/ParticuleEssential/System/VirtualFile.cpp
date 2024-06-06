@@ -79,7 +79,8 @@ namespace Particule::Essential::System
 
     VirtualFile::~VirtualFile()
     {
-        delete data;
+        if (unload != nullptr)
+            unload(data);
     }
 
     void VirtualFile::Load()
