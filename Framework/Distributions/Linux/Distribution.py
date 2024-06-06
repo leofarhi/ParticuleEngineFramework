@@ -46,6 +46,8 @@ def getWslPath(path):
 
 def install(base_path, build_path, output_path, args):
     print("Installing...")
+    cmd = f"sudo apt-get install -y g++ make"
+    process(cmd,cmd, cwd=curent_dir)
     packages = ["libsdl2-dev", "libsdl2-image-dev", "libsdl2-ttf-dev", "libsdl2-mixer-dev"]
     cmd = f"sudo apt-get install -y {' '.join(packages)}"
     process(cmd,cmd, cwd=curent_dir)
