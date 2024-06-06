@@ -46,19 +46,14 @@ def getWslPath(path):
 
 def install(base_path, build_path, output_path, args):
     print("Installing...")
-    os.makedirs(os.path.join(curent_dir, "packages"), exist_ok=True)
-    package_dir = os.path.join(curent_dir, "packages")
     packages = ["libsdl2-dev", "libsdl2-image-dev", "libsdl2-ttf-dev", "libsdl2-mixer-dev"]
     cmd = f"sudo apt-get install -y {' '.join(packages)}"
-    process(cmd,cmd, cwd=package_dir)
+    process(cmd,cmd, cwd=curent_dir)
     print("\033[92mAll the dependencies have been installed.\033[0m")
     return
 
 def build(base_path, build_path, output_path, args):
     print("Building...")
-    if not os.path.exists(os.path.join(curent_dir, "packages")):
-        print("\033[91mThe dependencies are not installed.\033[0m")
-        sys.exit(1)
     #clean the build folder
     shutil.rmtree(build_path, ignore_errors=True)
     os.makedirs(build_path)
