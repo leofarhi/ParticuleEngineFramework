@@ -87,5 +87,43 @@ def build(base_path, build_path, output_path, args):
     shutil.move(os.path.join(build_path, "build","libparticule.a"), os.path.join(output_path, "lib", "libparticule.a"))
     shutil.move(os.path.join(build_path, "includes"), os.path.join(output_path))
 
+def MatchDemo(demo):
+    lst = os.listdir(os.path.join(curent_dir, "Demos"))
+    for item in lst:
+        if item.lower() == demo.lower():
+            return item
+    return None
+
+def BuildTestDemo(output_path,demo_path):
+    #make bin folder
+    os.makedirs(os.path.join(demo_path, "bin"), exist_ok=True)
+    #copy lib folder
+    if not os.path.exists(os.path.join(demo_path, "lib")):
+        shutil.copytree(os.path.join(output_path, "lib"), os.path.join(demo_path, "lib"), dirs_exist_ok=True)
+    #make demo and send output in args
+    output_path = output_path.replace("\\", "/")
+    if wsl:
+        output_path = getWslPath(output_path)
+    cmd=f"fxsdk build-cg -c -DLIBRARY_PATH={output_path} -B build;make -C build"
+    print(cmd)
+    process(cmd,None, cwd=demo_path)
+    print("\033[92mDemo built.\033[0m")
+
 def demo(base_path, build_path, output_path, args):
-    pass
+    print("demo...")
+    #check if the output folder exists and particule.a exists
+    if not os.path.exists(os.path.join(output_path, "lib", "libparticule.a")):
+        print("\033[91mBuild the framework first.\033[0m")
+        sys.exit(1)
+    if len(args) != 0:
+        if args[0] == "clean":
+            for item in os.listdir(os.path.join(curent_dir, "Demos")):
+                process("fxsdk clean",None, cwd=os.path.join(curent_dir, "Demos", item))
+        else:
+            demo = MatchDemo(args[0])
+            if demo == None:
+                print("\033[91mDemo not found.\033[0m")
+                sys.exit(1)
+            BuildTestDemo(output_path,os.path.join(curent_dir, "Demos", demo))
+    else:
+        BuildTestDemo(output_path,os.path.join(curent_dir, "Demos", "Demo1"))
