@@ -1,4 +1,5 @@
 #include <ParticuleEssential/ParticuleEssential.hpp>
+#include <ParticuleEssential/System/VirtualFile.hpp>
 #include "./../includes/ParticuleEssential/Graphic/Window.hpp"
 #include "./../includes/ParticuleEssential/Input/Input.hpp"
 
@@ -9,9 +10,6 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <unistd.h>
-
-using namespace Particule::Essential::Graphic;
-using namespace Particule::Essential::Input;
 
 static void ResetDirectory()
 {
@@ -31,6 +29,9 @@ static void ResetDirectory()
 
 namespace Particule::Essential
 {
+    using namespace Particule::Essential::Graphic;
+    using namespace Particule::Essential::Input;
+    using namespace Particule::Essential::System;
     void ParticuleEssentialInit()
     {
         // Initializes the SDL.
@@ -46,6 +47,7 @@ namespace Particule::Essential
             error_exit(EXIT_FAILURE, "error TTF_Init %s", TTF_GetError());
 
         input = new InputManager();
+        new VirtualResources();
     }
 
     void ParticuleEssentialQuit()
@@ -58,6 +60,6 @@ namespace Particule::Essential
         IMG_Quit();
         SDL_Quit();
         delete input;
-        //PC_QuitAsset();
+        delete VirtualResources::Instance;
     }
 }

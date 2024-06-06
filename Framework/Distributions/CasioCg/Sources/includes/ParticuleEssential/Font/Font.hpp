@@ -14,6 +14,7 @@ namespace Particule::Essential::Font
     private:
         char* path;
         font_t* font;
+        int size;
     public:
         Font();
         Font(const char* path, int size);

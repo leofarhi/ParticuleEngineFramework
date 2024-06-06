@@ -12,36 +12,36 @@ namespace Particule::Essential::Graphic
     //Calls the constructor with the default values.
     Window::Window()
     {
-        this->width = 800;
-        this->height = 600;
-        
+        this->width = 396;
+        this->height = 224;
         runnig = true;
     }
 
     Window::Window(int width, int height, const char* title)
     {
-        
+        (void)width;
+        (void)height;
+        (void)title;
+        this->width = 396;
+        this->height = 224;
         runnig = true;
     }
 
-    Window::~Window()
-    {
-        
-    }
+    Window::~Window(){}
 
     void Window::Update()
     {
-        
+        dupdate();
     }
 
     void Window::Clear()
     {
-        
+        dclear(C_BLACK);
     }
 
     void Window::ClearColor(Color color)
     {
-        
+        dclear(color.color);
     }
 
     bool Window::IsRunning()

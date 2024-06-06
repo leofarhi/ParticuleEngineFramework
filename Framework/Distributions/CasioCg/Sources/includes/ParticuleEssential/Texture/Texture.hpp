@@ -13,6 +13,12 @@ namespace Particule::Essential::Image
     class Texture
     {
         bopti_image_t* texture;
+        char* path;
+        int (*__GetPixel)(Texture* texture, int x, int y);
+        int (*__DecodePixel)(Texture* texture, int pixel);
+        void (*__SetPixel)(Texture* texture, int x, int y, int color);
+        int _alphaValue;
+        bool isAllocated;
     public:
         Texture();
         ~Texture();

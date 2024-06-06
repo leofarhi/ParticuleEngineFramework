@@ -7,11 +7,11 @@ namespace Particule::Essential::Graphic::Draw
 {
     void DrawPixel(int x, int y, Color color)
     {
-        
+        dpixel(x, y, color.color);
     }
 
     void DrawPixelUnsafe(int x, int y, Color color)
     {
-        
+        dpixel(x, y, color.color);
     }
 }

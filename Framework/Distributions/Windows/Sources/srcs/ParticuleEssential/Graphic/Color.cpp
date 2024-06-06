@@ -18,6 +18,15 @@ namespace Particule::Essential::Graphic
         this->a = a;
     }
 
+    Color::Color(long long int raw)
+    {
+        //raw = 0xRRGGBBAA
+        r = (raw >> 24) & 0xFF;
+        g = (raw >> 16) & 0xFF;
+        b = (raw >> 8) & 0xFF;
+        a = raw & 0xFF;
+    }
+
     Color::Color(const Color &color)
     {
         r = color.r;

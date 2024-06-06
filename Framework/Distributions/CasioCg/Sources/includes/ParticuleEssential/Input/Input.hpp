@@ -9,19 +9,8 @@
 #include <gint/keyboard.h>
 #include <gint/rtc.h>
 
-namespace Particule::Essential::CasioCg
-{
-    typedef struct 
-    {
-        int key;
-        int type;
-    } GINT_keyinfo;
-}
-
 namespace Particule::Essential::Input
 {
-    using namespace Particule::Essential::CasioCg;
-
     class Mouse
     {
     public:
@@ -36,11 +25,9 @@ namespace Particule::Essential::Input
     class InputManager
     {
     private:
-        List<GINT_keyinfo> *InputEvents;
-        List<GINT_keyinfo> *InputEventsHeld;
+        List<key_event_t> InputEvents;
     public:
-        List<GINT_keyinfo> *GetInputEvents() const;
-        List<GINT_keyinfo> *GetInputEventsHeld() const;
+        List<key_event_t> *GetInputEvents();
 
         Mouse* mouse;
         InputManager();

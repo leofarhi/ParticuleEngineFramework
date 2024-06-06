@@ -6,7 +6,6 @@
 #include <unistd.h>
 namespace Particule::Essential::Input
 {
-    using namespace Particule::Essential::CasioCg;
     InputManager* input = nullptr;
 
     Mouse::Mouse()
@@ -20,57 +19,62 @@ namespace Particule::Essential::Input
 
     bool Mouse::IsPressed(int button)
     {
-        
+        return input->IsKeyPressed(button);
     }
 
     bool Mouse::IsDown(int button)
     {
-        
+        return input->IsKeyDown(button);
     }
 
     bool Mouse::IsUp(int button)
     {
-        
+        return input->IsKeyUp(button);
     }
 
-    InputManager::InputManager()
-    {
-        
-    }
+    InputManager::InputManager(){}
 
-    InputManager::~InputManager()
-    {
-        
-    }
+    InputManager::~InputManager(){}
 
-    List<GINT_keyinfo>* InputManager::GetInputEvents() const
+    List<key_event_t> *InputManager::GetInputEvents()
     {
-        return InputEvents;
-    }
-
-    List<GINT_keyinfo>* InputManager::GetInputEventsHeld() const
-    {
-        return InputEventsHeld;
+        return &InputEvents;
     }
 
     void InputManager::Update()
     {
-        
+        //clearevents();
+        InputEvents.Clear();
+        key_event_t ev;
+        while((ev = pollevent()).type != KEYEV_NONE)
+            InputEvents.Append(ev);
     }
 
     bool InputManager::IsKeyPressed(int key)
     {
-        
+        return keydown(key);
     }
 
     bool InputManager::IsKeyDown(int key)
     {
-        
+        for (ListNode<key_event_t> *cur=nullptr; input->GetInputEvents()->ForEach(&cur);)
+        {
+            key_event_t event = cur->data;
+            if (event.type == KEYEV_DOWN && event.key == key)
+                return true;
+        }
+        return false;
     }
 
     bool InputManager::IsKeyUp(int key)
     {
-        
+        for (ListNode<key_event_t> *cur=nullptr; input->GetInputEvents()->ForEach(&cur);)
+        {
+            key_event_t event = cur->data;
+            if (event.type == KEYEV_UP && event.key == key)
+                return true;
+        }
+        return false;
     }
 
     Vector2 InputManager::GetAnalogStick(int stick)

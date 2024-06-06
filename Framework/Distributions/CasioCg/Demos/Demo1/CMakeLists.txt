@@ -9,6 +9,8 @@ include(GenerateG3A)
 include(Fxconv)
 find_package(Gint 2.1 REQUIRED)
 
+message(STATUS "Library path: ${LIBRARY_PATH}")
+
 set(SOURCES
     src/main.cpp
 )
@@ -28,7 +30,7 @@ fxconv_declare_assets(${ASSETS} ${ASSETS_fx} ${ASSETS_cg} WITH_METADATA)
 
 add_executable(myaddin ${SOURCES} ${ASSETS} ${ASSETS_${FXSDK_PLATFORM}})
 target_compile_options(myaddin PRIVATE -Wall -Wextra -Os)
-target_link_libraries(myaddin Gint::Gint "${CMAKE_CURRENT_SOURCE_DIR}/lib/libsupc++.a" "${CMAKE_CURRENT_SOURCE_DIR}/lib/libparticule.a") 
+target_link_libraries(myaddin Gint::Gint "${CMAKE_CURRENT_SOURCE_DIR}/lib/libsupc++.a" "${CMAKE_CURRENT_SOURCE_DIR}/lib/libparticule.a" stdc++) 
 
 set(NAME_APP "demo")
 

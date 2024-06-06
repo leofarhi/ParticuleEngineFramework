@@ -13,7 +13,7 @@ namespace Particule::Essential::Graphic
 
         Color();
         Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
-        Color(unsigned int hex);
+        Color(long long int raw);
         Color(const Color &other);
         Color &operator=(const Color &other);
         bool operator==(const Color &other) const;
