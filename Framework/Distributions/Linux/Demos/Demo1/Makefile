@@ -40,6 +40,10 @@ $(EXEC): $(OBJS)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -o $(EXEC) $(OBJS) $(LDLIBS)
 	@echo "main done!"
 
+# Compilation
+%.o: %.cpp
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
 $(foreach f, $(EXE), $(eval $(f):))
 # Include dependency files
 -include $(DEPS)
