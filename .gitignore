@@ -204,5 +204,5 @@ Demo/bin/*
 Todolist.txt
 /Framework/Build
 /Framework/Output
-/Framework/Distributions/Windows/Demos
-/Framework/Distributions/Linux/Demos
+/Framework/Distributions/Windows/Demos/bin/*
+/Framework/Distributions/Linux/Demos/bin/*
