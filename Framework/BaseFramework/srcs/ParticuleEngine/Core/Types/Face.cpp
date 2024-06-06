@@ -89,7 +89,7 @@ namespace Particule::Core
         return a > b ? (a > c ? a : c) : (b > c ? b : c);
     }
 
-    static void draw_texture_trapezoid(Vector2Int src[3], Vector3Int dest[3], Texture *texture, bool doubleSided)
+    /*static void draw_texture_trapezoid(Vector2Int src[3], Vector3Int dest[3], Texture *texture, bool doubleSided)
     {
         int src_x0 = src[0].x, src_y0 = src[0].y;
         int src_x1 = src[1].x, src_y1 = src[1].y;
@@ -112,6 +112,7 @@ namespace Particule::Core
         {
             for (int x = min_x; x < max_x; x++)
             {
+                //change float to fixed point
                 float w0 = ((dest_x2 - dest_x1) * (y - dest_y1) - (dest_y2 - dest_y1) * (x - dest_x1)) / (float)area;
                 float w1 = ((dest_x0 - dest_x2) * (y - dest_y2) - (dest_y0 - dest_y2) * (x - dest_x2)) / (float)area;
                 float w2 = 1 - w0 - w1;
@@ -127,7 +128,53 @@ namespace Particule::Core
                 }
             }
         }
+    }*/
+
+    static void draw_texture_trapezoid(Vector2Int src[3], Vector3Int dest[3], Texture *texture, bool doubleSided)
+    {
+        long long src_x0 = src[0].x, src_y0 = src[0].y;
+        long long src_x1 = src[1].x, src_y1 = src[1].y;
+        long long src_x2 = src[2].x, src_y2 = src[2].y;
+        long long dest_x0 = dest[0].x, dest_y0 = dest[0].y, dest_z0 = dest[0].z;
+        long long dest_x1 = dest[1].x, dest_y1 = dest[1].y, dest_z1 = dest[1].z;
+        long long dest_x2 = dest[2].x, dest_y2 = dest[2].y, dest_z2 = dest[2].z;
+        long long tex_w = texture->Width();
+        long long tex_h = texture->Height();
+        
+        if (!doubleSided && (dest_x1 - dest_x0) * (dest_y2 - dest_y0) - (dest_y1 - dest_y0) * (dest_x2 - dest_x0) < 0)
+            return;
+
+        long long area = (dest_x2 - dest_x1) * (dest_y0 - dest_y1) - (dest_x0 - dest_x1) * (dest_y2 - dest_y1);
+        if (area == 0)
+            return;
+
+        long long min_y = min_local(dest_y1, dest_y2, dest_y0);
+        long long min_x = min_local(dest_x1, dest_x2, dest_x0);
+        long long max_y = max_local(dest_y1, dest_y2, dest_y0);
+        long long max_x = max_local(dest_x1, dest_x2, dest_x0);
+
+        for (long long y = min_y; y < max_y; y++)
+        {
+            for (long long x = min_x; x < max_x; x++)
+            {
+                // Change float to fixed point
+                long long w0 = (((dest_x2 - dest_x1) * (y - dest_y1) - (dest_y2 - dest_y1) * (x - dest_x1)) << 16) / area;
+                long long w1 = (((dest_x0 - dest_x2) * (y - dest_y2) - (dest_y0 - dest_y2) * (x - dest_x2)) << 16) / area;
+                long long w2 = (1 << 16) - w0 - w1;
+                if (0 <= w0 && w0 <= (1 << 16) && 0 <= w1 && w1 <= (1 << 16) && 0 <= w2 && w2 <= (1 << 16))
+                {
+                    long long z = (1 << 16) / (w0 / dest_z0 + w1 / dest_z1 + w2 / dest_z2);
+                    int u = (z * (w0 * src_x0 / dest_z0 + w1 * src_x1 / dest_z1 + w2 * src_x2 / dest_z2)) >> 16;
+                    int v = (z * (w0 * src_y0 / dest_z0 + w1 * src_y1 / dest_z1 + w2 * src_y2 / dest_z2)) >> 16;
+                    u = (int)u % tex_w;
+                    v = (int)v % tex_h;
+                    Color color = texture->ReadPixel(u, v);
+                    DrawPixelUnsafe(x, y, COLOR_WHITE);//color);
+                }
+            }
+        }
     }
+
     void Face::DrawTextured()
     {
         if (texture)

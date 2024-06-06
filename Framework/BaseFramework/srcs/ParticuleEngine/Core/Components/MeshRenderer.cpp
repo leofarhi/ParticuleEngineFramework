@@ -1,5 +1,6 @@
 #include <ParticuleEngine/Core/Components/MeshRenderer.hpp>
 #include <ParticuleEngine/Core/Types/Mesh.hpp>
+#include <ParticuleEssential/Basic/Basic.hpp>
 #include <ParticuleEngine/Core/Components/Camera.hpp>
 #include <ParticuleEssential/Types/Vector3Int.hpp>
 #include <ParticuleEssential/Types/Matrix.hpp>
@@ -24,25 +25,25 @@ namespace Particule::Core
     {
         Matrix<float> m(3, 3);
         m(0, 0) = 1;m(0, 1) = 0;m(0, 2) = 0;
-        m(1, 0) = 0;m(1, 1) = cos(theta);m(1, 2) = -sin(theta);
-        m(2, 0) = 0;m(2, 1) = sin(theta);m(2, 2) = cos(theta);
+        m(1, 0) = 0;m(1, 1) = cos_approx(theta);m(1, 2) = -sin_approx(theta);
+        m(2, 0) = 0;m(2, 1) = sin_approx(theta);m(2, 2) = cos_approx(theta);
         return m;
     }
 
     static Matrix<float> GenerateYRotationMatrix(float theta)
     {
         Matrix<float> m(3, 3);
-        m(0, 0) = cos(theta);m(0, 1) = 0;m(0, 2) = -sin(theta);
+        m(0, 0) = cos_approx(theta);m(0, 1) = 0;m(0, 2) = -sin_approx(theta);
         m(1, 0) = 0;m(1, 1) = 1;m(1, 2) = 0;
-        m(2, 0) = sin(theta);m(2, 1) = 0;m(2, 2) = cos(theta);
+        m(2, 0) = sin_approx(theta);m(2, 1) = 0;m(2, 2) = cos_approx(theta);
         return m;
     }
 
     static Matrix<float> GenerateZRotationMatrix(float theta)
     {
         Matrix<float> m(3, 3);
-        m(0, 0) = cos(theta);m(0, 1) = -sin(theta);m(0, 2) = 0;
-        m(1, 0) = sin(theta);m(1, 1) = cos(theta);m(1, 2) = 0;
+        m(0, 0) = cos_approx(theta);m(0, 1) = -sin_approx(theta);m(0, 2) = 0;
+        m(1, 0) = sin_approx(theta);m(1, 1) = cos_approx(theta);m(1, 2) = 0;
         m(2, 0) = 0;m(2, 1) = 0;m(2, 2) = 1;
         return m;
     }
@@ -82,7 +83,6 @@ namespace Particule::Core
             x = x + window->GetWidth() / 2;
             y = y + window->GetHeight() / 2;
             mesh->vertices[i].projected = Vector3Int(x, y, z);
-            //printf("x: %f, y: %f, z: %f\n", x, y, z);
         }
     }
 

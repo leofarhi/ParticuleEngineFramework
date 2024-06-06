@@ -24,6 +24,8 @@ namespace Particule::Core
         for (size_t i = 0; i < this->faces.Size(); i++)
         {
             Face *face = this->faces[i];
+            //face->DrawWireframe();
+            //continue;
             if (face->texture != nullptr)
                 face->DrawTextured();
             else

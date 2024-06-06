@@ -1,5 +1,6 @@
 #include <ParticuleEssential/ParticuleEssential.hpp>
 #include <ParticuleEssential/System/VirtualFile.hpp>
+#include <ParticuleEssential/Basic/Basic.hpp>
 #include "./../includes/ParticuleEssential/Graphic/Window.hpp"
 #include "./../includes/ParticuleEssential/Input/Input.hpp"
 
@@ -16,6 +17,7 @@ namespace Particule::Essential
 
     void ParticuleEssentialInit()
     {
+        InitBasic();
         input = new InputManager();
         new VirtualResources();
     }

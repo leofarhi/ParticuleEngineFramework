@@ -1,5 +1,6 @@
 #include <ParticuleEssential/ParticuleEssential.hpp>
 #include <ParticuleEssential/System/VirtualFile.hpp>
+#include <ParticuleEssential/Basic/Basic.hpp>
 #include "./../includes/ParticuleEssential/Graphic/Window.hpp"
 #include "./../includes/ParticuleEssential/Input/Input.hpp"
 
@@ -34,6 +35,7 @@ namespace Particule::Essential
     using namespace Particule::Essential::System;
     void ParticuleEssentialInit()
     {
+        InitBasic();
         // Initializes the SDL.
         if (SDL_Init(SDL_INIT_VIDEO) != 0)
             error_exit(EXIT_FAILURE, "error Init %s", SDL_GetError());
