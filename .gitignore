@@ -37,3 +37,7 @@ Demo/bin/*
 /CasioCg/build
 /CasioCg/bin
 Todolist.txt
+/Framework/Build
+/Framework/Output
+/Framework/Distributions/Windows/Demos
+/Framework/Distributions/Linux/Demos
