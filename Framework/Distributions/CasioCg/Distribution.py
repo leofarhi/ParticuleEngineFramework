@@ -81,6 +81,11 @@ def build(base_path, build_path, output_path, args):
     #make the project
     cmd = "fxsdk build-cg -c -B build;make -C build"
     process(cmd,cmd, cwd=build_path)
+     #############################################
+    #copy the output files
+    shutil.move(os.path.join(build_path, "lib"), output_path)
+    shutil.move(os.path.join(build_path, "build","libparticule.a"), os.path.join(output_path, "lib", "libparticule.a"))
+    shutil.move(os.path.join(build_path, "includes"), os.path.join(output_path))
 
 def demo(base_path, build_path, output_path, args):
     pass
