@@ -1,6 +1,7 @@
 import os, sys
 import subprocess
 import importlib
+import shutil
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -39,11 +40,11 @@ elif command == "print":
     for dist in distributions:
         print(dist)
     sys.exit(0)
-elif command == "clean":
+elif command == "clean" and len(args) == 1:
     if os.path.exists(build_path):
-        os.rmdir(build_path)
+        shutil.rmtree(build_path)
     if os.path.exists(output_path):
-        os.rmdir(output_path)
+        shutil.rmtree(output_path)
     sys.exit(0)
 elif command not in cmd_available:
     print_error()

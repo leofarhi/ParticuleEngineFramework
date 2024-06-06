@@ -81,7 +81,7 @@ def build(base_path, build_path, output_path, args):
     #make the project
     cmd = "fxsdk build-cg -c -B build;make -C build"
     process(cmd,cmd, cwd=build_path)
-     #############################################
+    #############################################
     #copy the output files
     shutil.move(os.path.join(build_path, "lib"), output_path)
     shutil.move(os.path.join(build_path, "build","libparticule.a"), os.path.join(output_path, "lib", "libparticule.a"))
@@ -118,7 +118,8 @@ def demo(base_path, build_path, output_path, args):
     if len(args) != 0:
         if args[0] == "clean":
             for item in os.listdir(os.path.join(curent_dir, "Demos")):
-                process("fxsdk clean",None, cwd=os.path.join(curent_dir, "Demos", item))
+                shutil.rmtree(os.path.join(curent_dir, "Demos", item, "bin"), ignore_errors=True)
+                shutil.rmtree(os.path.join(curent_dir, "Demos", item, "build"), ignore_errors=True)
         else:
             demo = MatchDemo(args[0])
             if demo == None:
