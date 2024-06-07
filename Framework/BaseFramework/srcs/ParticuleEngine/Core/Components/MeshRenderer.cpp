@@ -21,93 +21,69 @@ namespace Particule::Core
     {
     }
 
-    static void GenerateXRotationMatrix(float theta, float m[3][3])
+    inline static void GenerateXRotationMatrixAndTransform(float theta, float m[3])
     {
-        m[0][0] = 1; m[0][1] = 0; m[0][2] = 0;
-        m[1][0] = 0; m[1][1] = cos_approx(theta); m[1][2] = -sin_approx(theta);
-        m[2][0] = 0; m[2][1] = sin_approx(theta); m[2][2] = cos_approx(theta);
+        const float cos_res = cos_approx(theta);
+        const float sin_res = sin_approx(theta);
+        const float y = m[1];
+        const float z = m[2];
+        m[1] = y * cos_res - z * sin_res;
+        m[2] = y * sin_res + z * cos_res;
     }
 
-    static void GenerateYRotationMatrix(float theta, float m[3][3])
+    inline static void GenerateYRotationMatrixAndTransform(float theta, float m[3])
     {
-        m[0][0] = cos_approx(theta); m[0][1] = 0; m[0][2] = -sin_approx(theta);
-        m[1][0] = 0; m[1][1] = 1; m[1][2] = 0;
-        m[2][0] = sin_approx(theta); m[2][1] = 0; m[2][2] = cos_approx(theta);
+        const float cos_res = cos_approx(theta);
+        const float sin_res = sin_approx(theta);
+        const float x = m[0];
+        const float z = m[2];
+        m[0] = x * cos_res + z * sin_res;
+        m[2] = -x * sin_res + z * cos_res;
     }
 
-    static void GenerateZRotationMatrix(float theta, float m[3][3])
+    inline static void GenerateZRotationMatrixAndTransform(float theta, float m[3])
     {
-        m[0][0] = cos_approx(theta); m[0][1] = -sin_approx(theta); m[0][2] = 0;
-        m[1][0] = sin_approx(theta); m[1][1] = cos_approx(theta); m[1][2] = 0;
-        m[2][0] = 0; m[2][1] = 0; m[2][2] = 1;
+        const float cos_res = cos_approx(theta);
+        const float sin_res = sin_approx(theta);
+        const float x = m[0];
+        const float y = m[1];
+        m[0] = x * cos_res - y * sin_res;
+        m[1] = x * sin_res + y * cos_res;
     }
-
-    void MultiplyMatrixVector(const float m[3][3], const float v[3], float result[3])
-    {
-        for (int i = 0; i < 3; ++i)
-        {
-            result[i] = 0;
-            for (int j = 0; j < 3; ++j)
-            {
-                result[i] += m[i][j] * v[j];
-            }
-        }
-    }
-
-
 
     void MeshRenderer::CalculateProjection(Camera *camera)
     {
         if (this->mesh == nullptr)
             return;
-
+        const Vector2Int center = Vector2Int(window->GetWidth() / 2, window->GetHeight() / 2);
+        const Transform *_transform = this->transform();
+        const Transform *cameraTransform = camera->transform();
         for (size_t i = 0; i < this->mesh->verticesCount; i++)
         {
-            Vector3Int p = this->mesh->vertices[i].position * this->transform()->scale;
+            Vector3Int p = this->mesh->vertices[i].position * _transform->scale;
 
             float m[3] = { (float)p.x, (float)p.y, (float)p.z };
-            float result[3];
+            // Apply local rotation
+            GenerateXRotationMatrixAndTransform(_transform->rotation.x, m);
+            GenerateYRotationMatrixAndTransform(_transform->rotation.y, m);
+            GenerateZRotationMatrixAndTransform(_transform->rotation.z, m);
 
-            float transform[3] = {
-                this->transform()->position.x,
-                this->transform()->position.y,
-                this->transform()->position.z
-            };
+            // Apply translation
+            m[0] += _transform->position.x;
+            m[1] += _transform->position.y;
+            m[2] += _transform->position.z;
 
-            float rotationMatrix[3][3];
+            // Apply camera translation
+            m[0] -= cameraTransform->position.x;
+            m[1] -= cameraTransform->position.y;
+            m[2] -= cameraTransform->position.z;
 
-            GenerateXRotationMatrix(this->transform()->rotation.x, rotationMatrix);
-            MultiplyMatrixVector(rotationMatrix, m, result);
-            for (int j = 0; j < 3; ++j) m[j] = result[j]; // Remplacement de std::copy
+            // Apply camera rotation
+            GenerateXRotationMatrixAndTransform(cameraTransform->rotation.x, m);
+            GenerateYRotationMatrixAndTransform(cameraTransform->rotation.y, m);
+            GenerateZRotationMatrixAndTransform(cameraTransform->rotation.z, m);
 
-            GenerateYRotationMatrix(this->transform()->rotation.y, rotationMatrix);
-            MultiplyMatrixVector(rotationMatrix, m, result);
-            for (int j = 0; j < 3; ++j) m[j] = result[j]; // Remplacement de std::copy
-
-            GenerateZRotationMatrix(this->transform()->rotation.z, rotationMatrix);
-            MultiplyMatrixVector(rotationMatrix, m, result);
-            for (int j = 0; j < 3; ++j) m[j] = result[j]; // Remplacement de std::copy
-
-            m[0] += transform[0];
-            m[1] += transform[1];
-            m[2] += transform[2];
-
-            m[0] -= camera->transform()->position.x;
-            m[1] -= camera->transform()->position.y;
-            m[2] -= camera->transform()->position.z;
-
-            GenerateXRotationMatrix(camera->transform()->rotation.x, rotationMatrix);
-            MultiplyMatrixVector(rotationMatrix, m, result);
-            for (int j = 0; j < 3; ++j) m[j] = result[j]; // Remplacement de std::copy
-
-            GenerateYRotationMatrix(camera->transform()->rotation.y, rotationMatrix);
-            MultiplyMatrixVector(rotationMatrix, m, result);
-            for (int j = 0; j < 3; ++j) m[j] = result[j]; // Remplacement de std::copy
-
-            GenerateZRotationMatrix(camera->transform()->rotation.z, rotationMatrix);
-            MultiplyMatrixVector(rotationMatrix, m, result);
-            for (int j = 0; j < 3; ++j) m[j] = result[j]; // Remplacement de std::copy
-
+            // Projection
             float x = m[0];
             float y = m[1];
             float z = m[2];
@@ -118,12 +94,13 @@ namespace Particule::Core
             x = x * f + camera->transform()->position.x;
             y = -y * f + camera->transform()->position.y;
 
-            x = x + window->GetWidth() / 2;
-            y = y + window->GetHeight() / 2;
+            x = x + center.x;
+            y = y + center.y;
 
             mesh->vertices[i].projected = Vector3Int(x, y, z);
         }
     }
+
 
 
 }
