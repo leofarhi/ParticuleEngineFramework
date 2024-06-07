@@ -21,6 +21,30 @@ namespace Particule::Core
     {
     }
 
+    inline static void ApplyRotationX(float &y, float &z, float cos_theta, float sin_theta)
+    {
+        const float new_y = y * cos_theta - z * sin_theta;
+        const float new_z = y * sin_theta + z * cos_theta;
+        y = new_y;
+        z = new_z;
+    }
+
+    inline static void ApplyRotationY(float &x, float &z, float cos_theta, float sin_theta)
+    {
+        const float new_x = x * cos_theta + z * sin_theta;
+        const float new_z = -x * sin_theta + z * cos_theta;
+        x = new_x;
+        z = new_z;
+    }
+
+    inline static void ApplyRotationZ(float &x, float &y, float cos_theta, float sin_theta)
+    {
+        const float new_x = x * cos_theta - y * sin_theta;
+        const float new_y = x * sin_theta + y * cos_theta;
+        x = new_x;
+        y = new_y;
+    }
+
     void MeshRenderer::CalculateProjection(Camera *camera)
     {
         if (this->mesh == nullptr)
@@ -47,66 +71,27 @@ namespace Particule::Core
         for (size_t i = 0; i < this->mesh->verticesCount; i++)
         {
             Vector3 m = this->mesh->vertices[i].position * _transform->scale;
-            // Apply local rotation (X axis)
-            {
-                const float y = m.y;
-                const float z = m.z;
-                m.y = y * cos_transform.x - z * sin_transform.x;
-                m.z = y * sin_transform.x + z * cos_transform.x;
-            }
-            // Apply local rotation (Y axis)
-            {
-                const float x = m.x;
-                const float z = m.z;
-                m.x = x * cos_transform.y + z * sin_transform.y;
-                m.z = -x * sin_transform.y + z * cos_transform.y;
-            }
-            // Apply local rotation (Z axis)
-            {
-                const float x = m.x;
-                const float y = m.y;
-                m.x = x * cos_transform.z - y * sin_transform.z;
-                m.y = x * sin_transform.z + y * cos_transform.z;
-            }
+            // Apply local rotation
+            ApplyRotationX(m.y, m.z, cos_transform.x, sin_transform.x);
+            ApplyRotationY(m.x, m.z, cos_transform.y, sin_transform.y);
+            ApplyRotationZ(m.x, m.y, cos_transform.z, sin_transform.z);
+
             // Apply translation
-            m.x += _transform->position.x;
-            m.y += _transform->position.y;
-            m.z += _transform->position.z;
-            // Apply camera translation
-            m.x -= cameraTransform->position.x;
-            m.y -= cameraTransform->position.y;
-            m.z -= cameraTransform->position.z;
-            // Apply camera rotation (X axis)
-            {
-                const float y = m.y;
-                const float z = m.z;
-                m.y = y * cos_camera.x - z * sin_camera.x;
-                m.z = y * sin_camera.x + z * cos_camera.x;
-            }
-            // Apply camera rotation (Y axis)
-            {
-                const float x = m.x;
-                const float z = m.z;
-                m.x = x * cos_camera.y + z * sin_camera.y;
-                m.z = -x * sin_camera.y + z * cos_camera.y;
-            }
-            // Apply camera rotation (Z axis)
-            {
-                const float x = m.x;
-                const float y = m.y;
-                m.x = x * cos_camera.z - y * sin_camera.z;
-                m.y = x * sin_camera.z + y * cos_camera.z;
-            }
+            m.x += _transform->position.x - cameraTransform->position.x;
+            m.y += _transform->position.y - cameraTransform->position.y;
+            m.z += _transform->position.z - cameraTransform->position.z;
+
+            // Apply camera rotation
+            ApplyRotationX(m.y, m.z, cos_camera.x, sin_camera.x);
+            ApplyRotationY(m.x, m.z, cos_camera.y, sin_camera.y);
+            ApplyRotationZ(m.x, m.y, cos_camera.z, sin_camera.z);
 
             // Projection
             m.z = m.z == 0 ? 1 : m.z;
             float f = 300 / m.z;
 
-            m.x = m.x * f + cameraTransform->position.x;
-            m.y = -m.y * f + cameraTransform->position.y;
-
-            m.x = m.x + center.x;
-            m.y = m.y + center.y;
+            m.x = (m.x * f + cameraTransform->position.x) + center.x;
+            m.y = (-m.y * f + cameraTransform->position.y) + center.y;
 
             mesh->vertices[i].projected = m;
         }
