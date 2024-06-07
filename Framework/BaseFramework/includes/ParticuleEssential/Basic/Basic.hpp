@@ -27,6 +27,10 @@
 
 #define EPSILON 0.00001
 
+typedef long long fixed;
+
+#define FIXED_SHIFT 18//16
+
 void init_trig_tables();
 
 float sin_approx(float i);
