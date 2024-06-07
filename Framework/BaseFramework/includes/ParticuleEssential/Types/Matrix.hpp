@@ -42,7 +42,7 @@ Matrix<T>::Matrix(int rows, int cols)
 {
     this->rows = rows;
     this->cols = cols;
-    this->data = (T *)malloc(rows * cols * sizeof(T));
+    this->data = new T[rows * cols];
     for (int i = 0; i < rows * cols; i++)
         this->data[i] = 0;
 }
@@ -52,7 +52,7 @@ Matrix<T>::Matrix(int rows, int cols, T *data)
 {
     this->rows = rows;
     this->cols = cols;
-    this->data = (T *)malloc(rows * cols * sizeof(T));
+    this->data = new T[rows * cols];
     for (int i = 0; i < rows * cols; i++)
         this->data[i] = data[i];
 }
@@ -60,7 +60,7 @@ Matrix<T>::Matrix(int rows, int cols, T *data)
 template <typename T>
 Matrix<T>::~Matrix()
 {
-    free(this->data);
+    delete[] this->data;
 }
 
 template <typename T>
@@ -82,11 +82,23 @@ Matrix<T> &Matrix<T>::operator=(const Matrix &other)
     {
         return *this;
     }
+
+    // Libérer la mémoire existante
+    delete[] this->data;
+
+    // Copier les dimensions
     this->rows = other.rows;
     this->cols = other.cols;
-    this->data = (T *)malloc(rows * cols * sizeof(T));
+
+    // Allouer de la nouvelle mémoire
+    this->data = new T[rows * cols];
+
+    // Copier les éléments
     for (int i = 0; i < rows * cols; i++)
+    {
         this->data[i] = other.data[i];
+    }
+
     return *this;
 }
 

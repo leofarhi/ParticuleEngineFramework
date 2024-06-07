@@ -79,97 +79,60 @@ namespace Particule::Core
         depth /= verticesCount;
     }
 
-    static int min_local(int a, int b, int c)
+    inline static int min_local(int a, int b, int c)
     {
-        return a < b ? (a < c ? a : c) : (b < c ? b : c);
+        int min_ab = a < b ? a : b;
+        return min_ab < c ? min_ab : c;
     }
 
-    static int max_local(int a, int b, int c)
+    inline static int max_local(int a, int b, int c)
     {
-        return a > b ? (a > c ? a : c) : (b > c ? b : c);
+        int max_ab = a > b ? a : b;
+        return max_ab > c ? max_ab : c;
     }
-
-    /*static void draw_texture_trapezoid(Vector2Int src[3], Vector3Int dest[3], Texture *texture, bool doubleSided)
-    {
-        int src_x0 = src[0].x, src_y0 = src[0].y;
-        int src_x1 = src[1].x, src_y1 = src[1].y;
-        int src_x2 = src[2].x, src_y2 = src[2].y;
-        int dest_x0 = dest[0].x, dest_y0 = dest[0].y, dest_z0 = dest[0].z;
-        int dest_x1 = dest[1].x, dest_y1 = dest[1].y, dest_z1 = dest[1].z;
-        int dest_x2 = dest[2].x, dest_y2 = dest[2].y, dest_z2 = dest[2].z;
-        int tex_w = texture->Width();
-        int tex_h = texture->Height();
-        if (!doubleSided && (dest_x1 - dest_x0) * (dest_y2 - dest_y0) - (dest_y1 - dest_y0) * (dest_x2 - dest_x0) < 0)
-            return;
-        int area = (dest_x2 - dest_x1) * (dest_y0 - dest_y1) - (dest_x0 - dest_x1) * (dest_y2 - dest_y1);
-        if (area == 0)
-            return;
-        int min_y = min_local(dest_y1, dest_y2, dest_y0);
-        int min_x = min_local(dest_x1, dest_x2, dest_x0);
-        int max_y = max_local(dest_y1, dest_y2, dest_y0);
-        int max_x = max_local(dest_x1, dest_x2, dest_x0);
-        for (int y = min_y; y < max_y; y++)
-        {
-            for (int x = min_x; x < max_x; x++)
-            {
-                //change float to fixed point
-                float w0 = ((dest_x2 - dest_x1) * (y - dest_y1) - (dest_y2 - dest_y1) * (x - dest_x1)) / (float)area;
-                float w1 = ((dest_x0 - dest_x2) * (y - dest_y2) - (dest_y0 - dest_y2) * (x - dest_x2)) / (float)area;
-                float w2 = 1 - w0 - w1;
-                if (0 <= w0 && w0 <= 1 && 0 <= w1 && w1 <= 1 && 0 <= w2 && w2 <= 1)
-                {
-                    float z = 1 / (w0 / dest_z0 + w1 / dest_z1 + w2 / dest_z2);
-                    float u = z * (w0 * src_x0 / dest_z0 + w1 * src_x1 / dest_z1 + w2 * src_x2 / dest_z2);
-                    float v = z * (w0 * src_y0 / dest_z0 + w1 * src_y1 / dest_z1 + w2 * src_y2 / dest_z2);
-                    u = (int)u % tex_w;
-                    v = (int)v % tex_h;
-                    Color color = texture->ReadPixel(u, v);
-                    DrawPixelUnsafe(x, y, color);
-                }
-            }
-        }
-    }*/
 
     static void draw_texture_trapezoid(Vector2Int src[3], Vector3Int dest[3], Texture *texture, bool doubleSided)
     {
-        long long src_x0 = src[0].x, src_y0 = src[0].y;
-        long long src_x1 = src[1].x, src_y1 = src[1].y;
-        long long src_x2 = src[2].x, src_y2 = src[2].y;
-        long long dest_x0 = dest[0].x, dest_y0 = dest[0].y, dest_z0 = dest[0].z;
-        long long dest_x1 = dest[1].x, dest_y1 = dest[1].y, dest_z1 = dest[1].z;
-        long long dest_x2 = dest[2].x, dest_y2 = dest[2].y, dest_z2 = dest[2].z;
-        long long tex_w = texture->Width();
-        long long tex_h = texture->Height();
+        const long long src_x0 = src[0].x, src_y0 = src[0].y;
+        const long long src_x1 = src[1].x, src_y1 = src[1].y;
+        const long long src_x2 = src[2].x, src_y2 = src[2].y;
+        const long long dest_x0 = dest[0].x, dest_y0 = dest[0].y, dest_z0 = dest[0].z;
+        const long long dest_x1 = dest[1].x, dest_y1 = dest[1].y, dest_z1 = dest[1].z;
+        const long long dest_x2 = dest[2].x, dest_y2 = dest[2].y, dest_z2 = dest[2].z;
+        const long long tex_w = texture->Width();
+        const long long tex_h = texture->Height();
         
         if (!doubleSided && (dest_x1 - dest_x0) * (dest_y2 - dest_y0) - (dest_y1 - dest_y0) * (dest_x2 - dest_x0) < 0)
             return;
 
-        long long area = (dest_x2 - dest_x1) * (dest_y0 - dest_y1) - (dest_x0 - dest_x1) * (dest_y2 - dest_y1);
+        const long long area = (dest_x2 - dest_x1) * (dest_y0 - dest_y1) - (dest_x0 - dest_x1) * (dest_y2 - dest_y1);
         if (area == 0)
             return;
 
-        long long min_y = min_local(dest_y1, dest_y2, dest_y0);
-        long long min_x = min_local(dest_x1, dest_x2, dest_x0);
-        long long max_y = max_local(dest_y1, dest_y2, dest_y0);
-        long long max_x = max_local(dest_x1, dest_x2, dest_x0);
+        const long long min_y = min_local(dest_y1, dest_y2, dest_y0);
+        const long long min_x = min_local(dest_x1, dest_x2, dest_x0);
+        const long long max_y = max_local(dest_y1, dest_y2, dest_y0);
+        const long long max_x = max_local(dest_x1, dest_x2, dest_x0);
 
-        for (long long y = min_y; y < max_y; y++)
+        const int precision = 18;//16;
+        for (int y = min_y; y < max_y; ++y)
         {
-            for (long long x = min_x; x < max_x; x++)
+            for (int x = min_x; x < max_x; ++x)
             {
                 // Change float to fixed point
-                long long w0 = (((dest_x2 - dest_x1) * (y - dest_y1) - (dest_y2 - dest_y1) * (x - dest_x1)) << 16) / area;
-                long long w1 = (((dest_x0 - dest_x2) * (y - dest_y2) - (dest_y0 - dest_y2) * (x - dest_x2)) << 16) / area;
-                long long w2 = (1 << 16) - w0 - w1;
-                if (0 <= w0 && w0 <= (1 << 16) && 0 <= w1 && w1 <= (1 << 16) && 0 <= w2 && w2 <= (1 << 16))
+                const long long w0 = (((dest_x2 - dest_x1) * (y - dest_y1) - (dest_y2 - dest_y1) * (x - dest_x1)) << precision) / area;
+                const long long w1 = (((dest_x0 - dest_x2) * (y - dest_y2) - (dest_y0 - dest_y2) * (x - dest_x2)) << precision) / area;
+                const long long w2 = (1 << precision) - w0 - w1;
+                continue;
+                if ((w0 >= 0) & (w1 >= 0) & (w2 >= 0))
                 {
-                    long long z = (1 << 16) / (w0 / dest_z0 + w1 / dest_z1 + w2 / dest_z2);
-                    int u = (z * (w0 * src_x0 / dest_z0 + w1 * src_x1 / dest_z1 + w2 * src_x2 / dest_z2)) >> 16;
-                    int v = (z * (w0 * src_y0 / dest_z0 + w1 * src_y1 / dest_z1 + w2 * src_y2 / dest_z2)) >> 16;
+                    const long long z = (1 << precision) / (w0 / dest_z0 + w1 / dest_z1 + w2 / dest_z2);
+                    int u = (z * (w0 * src_x0 / dest_z0 + w1 * src_x1 / dest_z1 + w2 * src_x2 / dest_z2)) >> precision;
+                    int v = (z * (w0 * src_y0 / dest_z0 + w1 * src_y1 / dest_z1 + w2 * src_y2 / dest_z2)) >> precision;
                     u = (int)u % tex_w;
                     v = (int)v % tex_h;
                     Color color = texture->ReadPixel(u, v);
-                    DrawPixelUnsafe(x, y, COLOR_WHITE);//color);
+                    DrawPixelUnsafe(x, y, color);
                 }
             }
         }

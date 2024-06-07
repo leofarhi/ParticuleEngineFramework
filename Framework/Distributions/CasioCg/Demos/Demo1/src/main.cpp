@@ -65,12 +65,13 @@ MeshRenderer *meshrender = nullptr;
 
 Scene *LoadScene1()
 {
-    Texture *texture = nullptr;//Texture::Load("../texture.jpg");
+    Texture *texture = Texture::Load("../texture.jpg");
+    //Texture *texture = nullptr;
     printf("Texture: %p\n", texture);
     Scene *scene = new Scene("Scene1");
     GameObject *go = new GameObject(scene);
     go->AddComponent<Camera>();
-    Mesh *mesh = new Mesh(8,4);//6);
+    Mesh *mesh = new Mesh(8,6);
 
     int size = 100;
     mesh->vertices[0].position = Vector3Int(-size, size, size);
@@ -82,8 +83,8 @@ Scene *LoadScene1()
     mesh->vertices[6].position = Vector3Int(size, -size, -size);
     mesh->vertices[7].position = Vector3Int(-size, -size, -size);
 
-    int w = 1;//texture->Width();
-    int h = 1;//texture->Height();
+    int w = texture->Width();
+    int h = texture->Height();
     mesh->faces[0] = new Face(&mesh->vertices[1], &mesh->vertices[0], &mesh->vertices[3], &mesh->vertices[2],
                     Vector2Int(0, 0), Vector2Int(w-1, 0), Vector2Int(w-1, h-1), Vector2Int(0, h-1), texture);
     mesh->faces[1] = new Face(&mesh->vertices[4], &mesh->vertices[5], &mesh->vertices[6], &mesh->vertices[7],
@@ -92,10 +93,10 @@ Scene *LoadScene1()
                     Vector2Int(0, 0), Vector2Int(w-1, 0), Vector2Int(w-1, h-1), Vector2Int(0, h-1), texture);
     mesh->faces[3] = new Face(&mesh->vertices[2], &mesh->vertices[3], &mesh->vertices[7], &mesh->vertices[6],
                     Vector2Int(0, 0), Vector2Int(w-1, 0), Vector2Int(w-1, h-1), Vector2Int(0, h-1), texture);
-    /*mesh->faces[4] = new Face(&mesh->vertices[0], &mesh->vertices[4], &mesh->vertices[7], &mesh->vertices[3],
+    mesh->faces[4] = new Face(&mesh->vertices[0], &mesh->vertices[4], &mesh->vertices[7], &mesh->vertices[3],
                     Vector2Int(0, 0), Vector2Int(w-1, 0), Vector2Int(w-1, h-1), Vector2Int(0, h-1), texture);
     mesh->faces[5] = new Face(&mesh->vertices[5], &mesh->vertices[1], &mesh->vertices[2], &mesh->vertices[6],
-                    Vector2Int(0, 0), Vector2Int(w-1, 0), Vector2Int(w-1, h-1), Vector2Int(0, h-1), texture);*/
+                    Vector2Int(0, 0), Vector2Int(w-1, 0), Vector2Int(w-1, h-1), Vector2Int(0, h-1), texture);
     go->transform()->position.z = -500;
 
     GameObject *go2 = new GameObject(scene);
@@ -119,6 +120,7 @@ Scene *LoadScene1()
 
 extern bopti_image_t IMG_ASSET_texture;
 #include <gint/clock.h>
+#include <time.h>
 /*enum {
     CLOCK_SPEED_UNKNOWN = 0,
     CLOCK_SPEED_F1 = 1,
@@ -131,7 +133,8 @@ extern bopti_image_t IMG_ASSET_texture;
 
 int main()
 {
-    clock_set_speed(CLOCK_SPEED_F4);
+    srand(time(NULL));
+    clock_set_speed(CLOCK_SPEED_F5);
     ParticuleEssentialInit();
     ParticuleEngineInit();
     VirtualFile a("../texture.jpg",(void*)&IMG_ASSET_texture);
@@ -140,16 +143,18 @@ int main()
     window = new Window();//800, 600, "Demo");
     sceneManager->AddScene(LoadScene1);
     sceneManager->LoadScene(0);
-    
+    int i = 0;
     while (test && window->IsRunning() && !input->IsKeyPressed(KEY_EXIT))
     {
         window->Clear();
+        test->Draw((i++)%(window->GetWidth()-test->Width()), 0);
+        test->Draw((i++)%(window->GetWidth()-test->Width()), 160);
         Camera::mainCamera->bufferRenderer->Clear();
         meshrender->CalculateProjection(Camera::mainCamera);
         meshrender->mesh->DrawInBuffer(Camera::mainCamera);
         Camera::mainCamera->bufferRenderer->Draw();
-        meshrender->gameObject->transform()->rotation.y += 0.001;
-        //meshrender->gameObject->transform()->rotation.z += 0.001;
+        meshrender->gameObject->transform()->rotation.y += 0.1;
+        meshrender->gameObject->transform()->rotation.z += 0.1;
         input->Update();
         window->Update();
     }

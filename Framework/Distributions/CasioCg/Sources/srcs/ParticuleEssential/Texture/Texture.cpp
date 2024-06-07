@@ -244,7 +244,9 @@ namespace Particule::Essential::Image
     Color Texture::ReadPixel(int x, int y)
     {
         //TODO
-        return COLOR_WHITE;
+        //return COLOR_WHITE;
+        Color color(x,y,0,0);
+        return color;
     }
 
     long long Texture::ReadPixelInt(int x, int y)

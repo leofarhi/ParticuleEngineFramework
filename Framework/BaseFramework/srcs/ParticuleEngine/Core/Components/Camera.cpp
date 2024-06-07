@@ -1,5 +1,6 @@
 #include <ParticuleEngine/Core/Components/Camera.hpp>
 #include <ParticuleEngine/Core/Types/Mesh.hpp>
+#include <stdio.h>
 
 namespace Particule::Core
 {
@@ -24,8 +25,6 @@ namespace Particule::Core
         for (size_t i = 0; i < this->faces.Size(); i++)
         {
             Face *face = this->faces[i];
-            //face->DrawWireframe();
-            //continue;
             if (face->texture != nullptr)
                 face->DrawTextured();
             else
