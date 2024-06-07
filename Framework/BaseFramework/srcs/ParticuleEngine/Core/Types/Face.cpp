@@ -115,18 +115,27 @@ namespace Particule::Core
         const long long max_x = max_local(dest_x1, dest_x2, dest_x0);
 
         const int precision = 18;//16;
+
+        const long long w0_1 = (dest_x2 - dest_x1);
+        const long long w0_2 = (dest_y2 - dest_y1);
+        const long long w1_1 = (dest_x0 - dest_x2);
+        const long long w1_2 = (dest_y0 - dest_y2);
+
+        const long long one = 1 << precision;
+
         for (int y = min_y; y < max_y; ++y)
         {
+            long long w0__1 = w0_1 * (y - dest_y1);
+            long long w1__1 = w1_1 * (y - dest_y2);
             for (int x = min_x; x < max_x; ++x)
             {
                 // Change float to fixed point
-                const long long w0 = (((dest_x2 - dest_x1) * (y - dest_y1) - (dest_y2 - dest_y1) * (x - dest_x1)) << precision) / area;
-                const long long w1 = (((dest_x0 - dest_x2) * (y - dest_y2) - (dest_y0 - dest_y2) * (x - dest_x2)) << precision) / area;
-                const long long w2 = (1 << precision) - w0 - w1;
-                continue;
+                const long long w0 = ((w0__1 - w0_2 * (x - dest_x1)) << precision) / area;
+                const long long w1 = ((w1__1 - w1_2 * (x - dest_x2)) << precision) / area;
+                const long long w2 = one - w0 - w1;
                 if ((w0 >= 0) & (w1 >= 0) & (w2 >= 0))
                 {
-                    const long long z = (1 << precision) / (w0 / dest_z0 + w1 / dest_z1 + w2 / dest_z2);
+                    const long long z = one / (w0 / dest_z0 + w1 / dest_z1 + w2 / dest_z2);
                     int u = (z * (w0 * src_x0 / dest_z0 + w1 * src_x1 / dest_z1 + w2 * src_x2 / dest_z2)) >> precision;
                     int v = (z * (w0 * src_y0 / dest_z0 + w1 * src_y1 / dest_z1 + w2 * src_y2 / dest_z2)) >> precision;
                     u = (int)u % tex_w;
@@ -137,6 +146,8 @@ namespace Particule::Core
             }
         }
     }
+
+
 
     void Face::DrawTextured()
     {
