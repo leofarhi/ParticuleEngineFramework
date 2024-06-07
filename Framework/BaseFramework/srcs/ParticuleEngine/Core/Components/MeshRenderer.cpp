@@ -21,85 +21,98 @@ namespace Particule::Core
     {
     }
 
-    inline static void GenerateXRotationMatrixAndTransform(float theta, float m[3])
-    {
-        const float cos_res = cos_approx(theta);
-        const float sin_res = sin_approx(theta);
-        const float y = m[1];
-        const float z = m[2];
-        m[1] = y * cos_res - z * sin_res;
-        m[2] = y * sin_res + z * cos_res;
-    }
-
-    inline static void GenerateYRotationMatrixAndTransform(float theta, float m[3])
-    {
-        const float cos_res = cos_approx(theta);
-        const float sin_res = sin_approx(theta);
-        const float x = m[0];
-        const float z = m[2];
-        m[0] = x * cos_res + z * sin_res;
-        m[2] = -x * sin_res + z * cos_res;
-    }
-
-    inline static void GenerateZRotationMatrixAndTransform(float theta, float m[3])
-    {
-        const float cos_res = cos_approx(theta);
-        const float sin_res = sin_approx(theta);
-        const float x = m[0];
-        const float y = m[1];
-        m[0] = x * cos_res - y * sin_res;
-        m[1] = x * sin_res + y * cos_res;
-    }
-
     void MeshRenderer::CalculateProjection(Camera *camera)
     {
         if (this->mesh == nullptr)
             return;
+
         const Vector2Int center = Vector2Int(window->GetWidth() / 2, window->GetHeight() / 2);
         const Transform *_transform = this->transform();
         const Transform *cameraTransform = camera->transform();
+
+        Vector3 cos_transform = Vector3(cos_approx(_transform->rotation.x),
+                                        cos_approx(_transform->rotation.y),
+                                        cos_approx(_transform->rotation.z));
+        Vector3 sin_transform = Vector3(sin_approx(_transform->rotation.x),
+                                        sin_approx(_transform->rotation.y),
+                                        sin_approx(_transform->rotation.z));
+
+        Vector3 cos_camera = Vector3(cos_approx(cameraTransform->rotation.x),
+                                        cos_approx(cameraTransform->rotation.y),
+                                        cos_approx(cameraTransform->rotation.z));
+        Vector3 sin_camera = Vector3(sin_approx(cameraTransform->rotation.x),
+                                        sin_approx(cameraTransform->rotation.y),
+                                        sin_approx(cameraTransform->rotation.z));
+
         for (size_t i = 0; i < this->mesh->verticesCount; i++)
         {
-            Vector3Int p = this->mesh->vertices[i].position * _transform->scale;
-
-            float m[3] = { (float)p.x, (float)p.y, (float)p.z };
-            // Apply local rotation
-            GenerateXRotationMatrixAndTransform(_transform->rotation.x, m);
-            GenerateYRotationMatrixAndTransform(_transform->rotation.y, m);
-            GenerateZRotationMatrixAndTransform(_transform->rotation.z, m);
-
+            Vector3 m = this->mesh->vertices[i].position * _transform->scale;
+            // Apply local rotation (X axis)
+            {
+                const float y = m.y;
+                const float z = m.z;
+                m.y = y * cos_transform.x - z * sin_transform.x;
+                m.z = y * sin_transform.x + z * cos_transform.x;
+            }
+            // Apply local rotation (Y axis)
+            {
+                const float x = m.x;
+                const float z = m.z;
+                m.x = x * cos_transform.y + z * sin_transform.y;
+                m.z = -x * sin_transform.y + z * cos_transform.y;
+            }
+            // Apply local rotation (Z axis)
+            {
+                const float x = m.x;
+                const float y = m.y;
+                m.x = x * cos_transform.z - y * sin_transform.z;
+                m.y = x * sin_transform.z + y * cos_transform.z;
+            }
             // Apply translation
-            m[0] += _transform->position.x;
-            m[1] += _transform->position.y;
-            m[2] += _transform->position.z;
-
+            m.x += _transform->position.x;
+            m.y += _transform->position.y;
+            m.z += _transform->position.z;
             // Apply camera translation
-            m[0] -= cameraTransform->position.x;
-            m[1] -= cameraTransform->position.y;
-            m[2] -= cameraTransform->position.z;
-
-            // Apply camera rotation
-            GenerateXRotationMatrixAndTransform(cameraTransform->rotation.x, m);
-            GenerateYRotationMatrixAndTransform(cameraTransform->rotation.y, m);
-            GenerateZRotationMatrixAndTransform(cameraTransform->rotation.z, m);
+            m.x -= cameraTransform->position.x;
+            m.y -= cameraTransform->position.y;
+            m.z -= cameraTransform->position.z;
+            // Apply camera rotation (X axis)
+            {
+                const float y = m.y;
+                const float z = m.z;
+                m.y = y * cos_camera.x - z * sin_camera.x;
+                m.z = y * sin_camera.x + z * cos_camera.x;
+            }
+            // Apply camera rotation (Y axis)
+            {
+                const float x = m.x;
+                const float z = m.z;
+                m.x = x * cos_camera.y + z * sin_camera.y;
+                m.z = -x * sin_camera.y + z * cos_camera.y;
+            }
+            // Apply camera rotation (Z axis)
+            {
+                const float x = m.x;
+                const float y = m.y;
+                m.x = x * cos_camera.z - y * sin_camera.z;
+                m.y = x * sin_camera.z + y * cos_camera.z;
+            }
 
             // Projection
-            float x = m[0];
-            float y = m[1];
-            float z = m[2];
+            m.z = m.z == 0 ? 1 : m.z;
+            float f = 300 / m.z;
 
-            z = z == 0 ? 1 : z;
-            float f = 300 / z;
+            m.x = m.x * f + cameraTransform->position.x;
+            m.y = -m.y * f + cameraTransform->position.y;
 
-            x = x * f + camera->transform()->position.x;
-            y = -y * f + camera->transform()->position.y;
+            m.x = m.x + center.x;
+            m.y = m.y + center.y;
 
-            x = x + center.x;
-            y = y + center.y;
-
-            mesh->vertices[i].projected = Vector3Int(x, y, z);
+            mesh->vertices[i].projected = m;
         }
     }
+
+
 
 
 
