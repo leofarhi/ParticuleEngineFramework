@@ -11,6 +11,83 @@ namespace Particule::Essential::Image
     using Particule::Essential::Graphic::Color;
     using Particule::Essential::Image::Sprite;
     using namespace Particule::Essential::System;
+
+
+    static int GetPixel_CG_RGB16(bopti_image_t* texture, int x, int y){
+        void *data = ((unsigned char *)texture->data) + y * texture->stride;
+        uint16_t *data_u16 = (uint16_t *)data;
+        return data_u16[x];
+    }
+
+    static int GetPixel_CG_P8(bopti_image_t* texture, int x, int y){
+        void *data = ((unsigned char *)texture->data) + y * texture->stride;
+        uint8_t *data_u8 = (uint8_t *)data;
+        return (int8_t)data_u8[x];
+    }
+
+    static int GetPixel_CG_P4(bopti_image_t* texture, int x, int y){
+        void *data = ((unsigned char *)texture->data) + y * texture->stride;
+        uint8_t *data_u8 = (uint8_t *)data;
+        return (x & 1) ? data_u8[x >> 1] & 0x0f : data_u8[x >> 1] >> 4;
+    }
+
+    static int DecodePixel_CG_RGB16(bopti_image_t* texture, int pixel){
+        (void)texture;
+        return pixel;
+    }
+
+    static int DecodePixel_CG_P8(bopti_image_t* texture, int pixel){
+        return texture->palette[pixel+128];
+    }
+
+    static int DecodePixel_CG_P4(bopti_image_t* texture, int pixel){
+        return texture->palette[pixel];
+    }
+
+    static void SetPixel_CG_RGB16(bopti_image_t* texture, int x, int y, int color){
+        void *data = ((unsigned char *)texture->data) + y * texture->stride;
+        uint16_t *data_u16 = (uint16_t *)data;
+        data_u16[x] = color;
+    }
+
+    static void SetPixel_CG_P8(bopti_image_t* texture, int x, int y, int color){
+        void *data = ((unsigned char *)texture->data) + y * texture->stride;
+        uint8_t *data_u8 = (uint8_t *)data;
+        data_u8[x] = color;
+    }
+
+    static void SetPixel_CG_P4(bopti_image_t* texture, int x, int y, int color){
+        void *data = ((unsigned char *)texture->data) + y * texture->stride;
+        uint8_t *data_u8 = (uint8_t *)data;
+        if (x & 1) {
+            data_u8[x >> 1] = (data_u8[x >> 1] & 0xf0) | (color & 0x0f);
+        } else {
+            data_u8[x >> 1] = (data_u8[x >> 1] & 0x0f) | (color << 4);
+        }
+    }
+
+    void Texture::SetupFormatTexture(){
+        bopti_image_t* texture = this->texture;
+        if(IMAGE_IS_RGB16(texture->format)) {
+            this->__GetPixel =GetPixel_CG_RGB16;
+            this->__DecodePixel =DecodePixel_CG_RGB16;
+            this->__SetPixel =SetPixel_CG_RGB16;
+        }
+        else if(IMAGE_IS_P8(texture->format)) {
+            this->__GetPixel =GetPixel_CG_P8;
+            this->__DecodePixel =DecodePixel_CG_P8;
+            this->__SetPixel =SetPixel_CG_P8;
+        }
+        else if(IMAGE_IS_P4(texture->format)) {
+            this->__GetPixel =GetPixel_CG_P4;
+            this->__DecodePixel =DecodePixel_CG_P4;
+            this->__SetPixel =SetPixel_CG_P4;
+        }
+
+        this->_alphaValue = image_alpha(texture->format);
+    }
+
+
     Texture::Texture()
     {
         texture = nullptr;
@@ -121,11 +198,11 @@ namespace Particule::Essential::Image
             sy2 = sy + (flipY ? (sh - 1 - (y2 >> 16)) : (y2 >> 16));
             while (col < w) {
                 sx2 = sx + (flipX ? (sw - 1 - (x2 >> 16)) : (x2 >> 16));
-                const int dataPix = this->__GetPixel(this, sx2, sy2);
+                const int dataPix = this->__GetPixel(this->texture, sx2, sy2);
                 
                 if (dataPix != alph)
                 {
-                    gint_vram[DWIDTH * (y + row) + (x + col)] = this->__DecodePixel(this, dataPix);
+                    gint_vram[DWIDTH * (y + row) + (x + col)] = this->__DecodePixel(this->texture, dataPix);
                 }
                 
                 x2 += xinc;
@@ -211,11 +288,11 @@ namespace Particule::Essential::Image
             sy2 = sy + (flipY ? (sh - 1 - (y2 >> 16)) : (y2 >> 16));
             while (col < w) {
                 sx2 = sx + (flipX ? (sw - 1 - (x2 >> 16)) : (x2 >> 16));
-                const int dataPix = this->__GetPixel(this, sx2, sy2);
+                const int dataPix = this->__GetPixel(this->texture, sx2, sy2);
                 
                 if (dataPix != alph)
                 {
-                    int colPix = this->__DecodePixel(this, dataPix);
+                    int colPix = this->__DecodePixel(this->texture, dataPix);
                     //multiply color
                     Color rgb(colPix);
                     Color colorRes(rgb.r * color.r / 255, rgb.g * color.g / 255, rgb.b * color.b / 255, 255);
@@ -245,8 +322,18 @@ namespace Particule::Essential::Image
     {
         //TODO
         //return COLOR_WHITE;
-        Color color(x,y,0,0);
-        return color;
+        //Color color(x,y,0,0);
+        int i = this->__GetPixel(this->texture, x, y);
+        if (i == this->_alphaValue)
+        {
+            Color color(0, 0, 0, 0);
+            return color;
+        }
+        else
+        {
+            Color color(this->__DecodePixel(this->texture, i));
+            return color;
+        }
     }
 
     long long Texture::ReadPixelInt(int x, int y)
@@ -279,6 +366,7 @@ namespace Particule::Essential::Image
         texture->__SetPixel = nullptr;
         texture->_alphaValue = 0;
         texture->isAllocated = false;
+        texture->SetupFormatTexture();
         return texture;
     }
 

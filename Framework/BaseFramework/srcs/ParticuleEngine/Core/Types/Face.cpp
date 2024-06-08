@@ -175,37 +175,18 @@ namespace Particule::Core
         return v0 + (v1 - v0) * (y - y0) / (y1 - y0);
     }
 
-    // Fonction pour dessiner une partie du triangle
-    static void draw_triangle_part(int y_start, int y_end, Vector3Int v0, Vector3Int v1, Vector3Int v2, Vector2Int uv0, Vector2Int uv1, Vector2Int uv2, Texture *texture, int width, int height)
+    static float finterpolate(float v0, float y0, float v1, float y1, float y)
     {
-        for (int y = y_start; y <= y_end; y++)
-        {
-            if (y < 0 || y >= height) continue;
+        if (y0 == y1)
+            return v0;
+        return v0 + (v1 - v0) * (y - y0) / (y1 - y0);
+    }
 
-            int x_start = interpolate(v0.x, v0.y, v1.x, v1.y, y);
-            int x_end = interpolate(v0.x, v0.y, v2.x, v2.y, y);
-            int u_start = interpolate(uv0.x, v0.y, uv1.x, v1.y, y);
-            int u_end = interpolate(uv0.x, v0.y, uv2.x, v2.y, y);
-            int v_start = interpolate(uv0.y, v0.y, uv1.y, v1.y, y);
-            int v_end = interpolate(uv0.y, v0.y, uv2.y, v2.y, y);
-
-            if (x_start > x_end) {
-                swap_int(x_start, x_end);
-                swap_int(u_start, u_end);
-                swap_int(v_start, v_end);
-            }
-
-            for (int x = x_start; x <= x_end; x++)
-            {
-                if (x < 0 || x >= width) continue;
-                int u = interpolate(u_start, x_start, u_end, x_end, x);
-                int v = interpolate(v_start, x_start, v_end, x_end, x);
-                u = (int)u % texture->Width();
-                v = (int)v % texture->Height();
-                Color color = texture->ReadPixel(u, v);
-                DrawPixelUnsafe(x, y, color);
-            }
-        }
+    static float ratio(float start, float end, float current)
+    {
+        if (start == end)
+            return 0;
+        return (float)(current - start) / (end - start);
     }
 
     static void draw_texture_trapezoid(Vector2Int src[3], Vector3Int dest[3], Texture *texture, bool doubleSided)
@@ -237,18 +218,21 @@ namespace Particule::Core
             int x_start = interpolate(v0.x, v0.y, v1.x, v1.y, y);int x_end = interpolate(v0.x, v0.y, v2.x, v2.y, y);
             int u_start = interpolate(uv0.x, v0.y, uv1.x, v1.y, y);int u_end = interpolate(uv0.x, v0.y, uv2.x, v2.y, y);
             int v_start = interpolate(uv0.y, v0.y, uv1.y, v1.y, y);int v_end = interpolate(uv0.y, v0.y, uv2.y, v2.y, y);
+            //int z_start = interpolate(v0.z, v0.y, v1.z, v1.y, y);int z_end = interpolate(v0.z, v0.y, v2.z, v2.y, y);
 
             if (x_start > x_end) {
                 swap_int(x_start, x_end);
                 swap_int(u_start, u_end);
                 swap_int(v_start, v_end);
+                //swap_int(z_start, z_end);
             }
 
             for (int x = x_start; x <= x_end; x++)
             {
                 if (x < 0 || x >= width) continue;
-                int u = interpolate(u_start, x_start, u_end, x_end, x);
-                int v = interpolate(v_start, x_start, v_end, x_end, x);
+                //float z = ratio(z_start,z_end,finterpolate(z_start, x_start, z_end, x_end, x));
+                int u = interpolate(u_start, x_start, u_end, x_end, x);//*z;
+                int v = interpolate(v_start, x_start, v_end, x_end, x);//*z;
                 u = (int)u % texture->Width();
                 v = (int)v % texture->Height();
                 Color color = texture->ReadPixel(u, v);
@@ -264,18 +248,21 @@ namespace Particule::Core
             int x_start = interpolate(v1.x, v1.y, v2.x, v2.y, y);int x_end = interpolate(v0.x, v0.y, v2.x, v2.y, y);
             int u_start = interpolate(uv1.x, v1.y, uv2.x, v2.y, y);int u_end = interpolate(uv0.x, v0.y, uv2.x, v2.y, y);
             int v_start = interpolate(uv1.y, v1.y, uv2.y, v2.y, y);int v_end = interpolate(uv0.y, v0.y, uv2.y, v2.y, y);
+            //int z_start = interpolate(v1.z, v1.y, v2.z, v2.y, y);int z_end = interpolate(v0.z, v0.y, v2.z, v2.y, y);
 
             if (x_start > x_end) {
                 swap_int(x_start, x_end);
                 swap_int(u_start, u_end);
                 swap_int(v_start, v_end);
+                //swap_int(z_start, z_end);
             }
 
             for (int x = x_start; x <= x_end; x++)
             {
                 if (x < 0 || x >= width) continue;
-                int u = interpolate(u_start, x_start, u_end, x_end, x);
-                int v = interpolate(v_start, x_start, v_end, x_end, x);
+                //float z = ratio(z_start,z_end,finterpolate(z_start, x_start, z_end, x_end, x));
+                int u = interpolate(u_start, x_start, u_end, x_end, x);//*z;
+                int v = interpolate(v_start, x_start, v_end, x_end, x);//*z;
                 u = (int)u % texture->Width();
                 v = (int)v % texture->Height();
                 Color color = texture->ReadPixel(u, v);
@@ -283,11 +270,6 @@ namespace Particule::Core
             }
         }
     }
-
-
-
-
-   
 
 
 

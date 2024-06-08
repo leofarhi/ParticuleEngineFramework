@@ -15,11 +15,12 @@ namespace Particule::Essential::Image
     {
         bopti_image_t* texture;
         String path;
-        int (*__GetPixel)(Texture* texture, int x, int y);
-        int (*__DecodePixel)(Texture* texture, int pixel);
-        void (*__SetPixel)(Texture* texture, int x, int y, int color);
+        int (*__GetPixel)(bopti_image_t* texture, int x, int y);
+        int (*__DecodePixel)(bopti_image_t* texture, int pixel);
+        void (*__SetPixel)(bopti_image_t* texture, int x, int y, int color);
         int _alphaValue;
         bool isAllocated;
+        void SetupFormatTexture();
     public:
         Texture();
         ~Texture();
