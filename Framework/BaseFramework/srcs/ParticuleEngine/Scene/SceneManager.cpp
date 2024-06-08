@@ -1,7 +1,11 @@
 #include <ParticuleEngine/Scene/SceneManager.hpp>
+#include <ParticuleEngine/Core/GameObject.hpp>
+#include <ParticuleEngine/Core/Component.hpp>
+#include <ParticuleEssential/Graphic/Window.hpp>
 
 namespace Particule::SceneManagement
 {
+    using namespace Particule::Essential::Graphic;
     SceneManager *sceneManager = nullptr;
 
     SceneManager::SceneManager()
@@ -26,6 +30,9 @@ namespace Particule::SceneManagement
     {
         Scene *scene = availableScenes[index]();
         loadedScenes.Append(scene);
+        scene->CallAllComponents(&Component::Awake, true);
+        scene->CallAllComponents(&Component::OnEnable, false);
+        scene->CallAllComponents(&Component::Start, false);
     }
 
     void SceneManager::UnloadScene(Scene *scene)
@@ -40,6 +47,8 @@ namespace Particule::SceneManagement
         {
             if (cur->data->name == name)
             {
+                cur->data->CallAllComponents(&Component::OnDisable, false);
+                cur->data->CallAllComponents(&Component::OnDestroy, true);
                 loadedScenes.Remove(cur->data);
                 delete cur->data;
                 break;
@@ -62,5 +71,22 @@ namespace Particule::SceneManagement
     Scene *SceneManager::activeScene()
     {
         return loadedScenes.First();
+    }
+
+    void SceneManager::CallAllComponents(void (Component::*method)(), bool includeInactive)
+    {
+        for (ListNode<Scene *> *cur = nullptr; loadedScenes.ForEach(&cur);)
+        {
+            cur->data->CallAllComponents(method, includeInactive);
+        }
+    }
+
+    int SceneManager::MainLoop()
+    {
+        CallAllComponents(&Component::FixedUpdate, false);
+        CallAllComponents(&Component::Update, false);
+        CallAllComponents(&Component::OnRenderObject, false);
+        CallAllComponents(&Component::OnRenderImage, false);
+        return window->IsRunning();
     }
 }

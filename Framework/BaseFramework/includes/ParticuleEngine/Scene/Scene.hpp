@@ -4,7 +4,6 @@
 #include <ParticuleEssential/Types/List.hpp>
 #include <ParticuleEssential/Types/String.hpp>
 #include <ParticuleEngine/Core/GameObject.hpp>
-#include <ParticuleEngine/Core/GameObject.hpp>
 
 namespace Particule::SceneManagement
 {
@@ -21,6 +20,8 @@ namespace Particule::SceneManagement
         void AddGameObject(GameObject *gameObject);
         void RemoveGameObject(GameObject *gameObject);
         GameObject* FindGameObject(String name);
+        
+        void CallAllComponents(void (Component::*method)(), bool includeInactive);
     };
 }
 

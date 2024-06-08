@@ -16,6 +16,8 @@ namespace Particule::Core
         virtual const String __class__() { return "MeshRenderer";}
 
         void CalculateProjection(Camera *camera);
+
+        void OnRenderObject() override;
     };
 }
 

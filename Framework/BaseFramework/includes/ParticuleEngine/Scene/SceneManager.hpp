@@ -23,6 +23,10 @@ namespace Particule::SceneManagement
 
         Scene *GetScene(String name);
         Scene *activeScene();
+
+        void CallAllComponents(void (Component::*method)(), bool includeInactive);
+
+        int MainLoop();
     };
 
     extern SceneManager *sceneManager;

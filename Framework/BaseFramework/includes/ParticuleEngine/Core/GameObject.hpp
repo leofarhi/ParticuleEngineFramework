@@ -46,6 +46,8 @@ namespace Particule::Core
         template <typename T_Component, typename... Args>
         T_Component *AddComponent(Args... args);
         Component *GetComponent(String className);
+
+        void CallComponent(void (Component::*method)());
     };
 
 }

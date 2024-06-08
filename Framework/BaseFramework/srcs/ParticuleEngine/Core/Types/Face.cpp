@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <math.h>
 
+
 namespace Particule::Core
 {
     using namespace Particule::Essential::Image;
@@ -93,7 +94,7 @@ namespace Particule::Core
         return max_ab > c ? max_ab : c;
     }
 
-    /*static void draw_texture_trapezoid(Vector2Int src[3], Vector3Int dest[3], Texture *texture, bool doubleSided)
+    static void draw_texture_trapezoid(Vector2Int src[3], Vector3Int dest[3], Texture *texture, bool doubleSided)
     {
         if (!doubleSided && (dest[1].x - dest[0].x) * (dest[2].y - dest[0].y) - (dest[1].y - dest[0].y) * (dest[2].x - dest[0].x) < 0)
             return;
@@ -144,7 +145,7 @@ namespace Particule::Core
                 }
             }
         }
-    }*/
+    }
 
     /*static void swap(Vector3Int &a, Vector3Int &b)
     {
@@ -182,13 +183,6 @@ namespace Particule::Core
         return v0 + (v1 - v0) * (y - y0) / (y1 - y0);
     }
 
-    static float ratio(float start, float end, float current)
-    {
-        if (start == end)
-            return 0;
-        return (float)(current - start) / (end - start);
-    }
-
     static void draw_texture_trapezoid(Vector2Int src[3], Vector3Int dest[3], Texture *texture, bool doubleSided)
     {
         if (!doubleSided && (dest[1].x - dest[0].x) * (dest[2].y - dest[0].y) - (dest[1].y - dest[0].y) * (dest[2].x - dest[0].x) < 0)
@@ -218,21 +212,21 @@ namespace Particule::Core
             int x_start = interpolate(v0.x, v0.y, v1.x, v1.y, y);int x_end = interpolate(v0.x, v0.y, v2.x, v2.y, y);
             int u_start = interpolate(uv0.x, v0.y, uv1.x, v1.y, y);int u_end = interpolate(uv0.x, v0.y, uv2.x, v2.y, y);
             int v_start = interpolate(uv0.y, v0.y, uv1.y, v1.y, y);int v_end = interpolate(uv0.y, v0.y, uv2.y, v2.y, y);
-            //int z_start = interpolate(v0.z, v0.y, v1.z, v1.y, y);int z_end = interpolate(v0.z, v0.y, v2.z, v2.y, y);
+            int z_start = interpolate(v0.z, v0.y, v1.z, v1.y, y);int z_end = interpolate(v0.z, v0.y, v2.z, v2.y, y);
 
             if (x_start > x_end) {
                 swap_int(x_start, x_end);
                 swap_int(u_start, u_end);
                 swap_int(v_start, v_end);
-                //swap_int(z_start, z_end);
+                swap_int(z_start, z_end);
             }
 
             for (int x = x_start; x <= x_end; x++)
             {
                 if (x < 0 || x >= width) continue;
-                //float z = ratio(z_start,z_end,finterpolate(z_start, x_start, z_end, x_end, x));
-                int u = interpolate(u_start, x_start, u_end, x_end, x);//*z;
-                int v = interpolate(v_start, x_start, v_end, x_end, x);//*z;
+                float z = interpolate(z_start, x_start, z_end, x_end, x);
+                float u = finterpolate((float)u_start/(float)z_start, x_start, (float)u_end/(float)z_end, x_end, x)*z;
+                float v = finterpolate((float)v_start/(float)z_start, x_start, (float)v_end/(float)z_end, x_end, x)*z;
                 u = (int)u % texture->Width();
                 v = (int)v % texture->Height();
                 Color color = texture->ReadPixel(u, v);
@@ -260,10 +254,9 @@ namespace Particule::Core
             for (int x = x_start; x <= x_end; x++)
             {
                 if (x < 0 || x >= width) continue;
-                float z = ratio(z_start,z_end,finterpolate(z_start, x_start, z_end, x_end, x));
-                printf("Z: %f\n", z);
-                int u = interpolate(u_start, x_start, u_end, x_end, x);//*z;
-                int v = interpolate(v_start, x_start, v_end, x_end, x);//*z;
+                float z = interpolate(z_start, x_start, z_end, x_end, x);
+                float u = finterpolate((float)u_start/(float)z_start, x_start, (float)u_end/(float)z_end, x_end, x)*z;
+                float v = finterpolate((float)v_start/(float)z_start, x_start, (float)v_end/(float)z_end, x_end, x)*z;
                 u = (int)u % texture->Width();
                 v = (int)v % texture->Height();
                 Color color = texture->ReadPixel(u, v);
@@ -272,7 +265,8 @@ namespace Particule::Core
         }
     }*/
 
-   static void swap(Vector3Int &a, Vector3Int &b)
+
+   /*static void swap(Vector3Int &a, Vector3Int &b)
 {
     Vector3Int tmp = a;
     a = b;
@@ -286,11 +280,33 @@ static void swap_int(int &a, int &b)
     b = tmp;
 }
 
+static void swap_float(float &a, float &b)
+{
+    float tmp = a;
+    a = b;
+    b = tmp;
+}
+
 static void swap_vec2int(Vector2Int &a, Vector2Int &b)
 {
     Vector2Int tmp = a;
     a = b;
     b = tmp;
+}
+
+// Fonction pour interpoler les valeurs
+static int interpolate(int v0, int y0, int v1, int y1, int y)
+{
+    if (y0 == y1)
+        return v0;
+    return v0 + (v1 - v0) * (y - y0) / (y1 - y0);
+}
+
+static float finterpolate(float v0, float y0, float v1, float y1, float y)
+{
+    if (y0 == y1)
+        return v0;
+    return v0 + (v1 - v0) * (y - y0) / (y1 - y0);
 }
 
 static void draw_texture_trapezoid(Vector2Int src[3], Vector3Int dest[3], Texture *texture, bool doubleSided)
@@ -308,54 +324,41 @@ static void draw_texture_trapezoid(Vector2Int src[3], Vector3Int dest[3], Textur
     if (dest[2].y < dest[1].y) { swap(dest[1], dest[2]); swap_vec2int(src[1], src[2]); }
 
     // Déclare les sommets après triage
-    Vector3Int v0 = dest[0];
-    Vector3Int v1 = dest[1];
-    Vector3Int v2 = dest[2];
-    Vector2Int uv0 = src[0];
-    Vector2Int uv1 = src[1];
-    Vector2Int uv2 = src[2];
+    Vector3Int v0 = dest[0], v1 = dest[1], v2 = dest[2];
+    Vector2Int uv0 = src[0], uv1 = src[1], uv2 = src[2];
 
     int width = window->GetWidth();
     int height = window->GetHeight();
-
-    auto interpolate = [](int v0, int y0, int v1, int y1, int y)
-    {
-        if (y0 == y1)
-            return v0;
-        return v0 + (v1 - v0) * (y - y0) / (y1 - y0);
-    };
-
-    // Fonction pour calculer les pondérations barycentriques
-    auto barycentric_weights = [](int x, int y, Vector3Int v0, Vector3Int v1, Vector3Int v2, float &w0, float &w1, float &w2)
-    {
-        float denom = (v1.y - v2.y) * (v0.x - v2.x) + (v2.x - v1.x) * (v0.y - v2.y);
-        w0 = ((v1.y - v2.y) * (x - v2.x) + (v2.x - v1.x) * (y - v2.y)) / denom;
-        w1 = ((v2.y - v0.y) * (x - v2.x) + (v0.x - v2.x) * (y - v2.y)) / denom;
-        w2 = 1 - w0 - w1;
-    };
 
     // Dessiner la partie inférieure du triangle
     for (int y = v0.y; y <= v1.y; y++)
     {
         if (y < 0 || y >= height) continue;
 
-        int x_start = interpolate(v0.x, v0.y, v1.x, v1.y, y);
-        int x_end = interpolate(v0.x, v0.y, v2.x, v2.y, y);
-        if (x_start > x_end) swap_int(x_start, x_end);
+        int x_start = finterpolate(v0.x, v0.y, v1.x, v1.y, y);
+        int x_end = finterpolate(v0.x, v0.y, v2.x, v2.y, y);
+        float z_start = 1.0f / finterpolate(1.0f / v0.z, v0.y, 1.0f / v1.z, v1.y, y);
+        float z_end = 1.0f / finterpolate(1.0f / v0.z, v0.y, 1.0f / v2.z, v2.y, y);
+        float u_start = finterpolate(uv0.x / (float)v0.z, v0.y, uv1.x / (float)v1.z, v1.y, y) * z_start;
+        float u_end = finterpolate(uv0.x / (float)v0.z, v0.y, uv2.x / (float)v2.z, v2.y, y) * z_end;
+        float v_start = finterpolate(uv0.y / (float)v0.z, v0.y, uv1.y / (float)v1.z, v1.y, y) * z_start;
+        float v_end = finterpolate(uv0.y / (float)v0.z, v0.y, uv2.y / (float)v2.z, v2.y, y) * z_end;
+
+        if (x_start > x_end) {
+            swap_int(x_start, x_end);
+            swap_float(u_start, u_end);
+            swap_float(v_start, v_end);
+            swap_float(z_start, z_end);
+        }
 
         for (int x = x_start; x <= x_end; x++)
         {
             if (x < 0 || x >= width) continue;
-
-            float w0, w1, w2;
-            barycentric_weights(x, y, v0, v1, v2, w0, w1, w2);
-            float z = 1 / (w0 / v0.z + w1 / v1.z + w2 / v2.z);
-            int u = z * (w0 * uv0.x / v0.z + w1 * uv1.x / v1.z + w2 * uv2.x / v2.z);
-            int v = z * (w0 * uv0.y / v0.z + w1 * uv1.y / v1.z + w2 * uv2.y / v2.z);
-
-            u = u % texture->Width();
-            v = v % texture->Height();
-
+            float z = finterpolate(z_start, x_start, z_end, x_end, x);
+            float u = finterpolate(u_start / z_start, x_start, u_end / z_end, x_end, x) * z;
+            float v = finterpolate(v_start / z_start, x_start, v_end / z_end, x_end, x) * z;
+            u = (int)u % texture->Width();
+            v = (int)v % texture->Height();
             Color color = texture->ReadPixel(u, v);
             DrawPixelUnsafe(x, y, color);
         }
@@ -366,29 +369,35 @@ static void draw_texture_trapezoid(Vector2Int src[3], Vector3Int dest[3], Textur
     {
         if (y < 0 || y >= height) continue;
 
-        int x_start = interpolate(v1.x, v1.y, v2.x, v2.y, y);
-        int x_end = interpolate(v0.x, v0.y, v2.x, v2.y, y);
-        if (x_start > x_end) swap_int(x_start, x_end);
+        int x_start = finterpolate(v1.x, v1.y, v2.x, v2.y, y);
+        int x_end = finterpolate(v0.x, v0.y, v2.x, v2.y, y);
+        float z_start = 1.0f / finterpolate(1.0f / v1.z, v1.y, 1.0f / v2.z, v2.y, y);
+        float z_end = 1.0f / finterpolate(1.0f / v0.z, v0.y, 1.0f / v2.z, v2.y, y);
+        float u_start = finterpolate(uv1.x / (float)v1.z, v1.y, uv2.x / (float)v2.z, v2.y, y) * z_start;
+        float u_end = finterpolate(uv0.x / (float)v0.z, v0.y, uv2.x / (float)v2.z, v2.y, y) * z_end;
+        float v_start = finterpolate(uv1.y / (float)v1.z, v1.y, uv2.y / (float)v2.z, v2.y, y) * z_start;
+        float v_end = finterpolate(uv0.y / (float)v0.z, v0.y, uv2.y / (float)v2.z, v2.y, y) * z_end;
+
+        if (x_start > x_end) {
+            swap_int(x_start, x_end);
+            swap_float(u_start, u_end);
+            swap_float(v_start, v_end);
+            swap_float(z_start, z_end);
+        }
 
         for (int x = x_start; x <= x_end; x++)
         {
             if (x < 0 || x >= width) continue;
-
-            float w0, w1, w2;
-            barycentric_weights(x, y, v0, v1, v2, w0, w1, w2);
-            float z = 1 / (w0 / v0.z + w1 / v1.z + w2 / v2.z);
-            int u = z * (w0 * uv0.x / v0.z + w1 * uv1.x / v1.z + w2 * uv2.x / v2.z);
-            int v = z * (w0 * uv0.y / v0.z + w1 * uv1.y / v1.z + w2 * uv2.y / v2.z);
-
-            u = u % texture->Width();
-            v = v % texture->Height();
-
+            float z = finterpolate(z_start, x_start, z_end, x_end, x);
+            float u = finterpolate(u_start / z_start, x_start, u_end / z_end, x_end, x) * z;
+            float v = finterpolate(v_start / z_start, x_start, v_end / z_end, x_end, x) * z;
+            u = (int)u % texture->Width();
+            v = (int)v % texture->Height();
             Color color = texture->ReadPixel(u, v);
             DrawPixelUnsafe(x, y, color);
         }
     }
-}
-
+}*/
 
 
 

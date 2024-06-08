@@ -34,6 +34,8 @@ namespace Particule::Core
         Camera(GameObject *gameObject);
         ~Camera() override;
         virtual const String __class__() { return "Camera";}
+
+        void OnRenderImage() override;
     };
 }
 

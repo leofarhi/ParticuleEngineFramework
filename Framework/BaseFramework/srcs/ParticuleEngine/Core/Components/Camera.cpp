@@ -70,4 +70,13 @@ namespace Particule::Core
     {
         delete this->bufferRenderer;
     }
+
+    //override OnRenderImage
+    void Camera::OnRenderImage()
+    {
+        if (Camera::mainCamera != this)
+            return;
+        this->bufferRenderer->Draw();
+        this->bufferRenderer->Clear();
+    }
 }

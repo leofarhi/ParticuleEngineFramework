@@ -25,6 +25,9 @@ namespace Particule::Core
         virtual void OnEnable() {};
         virtual void OnDisable() {};
         virtual void OnDestroy() {};
+
+        virtual void OnRenderObject() {};
+        virtual void OnRenderImage() {};
     };
 
     template <typename T_Component, typename... Args>
