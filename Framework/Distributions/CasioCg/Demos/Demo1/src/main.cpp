@@ -147,8 +147,8 @@ int main()
     while (test && window->IsRunning() && !input->IsKeyPressed(KEY_EXIT))
     {
         window->Clear();
-        test->Draw((i++)%(window->GetWidth()-test->Width()), 0);
-        test->Draw((i++)%(window->GetWidth()-test->Width()), 160);
+        //test->Draw((i++)%(window->GetWidth()-test->Width()), 0);
+        //test->Draw((i++)%(window->GetWidth()-test->Width()), 160);
         Camera::mainCamera->bufferRenderer->Clear();
         meshrender->CalculateProjection(Camera::mainCamera);
         meshrender->mesh->DrawInBuffer(Camera::mainCamera);
