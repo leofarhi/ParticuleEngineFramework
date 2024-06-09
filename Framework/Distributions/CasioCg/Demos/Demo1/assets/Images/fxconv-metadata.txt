@@ -1,5 +1,0 @@
-texture.jpg:
-  name: IMG_ASSET_texture
-  type: bopti-image
-  profile: p8
-

@@ -1,6 +1,6 @@
 #include <ParticuleEssential/Graphic/Color.hpp>
 
-namespace Particule::Essential::Graphic
+namespace Particule::Essential
 {
     Color::Color()
     {

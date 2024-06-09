@@ -11,10 +11,6 @@
 
 namespace Particule::Essential
 {
-    using namespace Particule::Essential::Graphic;
-    using namespace Particule::Essential::Input;
-    using namespace Particule::Essential::System;
-
     void ParticuleEssentialInit()
     {
         InitBasic();

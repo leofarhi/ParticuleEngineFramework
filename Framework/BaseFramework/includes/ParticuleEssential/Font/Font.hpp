@@ -3,9 +3,8 @@
 #include <ParticuleEssential/Graphic/Color.hpp>
 #include <ParticuleEssential/Types/Vector2Int.hpp>
 
-namespace Particule::Essential::Font
+namespace Particule::Essential
 {
-    using Particule::Essential::Graphic::Color;
     class Font
     {
     public:

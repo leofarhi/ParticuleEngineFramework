@@ -1,7 +1,7 @@
 #ifndef COLOR_HPP
 #define COLOR_HPP
 
-namespace Particule::Essential::Graphic
+namespace Particule::Essential
 {
     struct Color
     {

@@ -41,26 +41,33 @@ def build(base_path, build_path, output_path, args):
     #print in green
     print("\033[92mBuild successful.\033[0m")
 
+demos_path = os.path.join(curent_dir,"..","..", "Demos")
+
 def MatchDemo(demo):
-    lst = os.listdir(os.path.join(curent_dir, "Demos"))
+    lst = os.listdir(demos_path)
     for item in lst:
         if item.lower() == demo.lower():
             return item
     return None
 
 def BuildTestDemo(output_path,demo_path):
-    #make bin folder
-    if not os.path.exists(os.path.join(demo_path, "bin")) or len(os.listdir(os.path.join(demo_path, "bin"))) == 0:
-        os.makedirs(os.path.join(demo_path, "bin"), exist_ok=True)
-        #copy the output bin folder
-        shutil.copytree(os.path.join(output_path, "bin"), os.path.join(demo_path, "bin"), dirs_exist_ok=True)
+    build_path = os.path.join(demo_path, "build")
+    #clean the build folder
+    shutil.rmtree(build_path, ignore_errors=True)
+    os.makedirs(build_path)
+    os.makedirs(os.path.join(demo_path, "build", "bin"), exist_ok=True)
+    #copy the main folder
+    shutil.copytree(os.path.join(curent_dir, "Demo"), build_path, dirs_exist_ok=True)
+    #copy distribution files and overwrite existing files
+    shutil.copytree(os.path.join(output_path, "bin"), os.path.join(demo_path, "build", "bin"), dirs_exist_ok=True)
     #make demo and send output in args
     output_path = output_path.replace("\\", "/")
     cmd=f"set LIBRARY_PATH={output_path}&& make"
     print(cmd)
-    process(cmd, cwd=demo_path)
+    process(cmd, cwd=build_path)
     print("\033[92mDemo built.\033[0m")
-    process(".\\bin\\main.exe", cwd=demo_path)
+    process(".\\main.exe", cwd=os.path.join(build_path, "bin"))
+
 
 def demo(base_path, build_path, output_path, args):
     print("demo...")
@@ -70,13 +77,19 @@ def demo(base_path, build_path, output_path, args):
         sys.exit(1)
     if len(args) != 0:
         if args[0] == "clean":
-            for item in os.listdir(os.path.join(curent_dir, "Demos")):
-                process("make clean", cwd=os.path.join(curent_dir, "Demos", item))
+            for item in os.listdir(demos_path):
+                shutil.rmtree(os.path.join(demos_path, item, "build"), ignore_errors=True)
         else:
-            demo = MatchDemo(args[0])
-            if demo == None:
+            name = MatchDemo(args[0])
+            if name == None:
                 print("\033[91mDemo not found.\033[0m")
                 sys.exit(1)
-            BuildTestDemo(output_path,os.path.join(curent_dir, "Demos", demo))
+            BuildTestDemo(output_path,os.path.join(demos_path, name))
     else:
-        BuildTestDemo(output_path,os.path.join(curent_dir, "Demos", "Demo1"))
+        if len(os.listdir(demos_path)) == 0:
+            print("\033[91mNo demos found.\033[0m")
+            sys.exit(1)
+        else:
+            print("Demos found: ")
+            for item in os.listdir(demos_path):
+                print(item)

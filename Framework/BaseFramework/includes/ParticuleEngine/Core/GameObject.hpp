@@ -9,10 +9,7 @@
 #include <ParticuleEngine/Enum/Tag.hpp>
 #include <cstdarg>
 
-namespace Particule::SceneManagement
-{
-    class Scene;
-}
+namespace Particule::SceneManagement{class Scene;}
 
 namespace Particule::Core
 {

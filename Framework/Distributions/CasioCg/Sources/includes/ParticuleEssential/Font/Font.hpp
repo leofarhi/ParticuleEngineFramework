@@ -6,9 +6,8 @@
 #include <gint/display.h>
 #include <gint/keyboard.h>
 
-namespace Particule::Essential::Font
+namespace Particule::Essential
 {
-    using Particule::Essential::Graphic::Color;
     class Font
     {
     private:

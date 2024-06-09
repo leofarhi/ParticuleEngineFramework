@@ -4,9 +4,8 @@
 #include <ParticuleEssential/Types/Vector2Int.hpp>
 #include <SDL2/SDL_ttf.h>
 
-namespace Particule::Essential::Font
+namespace Particule::Essential
 {
-    using Particule::Essential::Graphic::Color;
     class Font
     {
     private:

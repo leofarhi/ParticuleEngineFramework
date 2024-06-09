@@ -6,9 +6,8 @@
 #include <gint/gint.h>
 #include <gint/display.h>
 
-namespace Particule::Essential::Image
+namespace Particule::Essential
 {
-    using Particule::Essential::Graphic::Color;
     class Sprite;
 
     class Texture

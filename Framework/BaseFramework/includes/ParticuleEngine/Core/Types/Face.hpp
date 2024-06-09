@@ -8,7 +8,7 @@
 
 namespace Particule::Core
 {
-    using namespace Particule::Essential::Image;
+    using namespace Particule::Essential;
 
     typedef struct Vertex
     {

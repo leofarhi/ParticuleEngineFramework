@@ -2,7 +2,7 @@
 #define DRAW_RECT_HPP
 #include "../Color.hpp"
 
-namespace Particule::Essential::Graphic::Draw
+namespace Particule::Essential
 {
     void DrawRect(int x, int y, int w, int h, Color color);
 

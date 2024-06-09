@@ -5,14 +5,8 @@
 #include <ParticuleEssential/System/VirtualFile.hpp>
 
 
-namespace Particule::Essential::Image
+namespace Particule::Essential
 {
-    using namespace Particule::Essential::Graphic;
-    using Particule::Essential::Graphic::Color;
-    using Particule::Essential::Image::Sprite;
-    using namespace Particule::Essential::System;
-
-
     static int GetPixel_CG_RGB16(bopti_image_t* texture, int x, int y){
         void *data = ((unsigned char *)texture->data) + y * texture->stride;
         uint16_t *data_u16 = (uint16_t *)data;

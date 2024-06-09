@@ -1,6 +1,6 @@
 #include <ParticuleEssential/Texture/Sprite.hpp>
 
-namespace Particule::Essential::Image
+namespace Particule::Essential
 {
     Sprite::Sprite()
     {

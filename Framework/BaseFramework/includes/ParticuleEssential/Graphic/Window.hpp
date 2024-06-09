@@ -6,7 +6,7 @@
 //All distribution start with DIST_
 
 #include "./Color.hpp"
-namespace Particule::Essential::Graphic
+namespace Particule::Essential
 {
     class Window
     {

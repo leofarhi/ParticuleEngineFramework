@@ -2,7 +2,7 @@
 #include "../../../../includes/ParticuleEssential/Graphic/Window.hpp"
 #include <SDL2/SDL.h>
 
-namespace Particule::Essential::Graphic::Draw
+namespace Particule::Essential
 {
     void DrawRect(int x, int y, int w, int h, Color color)
     {

@@ -9,7 +9,7 @@
 #include <gint/keyboard.h>
 #include <gint/rtc.h>
 
-namespace Particule::Essential::Input
+namespace Particule::Essential
 {
     class Mouse
     {

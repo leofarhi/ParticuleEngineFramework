@@ -5,13 +5,11 @@
 #include <ParticuleEssential/Types/Vector2Int.hpp>
 #include <ParticuleEssential/Texture/Texture.hpp>
 #include <ParticuleEngine/Core/Types/Face.hpp>
-#include <ParticuleEngine/Core/Components/Camera.hpp>
+#include <ParticuleEngine/Components/Core/Camera.hpp>
 #include <stdlib.h>
 
 namespace Particule::Core
 {
-    using namespace Particule::Essential::Image;
-
     class Mesh
     {
     public:

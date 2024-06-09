@@ -1,6 +1,6 @@
 #include <ParticuleEssential/System/VirtualFile.hpp>
 
-namespace Particule::Essential::System
+namespace Particule::Essential
 {
     VirtualResources* VirtualResources::Instance = nullptr;
 

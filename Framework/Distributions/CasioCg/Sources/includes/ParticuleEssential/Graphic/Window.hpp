@@ -18,7 +18,7 @@
 
 void error_exit(int exitcode, const char* format, ...);
 
-namespace Particule::Essential::Graphic
+namespace Particule::Essential
 {
     class Window
     {

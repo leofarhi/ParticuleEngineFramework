@@ -5,11 +5,9 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-namespace Particule::Essential::Image
+namespace Particule::Essential
 {
-    using namespace Particule::Essential::Graphic;
-    using Particule::Essential::Graphic::Color;
-    using Particule::Essential::Image::Sprite;
+
     Texture::Texture()
     {
         texture = nullptr;

@@ -5,7 +5,7 @@
 
 namespace Particule::SceneManagement
 {
-    using namespace Particule::Essential::Graphic;
+    using namespace Particule::Essential;
     SceneManager *sceneManager = nullptr;
 
     SceneManager::SceneManager()

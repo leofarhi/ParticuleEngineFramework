@@ -15,7 +15,7 @@ void error_exit(int exitcode, const char* format, ...)
     exit(exitcode);
 }
 
-namespace Particule::Essential::Graphic
+namespace Particule::Essential
 {
     Window* window = nullptr;
     //Calls the constructor with the default values.

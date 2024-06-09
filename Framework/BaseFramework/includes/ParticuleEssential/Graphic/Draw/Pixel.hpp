@@ -2,7 +2,7 @@
 #define DRAW_PIXEL_HPP
 #include "../Color.hpp"
 
-namespace Particule::Essential::Graphic::Draw
+namespace Particule::Essential
 {
     void DrawPixel(int x, int y, Color color);
 

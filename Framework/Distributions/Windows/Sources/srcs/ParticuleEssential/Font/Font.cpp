@@ -3,10 +3,8 @@
 #include <ParticuleEssential/Graphic/Color.hpp>
 #include <string.h>
 
-namespace Particule::Essential::Font
+namespace Particule::Essential
 {
-    using namespace Particule::Essential::Graphic;
-    using Particule::Essential::Graphic::Color;
     Font::Font()
     {
         char* path = nullptr;

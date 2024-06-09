@@ -2,7 +2,7 @@
 #include <ParticuleEngine/Core/Types/Face.hpp>
 #include <ParticuleEssential/Types/Vector3Int.hpp>
 #include <ParticuleEssential/Basic/Basic.hpp>
-#include <ParticuleEngine/Core/Components/Camera.hpp>
+#include <ParticuleEngine/Components/Core/Camera.hpp>
 #include <ParticuleEssential/Graphic/Draw/Line.hpp>
 #include <ParticuleEssential/Graphic/Color.hpp>
 #include <ParticuleEssential/Graphic/Window.hpp>
@@ -14,10 +14,7 @@
 
 namespace Particule::Core
 {
-    using namespace Particule::Essential::Image;
-    using namespace Particule::Essential::Graphic::Draw;
-    using namespace Particule::Essential::Graphic;
-    using namespace Particule::Essential::Image;
+    using namespace Particule::Essential;
 
     Face::Face(Vertex *p1, Vertex *p2, Vertex *p3,
                 Vector2Int uv1, Vector2Int uv2, Vector2Int uv3,

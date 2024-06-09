@@ -7,7 +7,6 @@
 
 namespace Particule::SceneManagement
 {
-
     class SceneManager
     {
     private:

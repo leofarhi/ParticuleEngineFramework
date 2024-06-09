@@ -1,6 +1,21 @@
 #ifndef PARTICULE_ENGINE_HPP
 #define PARTICULE_ENGINE_HPP
+
+#include <ParticuleEngine/Core/Types/Face.hpp>
+#include <ParticuleEngine/Core/Types/Mesh.hpp>
+
+#include <ParticuleEngine/Core/Component.hpp>
+#include <ParticuleEngine/Core/GameObject.hpp>
 #include <ParticuleEngine/Core/Object.hpp>
+#include <ParticuleEngine/Core/Transform.hpp>
+
+#include <ParticuleEngine/Enum/Layer.hpp>
+#include <ParticuleEngine/Enum/Tag.hpp>
+
+#include <ParticuleEngine/Scene/Scene.hpp>
+#include <ParticuleEngine/Scene/SceneManager.hpp>
+
+#include <ParticuleEngine/Components/Components.hpp>
 
 namespace Particule::Engine
 {

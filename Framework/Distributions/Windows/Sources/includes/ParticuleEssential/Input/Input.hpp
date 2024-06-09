@@ -6,7 +6,7 @@
 
 #include <SDL2/SDL.h>
 
-namespace Particule::Essential::Input
+namespace Particule::Essential
 {
     class Mouse
     {

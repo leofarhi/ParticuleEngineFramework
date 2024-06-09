@@ -3,7 +3,7 @@
 #include <ParticuleEssential/Types/String.hpp>
 #include <ParticuleEssential/Types/List.hpp>
 
-namespace Particule::Essential::System
+namespace Particule::Essential
 {
     class VirtualFile
     {

@@ -6,7 +6,7 @@
 #include <string.h>
 #include <unistd.h>
 
-namespace Particule::Essential::Graphic
+namespace Particule::Essential
 {
     Window* window = nullptr;
     //Calls the constructor with the default values.

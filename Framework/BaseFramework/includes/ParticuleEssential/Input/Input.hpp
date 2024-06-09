@@ -3,7 +3,7 @@
 #include "../Types/Vector2.hpp"
 #include "../Types/Vector2Int.hpp"
 
-namespace Particule::Essential::Input
+namespace Particule::Essential
 {
     class Mouse
     {

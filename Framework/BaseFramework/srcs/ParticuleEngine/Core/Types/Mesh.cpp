@@ -1,7 +1,7 @@
 #include <ParticuleEngine/Core/Types/Mesh.hpp>
 #include <ParticuleEngine/Core/Types/Face.hpp>
 #include <ParticuleEssential/Types/Vector3Int.hpp>
-#include <ParticuleEngine/Core/Components/Camera.hpp>
+#include <ParticuleEngine/Components/Core/Camera.hpp>
 #include <ParticuleEssential/Graphic/Draw/Line.hpp>
 #include <ParticuleEssential/Graphic/Color.hpp>
 #include <ParticuleEssential/Graphic/Draw/Pixel.hpp>
@@ -11,10 +11,7 @@
 
 namespace Particule::Core
 {
-    using namespace Particule::Essential::Image;
-    using namespace Particule::Essential::Graphic::Draw;
-    using namespace Particule::Essential::Graphic;
-    using namespace Particule::Essential::Image;
+    using namespace Particule::Essential;
 
     Mesh::Mesh()
     {

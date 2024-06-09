@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-namespace Particule::Essential::Input
+namespace Particule::Essential
 {
     InputManager* input = nullptr;
 
