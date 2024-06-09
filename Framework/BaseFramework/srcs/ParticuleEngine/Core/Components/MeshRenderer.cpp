@@ -63,6 +63,8 @@ namespace Particule::Core
         const Vector3 cos_camera(cos(cameraTransform->rotation.x), cos(cameraTransform->rotation.y), cos(cameraTransform->rotation.z));
         const Vector3 sin_camera(sin(cameraTransform->rotation.x), sin(cameraTransform->rotation.y), sin(cameraTransform->rotation.z));
 
+        const float min_z = 1;  // Define a minimum z value to avoid division by zero or too close projections
+
         for (size_t i = 0; i < this->mesh->verticesCount; i++)
         {
             Vector3 m = this->mesh->vertices[i].position * _transform->scale;
@@ -83,8 +85,8 @@ namespace Particule::Core
             ApplyRotationZ(m.x, m.y, cos_camera.z, sin_camera.z);
 
             // Projection
-            m.z = (m.z == 0) ? 1 : m.z;
-            float f = 300 / m.z;
+            float m_z = (m.z < min_z) ? min_z : m.z;  // Ensure m.z is not less than the minimum z value
+            float f = 300 / m_z;
 
             m.x = (m.x * f) + center.x;
             m.y = (-m.y * f) + center.y;

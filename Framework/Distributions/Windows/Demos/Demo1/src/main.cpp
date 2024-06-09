@@ -56,6 +56,7 @@ using namespace Particule::SceneManagement;
 
 #include <ParticuleEngine/Core/Components/Camera.hpp>
 #include <ParticuleEngine/Core/Components/MeshRenderer.hpp>
+#include <ParticuleEngine/Core/Components/Freecam.hpp>
 #include <ParticuleEngine/Core/GameObject.hpp>
 #include <ParticuleEngine/Core/Types/Mesh.hpp>
 
@@ -71,6 +72,7 @@ Scene *LoadScene1()
     Scene *scene = new Scene("Scene1");
     GameObject *go = new GameObject(scene);
     go->AddComponent<Camera>();
+    go->AddComponent<FreeCam>();
     Mesh *mesh = new Mesh(8,6);
 
     int size = 100;
@@ -131,12 +133,10 @@ int main()
     while (window->IsRunning())
     {
         window->Clear();
-        Camera::mainCamera->bufferRenderer->Clear();
-        meshrender->CalculateProjection(Camera::mainCamera);
-        meshrender->mesh->DrawInBuffer(Camera::mainCamera);
-        Camera::mainCamera->bufferRenderer->Draw();
-        meshrender->gameObject->transform()->rotation.y += 0.001;
-        meshrender->gameObject->transform()->rotation.z += 0.001;
+        sceneManager->MainLoop();
+
+        //meshrender->gameObject->transform()->rotation.y += 0.001;
+        //meshrender->gameObject->transform()->rotation.z += 0.001;
         input->Update();
         window->Update();
     }

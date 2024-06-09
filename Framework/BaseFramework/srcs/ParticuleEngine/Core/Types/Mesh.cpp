@@ -50,7 +50,8 @@ namespace Particule::Core
         {
             faces[i]->CalculateDepth();
             //printf("Depth: %f\n", faces[i]->depth);
-            camera->bufferRenderer->AddFace(faces[i]);
+            if (faces[i]->depth > faces[i]->verticesCount)
+                camera->bufferRenderer->AddFace(faces[i]);
         }
     }
 }

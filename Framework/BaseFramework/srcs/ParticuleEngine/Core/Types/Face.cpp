@@ -99,45 +99,43 @@ namespace Particule::Core
         if (!doubleSided && (dest[1].x - dest[0].x) * (dest[2].y - dest[0].y) - (dest[1].y - dest[0].y) * (dest[2].x - dest[0].x) < 0)
             return;
 
-        const fixed area = (dest[2].x - dest[1].x) * (dest[0].y - dest[1].y) - (dest[0].x - dest[1].x) * (dest[2].y - dest[1].y);
+        const float area = (dest[2].x - dest[1].x) * (dest[0].y - dest[1].y) - (dest[0].x - dest[1].x) * (dest[2].y - dest[1].y);
         if (area == 0)
             return;
-        const fixed src_x0 = src[0].x, src_y0 = src[0].y;
-        const fixed src_x1 = src[1].x, src_y1 = src[1].y;
-        const fixed src_x2 = src[2].x, src_y2 = src[2].y;
-        const fixed dest_x0 = dest[0].x, dest_y0 = dest[0].y, dest_z0 = dest[0].z;
-        const fixed dest_x1 = dest[1].x, dest_y1 = dest[1].y, dest_z1 = dest[1].z;
-        const fixed dest_x2 = dest[2].x, dest_y2 = dest[2].y, dest_z2 = dest[2].z;
-        const fixed tex_w = texture->Width();
-        const fixed tex_h = texture->Height();
+        const float src_x0 = src[0].x, src_y0 = src[0].y;
+        const float src_x1 = src[1].x, src_y1 = src[1].y;
+        const float src_x2 = src[2].x, src_y2 = src[2].y;
+        const float dest_x0 = dest[0].x, dest_y0 = dest[0].y, dest_z0 = dest[0].z;
+        const float dest_x1 = dest[1].x, dest_y1 = dest[1].y, dest_z1 = dest[1].z;
+        const float dest_x2 = dest[2].x, dest_y2 = dest[2].y, dest_z2 = dest[2].z;
+        const int tex_w = texture->Width();
+        const int tex_h = texture->Height();
 
-        const fixed min_y = min_local(dest_y1, dest_y2, dest_y0);
-        const fixed min_x = min_local(dest_x1, dest_x2, dest_x0);
-        const fixed max_y = max_local(dest_y1, dest_y2, dest_y0);
-        const fixed max_x = max_local(dest_x1, dest_x2, dest_x0);
+        const int min_y = min_local(dest_y1, dest_y2, dest_y0);
+        const int min_x = min_local(dest_x1, dest_x2, dest_x0);
+        const int max_y = max_local(dest_y1, dest_y2, dest_y0);
+        const int max_x = max_local(dest_x1, dest_x2, dest_x0);
 
-        const fixed w0_1 = (dest_x2 - dest_x1);
-        const fixed w0_2 = (dest_y2 - dest_y1);
-        const fixed w1_1 = (dest_x0 - dest_x2);
-        const fixed w1_2 = (dest_y0 - dest_y2);
-
-        const fixed one = 1 << FIXED_SHIFT;
+        const float w0_1 = (dest_x2 - dest_x1);
+        const float w0_2 = (dest_y2 - dest_y1);
+        const float w1_1 = (dest_x0 - dest_x2);
+        const float w1_2 = (dest_y0 - dest_y2);
 
         for (int y = min_y; y < max_y; ++y)
         {
-            fixed w0__1 = w0_1 * (y - dest_y1);
-            fixed w1__1 = w1_1 * (y - dest_y2);
+            float w0__1 = w0_1 * (y - dest_y1);
+            float w1__1 = w1_1 * (y - dest_y2);
             for (int x = min_x; x < max_x; ++x)
             {
                 // Change float to fixed point
-                const fixed w0 = ((w0__1 - w0_2 * (x - dest_x1)) << FIXED_SHIFT) / area;
-                const fixed w1 = ((w1__1 - w1_2 * (x - dest_x2)) << FIXED_SHIFT) / area;
-                const fixed w2 = one - w0 - w1;
-                if ((w0 >= 0) & (w1 >= 0) & (w2 >= 0))
+                const float w0 = (w0__1 - w0_2 * (x - dest_x1)) / area;
+                const float w1 = (w1__1 - w1_2 * (x - dest_x2)) / area;
+                const float w2 = 1 - w0 - w1;
+                if ((w0 >= 0) && (w1 >= 0) && (w2 >= 0))
                 {
-                    const fixed z = one / (w0 / dest_z0 + w1 / dest_z1 + w2 / dest_z2);
-                    int u = (z * (w0 * src_x0 / dest_z0 + w1 * src_x1 / dest_z1 + w2 * src_x2 / dest_z2)) >> FIXED_SHIFT;
-                    int v = (z * (w0 * src_y0 / dest_z0 + w1 * src_y1 / dest_z1 + w2 * src_y2 / dest_z2)) >> FIXED_SHIFT;
+                    const float z = 1 / (w0 / dest_z0 + w1 / dest_z1 + w2 / dest_z2);
+                    int u = (z * (w0 * src_x0 / dest_z0 + w1 * src_x1 / dest_z1 + w2 * src_x2 / dest_z2));
+                    int v = (z * (w0 * src_y0 / dest_z0 + w1 * src_y1 / dest_z1 + w2 * src_y2 / dest_z2));
                     u = (int)u % tex_w;
                     v = (int)v % tex_h;
                     Color color = texture->ReadPixel(u, v);

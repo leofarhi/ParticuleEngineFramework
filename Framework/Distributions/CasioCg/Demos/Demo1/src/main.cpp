@@ -149,10 +149,7 @@ int main()
         window->Clear();
         //test->Draw((i++)%(window->GetWidth()-test->Width()), 0);
         //test->Draw((i++)%(window->GetWidth()-test->Width()), 160);
-        Camera::mainCamera->bufferRenderer->Clear();
-        meshrender->CalculateProjection(Camera::mainCamera);
-        meshrender->mesh->DrawInBuffer(Camera::mainCamera);
-        Camera::mainCamera->bufferRenderer->Draw();
+        sceneManager->MainLoop();
         meshrender->gameObject->transform()->rotation.y += 0.1;
         meshrender->gameObject->transform()->rotation.z += 0.1;
         input->Update();

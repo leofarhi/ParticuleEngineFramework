@@ -39,6 +39,15 @@ def process(cmdLinux,cmdWSL,cwd=None):
     else:
         subprocess.Popen(cmdLinux, shell=True, cwd=cwd).wait()
 
+def process2(cmdLinux,cmdWSL,cwd=None):
+    if cmdWSL == None:
+        cmdWSL = cmdLinux
+    if wsl:
+        cmd = f'wsl "{cmdWSL}"'
+        subprocess.Popen(cmd, shell=True, cwd=cwd).wait()
+    else:
+        subprocess.Popen(cmdLinux, shell=True, cwd=cwd).wait()
+
 def getWslPath(path):
     cmd = f'wsl -e bash -lic "pwd"'
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,cwd=path)
@@ -106,7 +115,7 @@ def BuildTestDemo(output_path,demo_path):
     print(cmd)
     process(cmd,None, cwd=demo_path)
     print("\033[92mDemo built.\033[0m")
-    process("./bin/main",None, cwd=demo_path)
+    process2("./bin/main",None, cwd=demo_path)
 
 def demo(base_path, build_path, output_path, args):
     print("demo...")
