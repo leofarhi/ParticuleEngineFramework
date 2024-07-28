@@ -7,7 +7,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 build_path = os.path.join(dir_path, "Build")
 output_path = os.path.join(dir_path, "Output")
-base_path = os.path.join(dir_path, "BaseFramework")
+base_path = os.path.join(dir_path, "Sources","BaseFramework")
 print(dir_path)
 
 os.chdir(dir_path)
@@ -17,7 +17,7 @@ def print_error():
     sys.exit(1)
 
 def MatchDistribution(distribution):
-    lst = os.listdir("Distributions")
+    lst = os.listdir(os.path.join("Sources","Distributions"))
     for item in lst:
         if item.lower() == distribution.lower():
             return item
@@ -36,7 +36,7 @@ if command == "help":
     sys.exit(0)
 elif command == "print":
     # Print all the distributions available
-    distributions = os.listdir("Distributions")
+    distributions = os.listdir(os.path.join("Sources","Distributions"))
     for dist in distributions:
         print(dist)
     sys.exit(0)
@@ -53,7 +53,7 @@ distribution = MatchDistribution(args[1])
 
 # Load the distribution
 try:
-    dist = importlib.import_module(f"Distributions.{distribution}.Distribution")
+    dist = importlib.import_module(f"Sources.Distributions.{distribution}.Distribution")
 except ModuleNotFoundError:
     print("The distribution specified does not exist.")
     sys.exit(1)
