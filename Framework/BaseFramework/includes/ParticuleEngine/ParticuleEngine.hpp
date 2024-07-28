@@ -1,9 +1,6 @@
 #ifndef PARTICULE_ENGINE_HPP
 #define PARTICULE_ENGINE_HPP
 
-#include <ParticuleEngine/Core/Types/Face.hpp>
-#include <ParticuleEngine/Core/Types/Mesh.hpp>
-
 #include <ParticuleEngine/Core/Component.hpp>
 #include <ParticuleEngine/Core/GameObject.hpp>
 #include <ParticuleEngine/Core/Object.hpp>

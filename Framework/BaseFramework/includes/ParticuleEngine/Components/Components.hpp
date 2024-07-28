@@ -2,7 +2,6 @@
 #define PE_COMPONENTS_HPP
 
 #include "Core/Camera.hpp"
-#include "Core/MeshRenderer.hpp"
 
 #include "UI/Canvas.hpp"
 #include "UI/Text.hpp"
