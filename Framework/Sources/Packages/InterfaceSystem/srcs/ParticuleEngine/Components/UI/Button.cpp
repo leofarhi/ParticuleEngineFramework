@@ -1,6 +1,6 @@
 #include <ParticuleEngine/Components/UI/Button.hpp>
 
-namespace Particule::UI
+namespace Particule::Core::UI
 {
     
 }

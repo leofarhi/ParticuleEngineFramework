@@ -6,11 +6,11 @@
 namespace Particule::SceneManagement
 {
     using namespace Particule::Essential;
-    SceneManager *sceneManager = nullptr;
+    SceneManager *SceneManager::sceneManager = nullptr;
 
     SceneManager::SceneManager()
     {
-        sceneManager = this;
+        SceneManager::sceneManager = this;
     }
 
     SceneManager::~SceneManager()
@@ -85,6 +85,7 @@ namespace Particule::SceneManagement
     {
         CallAllComponents(&Component::FixedUpdate, false);
         CallAllComponents(&Component::Update, false);
+        CallAllComponents(&Component::LateUpdate, false);
         CallAllComponents(&Component::OnRenderObject, false);
         CallAllComponents(&Component::OnRenderImage, false);
     }

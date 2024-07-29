@@ -13,7 +13,7 @@ namespace Particule::Core
     {
         this->name = "GameObject";
         this->m_transform = new Transform(this);
-        this->scene = (Scene *)sceneManager->activeScene();
+        this->scene = (Scene *)SceneManager::sceneManager->activeScene();
         this->m_activeSelf = true;
     }
 

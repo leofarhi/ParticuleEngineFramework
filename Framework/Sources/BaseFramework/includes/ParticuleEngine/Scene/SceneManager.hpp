@@ -13,6 +13,8 @@ namespace Particule::SceneManagement
         List<Scene* (*)(void)> availableScenes;
         List<Scene*> loadedScenes;
     public:
+        static SceneManager *sceneManager;
+
         SceneManager();
         ~SceneManager();
         void AddScene(Scene* (*loadScene)(void));
@@ -27,8 +29,6 @@ namespace Particule::SceneManagement
 
         void MainLoop();
     };
-
-    extern SceneManager *sceneManager;
 }
 
 #endif // PE_SCENE_MANAGER_HPP

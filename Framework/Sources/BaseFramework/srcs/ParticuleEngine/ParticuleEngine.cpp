@@ -8,12 +8,12 @@ namespace Particule::Engine
     void ParticuleEngineInit()
     {
         // Initialize the engine
-        sceneManager = new SceneManager();
+        SceneManager::sceneManager = new SceneManager();
     }
 
     void ParticuleEngineQuit()
     {
         // Quit the engine
-        delete sceneManager;
+        delete SceneManager::sceneManager;
     }
 }

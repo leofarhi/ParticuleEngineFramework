@@ -1,7 +1,6 @@
 #ifndef SDL_MAIN_HANDLED
 #define SDL_MAIN_HANDLED
 #endif
-#include <SDL2/SDL.h>
 #include <ParticuleEssential/Graphic/Window.hpp>
 #include <ParticuleEssential/Graphic/Draw/Rect.hpp>
 #include <ParticuleEssential/Input/Input.hpp>

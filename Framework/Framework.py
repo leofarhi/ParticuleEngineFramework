@@ -13,7 +13,7 @@ print(dir_path)
 os.chdir(dir_path)
 
 def print_error():
-    print("Usage: [command] [distribution] or help for more information.")
+    print("Usage: [command] [distribution] [args] or help for more information.")
     sys.exit(1)
 
 def MatchDistribution(distribution):
@@ -32,7 +32,8 @@ command = args[0].lower()
 if command == "help":
     print("print : Print all the distributions available.")
     print("install [distribution] : Install the specified distribution.")
-    print("build [distribution] : Build the specified distribution.")
+    print("build [distribution] : Build the specified distribution.  ex: build Windows")
+    print("build [distribution] [packages:list] ex: build Windows [\"package1\", \"package2\"]")
     sys.exit(0)
 elif command == "print":
     # Print all the distributions available

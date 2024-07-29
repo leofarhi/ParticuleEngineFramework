@@ -1,6 +1,6 @@
 #include <ParticuleEngine/Components/UI/Mask.hpp>
 
-namespace Particule::UI
+namespace Particule::Core::UI
 {
     
 }

@@ -11,13 +11,37 @@ def install(base_path, build_path, output_path, args):
     print("Installing...")
     print("\033[92mAll the dependencies have already been installed.\033[0m")
 
+def build_packages(base_path, build_path, output_path, packages):
+    package_dir = os.path.join(os.path.dirname(os.path.realpath(base_path)),"Packages")
+    dispo = [i.lower() for i in os.listdir(package_dir)]
+    for i in packages:
+        if i.lower() not in dispo:
+            print(f"\033[91mPackage \"{i}\" not found.\033[0m")
+            exit(1)
+        else:
+            print("Add package: " + i)
+            pack_dir = os.path.join(package_dir,i)
+            for dirs in os.listdir(pack_dir):
+                shutil.copytree(os.path.join(pack_dir,dirs), os.path.join(build_path,dirs), dirs_exist_ok=True)
+
+
 def build(base_path, build_path, output_path, args):
+    packages = []
+    if len(args) > 0:
+        if args[0][0] == "[" and args[0][-1] == "]":
+            packages = args[0][1:-1].split(",")
+            #remove spaces
+            packages = [x.strip() for x in packages]
+        else:
+            print("\033[91mInvalid packages format.\033[0m")
+            exit(1)
     print("Building...")
     #clean the build folder
     shutil.rmtree(build_path, ignore_errors=True)
     os.makedirs(build_path)
     #copy the main folder
     shutil.copytree(base_path, build_path, dirs_exist_ok=True)
+    build_packages(base_path, build_path, output_path, packages)
     #clean and create the output folder
     shutil.rmtree(output_path, ignore_errors=True)
     os.makedirs(output_path)
