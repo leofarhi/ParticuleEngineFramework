@@ -1,18 +1,18 @@
-#include "../../../includes/ParticuleEssential/Font/Font.hpp"
+#include "../../../includes/ParticuleEssential/Font/InternalFont.hpp"
 #include "../../../includes/ParticuleEssential/Graphic/Window.hpp"
 #include <ParticuleEssential/Graphic/Color.hpp>
 #include <string.h>
 
 namespace Particule::Essential
 {
-    Font::Font()
+    InternalFont::InternalFont()
     {
         char* path = nullptr;
         font = nullptr;
         size = 0;
     }
 
-    Font::Font(const char* path, int size)
+    InternalFont::InternalFont(const char* path, int size)
     {
         this->path = new char[strlen(path) + 1];
         strcpy(this->path, path);
@@ -20,28 +20,28 @@ namespace Particule::Essential
         font = nullptr;
     }
 
-    Font::~Font()
+    InternalFont::~InternalFont()
     {
         if (path != nullptr)
             delete[] path;
     }
 
-    void Font::SetSize(int size)
+    void InternalFont::SetSize(int size)
     {
         this->size = size;
     }
 
-    int Font::GetSize()
+    int InternalFont::GetSize()
     {
         return size;
     }
 
-    void Font::DrawText(const char* text, int x, int y)
+    void InternalFont::DrawText(const char* text, int x, int y)
     {
         DrawTextColor(text, x, y, COLOR_WHITE);
     }
 
-    void Font::DrawTextColor(const char* text, int x, int y, Color color)
+    void InternalFont::DrawTextColor(const char* text, int x, int y, Color color)
     {
         if (font != NULL)
             dfont(font);
@@ -50,7 +50,7 @@ namespace Particule::Essential
         dtext(x, y, color.color, text);
     }
 
-    Vector2Int Font::GetTextSize(const char* text)
+    Vector2Int InternalFont::GetTextSize(const char* text)
     {
         Vector2Int size = {0,0};
         if (font == NULL)

@@ -81,12 +81,11 @@ namespace Particule::SceneManagement
         }
     }
 
-    int SceneManager::MainLoop()
+    void SceneManager::MainLoop()
     {
         CallAllComponents(&Component::FixedUpdate, false);
         CallAllComponents(&Component::Update, false);
         CallAllComponents(&Component::OnRenderObject, false);
         CallAllComponents(&Component::OnRenderImage, false);
-        return window->IsRunning();
     }
 }

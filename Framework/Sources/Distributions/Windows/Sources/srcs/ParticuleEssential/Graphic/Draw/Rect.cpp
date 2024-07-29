@@ -6,15 +6,15 @@ namespace Particule::Essential
 {
     void DrawRect(int x, int y, int w, int h, Color color)
     {
-        SDL_SetRenderDrawColor(window->renderer, color.r, color.g, color.b, color.a);
+        SDL_SetRenderDrawColor(Window::DrawingWindow->renderer, color.r, color.g, color.b, color.a);
         SDL_Rect rect = {x, y, w, h};
-        SDL_RenderDrawRect(window->renderer, &rect);
+        SDL_RenderDrawRect(Window::DrawingWindow->renderer, &rect);
     }
 
     void DrawRectFill(int x, int y, int w, int h, Color color)
     {
-        SDL_SetRenderDrawColor(window->renderer, color.r, color.g, color.b, color.a);
+        SDL_SetRenderDrawColor(Window::DrawingWindow->renderer, color.r, color.g, color.b, color.a);
         SDL_Rect rect = {x, y, w, h};
-        SDL_RenderFillRect(window->renderer, &rect);
+        SDL_RenderFillRect(Window::DrawingWindow->renderer, &rect);
     }
 }

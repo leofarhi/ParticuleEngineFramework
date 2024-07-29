@@ -15,7 +15,7 @@
 #include <ParticuleEssential/Types/Rect.hpp>
 #include <ParticuleEssential/Types/String.hpp>
 
-#include <ParticuleEssential/Font/Font.hpp>
+#include <ParticuleEssential/Font/InternalFont.hpp>
 
 #include <ParticuleEssential/Texture/Texture.hpp>
 #include <ParticuleEssential/Texture/Sprite.hpp>

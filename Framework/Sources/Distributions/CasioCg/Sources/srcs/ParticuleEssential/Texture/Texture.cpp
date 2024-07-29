@@ -180,8 +180,8 @@ namespace Particule::Essential
             h += y;
             y = 0;
         }
-        if(x + w > window->GetWidth()) w = window->GetWidth() - x;
-        if(y + h > window->GetHeight()) h = window->GetHeight() - y;
+        if(x + w > Window::DrawingWindow->GetWidth()) w = Window::DrawingWindow->GetWidth() - x;
+        if(y + h > Window::DrawingWindow->GetHeight()) h = Window::DrawingWindow->GetHeight() - y;
         const int alph = this->_alphaValue;
         int row = 0;
         int col = 0;
@@ -270,8 +270,8 @@ namespace Particule::Essential
             h += y;
             y = 0;
         }
-        if(x + w > window->GetWidth()) w = window->GetWidth() - x;
-        if(y + h > window->GetHeight()) h = window->GetHeight() - y;
+        if(x + w > Window::DrawingWindow->GetWidth()) w = Window::DrawingWindow->GetWidth() - x;
+        if(y + h > Window::DrawingWindow->GetHeight()) h = Window::DrawingWindow->GetHeight() - y;
         const int alph = this->_alphaValue;
         int row = 0;
         int col = 0;

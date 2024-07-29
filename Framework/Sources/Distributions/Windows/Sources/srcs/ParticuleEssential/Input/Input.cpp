@@ -1,15 +1,15 @@
 #include "../../../includes/ParticuleEssential/Input/Input.hpp"
+#include "../../../includes/ParticuleEssential/Graphic/Window.hpp"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 namespace Particule::Essential
 {
-    InputManager* input = nullptr;
 
-    Mouse::Mouse()
+    Mouse::Mouse(InputManager* input)
     {
+        this->input = input;
         position = {0, 0};
     }
 
@@ -56,9 +56,10 @@ namespace Particule::Essential
         return false;
     }
 
-    InputManager::InputManager()
+    InputManager::InputManager(Window* window)
     {
-        mouse = new Mouse();
+        this->window = window;
+        mouse = new Mouse(this);
         InputEvents = new List<SDL_Event*>();
         InputEventsHeld = new List<SDL_Event*>();
     }
@@ -146,7 +147,7 @@ namespace Particule::Essential
 
     bool InputManager::IsKeyPressed(int key)
     {
-        for (ListNode<SDL_Event*> *cur=nullptr; input->InputEventsHeld->ForEach(&cur);)
+        for (ListNode<SDL_Event*> *cur=nullptr; this->InputEventsHeld->ForEach(&cur);)
         {
             SDL_Event* event = (SDL_Event*)(cur->data);
             if (event->type == SDL_KEYDOWN && event->key.keysym.sym == key)
@@ -159,7 +160,7 @@ namespace Particule::Essential
 
     bool InputManager::IsKeyDown(int key)
     {
-        for (ListNode<SDL_Event*> *cur=nullptr; input->InputEvents->ForEach(&cur);)
+        for (ListNode<SDL_Event*> *cur=nullptr; this->InputEvents->ForEach(&cur);)
         {
             SDL_Event* event = (SDL_Event*)(cur->data);
             if (event->type == SDL_KEYDOWN && event->key.keysym.sym == key)
@@ -172,7 +173,7 @@ namespace Particule::Essential
 
     bool InputManager::IsKeyUp(int key)
     {
-        for (ListNode<SDL_Event*> *cur=nullptr; input->InputEvents->ForEach(&cur);)
+        for (ListNode<SDL_Event*> *cur=nullptr; this->InputEvents->ForEach(&cur);)
         {
             SDL_Event* event = (SDL_Event*)(cur->data);
             if (event->type == SDL_KEYUP && event->key.keysym.sym == key)

@@ -46,14 +46,14 @@ namespace Particule::Essential
     void Texture::Draw(int x, int y)
     {
         SDL_Rect rect = {x, y, width, height};
-        SDL_RenderCopy(window->renderer, texture, nullptr, &rect);
+        SDL_RenderCopy(Window::DrawingWindow->renderer, texture, nullptr, &rect);
     }
 
     void Texture::DrawSub(int x, int y, Rect rect)
     {
         SDL_Rect dst = {x, y, rect.w, rect.h};
         SDL_Rect src = {rect.x, rect.y, rect.w, rect.h};
-        SDL_RenderCopy(window->renderer, texture, &src, &dst);
+        SDL_RenderCopy(Window::DrawingWindow->renderer, texture, &src, &dst);
     }
 
     void Texture::DrawSize(int x, int y, int w, int h)
@@ -65,7 +65,7 @@ namespace Particule::Essential
         else
         {
             SDL_Rect rect = {x, y, w, h};
-            SDL_RenderCopy(window->renderer, texture, nullptr, &rect);
+            SDL_RenderCopy(Window::DrawingWindow->renderer, texture, nullptr, &rect);
         }
     }
 
@@ -97,7 +97,7 @@ namespace Particule::Essential
         }
         SDL_Rect dst = {x, y, w, h};
         SDL_Rect src = {rect.x, rect.y, rect.w, rect.h};
-        SDL_RenderCopyEx(window->renderer, texture, &src, &dst, 0, nullptr, flip);
+        SDL_RenderCopyEx(Window::DrawingWindow->renderer, texture, &src, &dst, 0, nullptr, flip);
     }
 
     void Texture::DrawColor(int x, int y, Color color)
@@ -183,7 +183,7 @@ namespace Particule::Essential
         SDL_Surface* surface = IMG_Load(path);
         if (surface == nullptr)
             error_exit(1, "Can't load texture %s\n", path);
-        texture->texture = SDL_CreateTextureFromSurface(window->renderer, surface);
+        texture->texture = SDL_CreateTextureFromSurface(Window::DrawingWindow->renderer, surface);
         if (texture->texture == nullptr)
             error_exit(1, "Can't create texture from surface %s\n", path);
         texture->width = surface->w;
@@ -196,7 +196,7 @@ namespace Particule::Essential
     Texture* Texture::Create(int width, int height)
     {
         Texture* texture = new Texture();
-        texture->texture = SDL_CreateTexture(window->renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_TARGET, width, height);
+        texture->texture = SDL_CreateTexture(Window::DrawingWindow->renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_TARGET, width, height);
         if (texture->texture == nullptr)
             error_exit(1, "Can't create texture\n");
         texture->width = width;

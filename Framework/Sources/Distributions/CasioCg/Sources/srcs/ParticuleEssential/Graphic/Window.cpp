@@ -8,26 +8,42 @@
 
 namespace Particule::Essential
 {
-    Window* window = nullptr;
+    Window* Window::DrawingWindow = nullptr;
+    Window* Window::MainWindow = nullptr;
     //Calls the constructor with the default values.
     Window::Window()
     {
+        if (Window::MainWindow == nullptr)
+        {
+            Window::DrawingWindow = this;
+            Window::MainWindow = this;
+        }
         this->width = 396;
         this->height = 224;
         runnig = true;
+        input = new InputManager(this);
     }
 
     Window::Window(int width, int height, const char* title)
     {
+        if (Window::MainWindow == nullptr)
+        {
+            Window::DrawingWindow = this;
+            Window::MainWindow = this;
+        }
         (void)width;
         (void)height;
         (void)title;
         this->width = 396;
         this->height = 224;
         runnig = true;
+        input = new InputManager(this);
     }
 
-    Window::~Window(){}
+    Window::~Window(){
+        if (runnig)
+            this->Destroy();
+    }
 
     void Window::Update()
     {
@@ -49,9 +65,14 @@ namespace Particule::Essential
         return this->runnig;
     }
 
-    void Window::Close()
+    void Window::Destroy()
     {
         runnig = false;
+        delete input;
+        if (DrawingWindow == this)
+            DrawingWindow = nullptr;
+        if (MainWindow == this)
+            MainWindow = nullptr;
     }
 
     int Window::GetWidth()

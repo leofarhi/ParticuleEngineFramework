@@ -33,6 +33,8 @@ namespace Particule::Essential
 
     void ParticuleEssentialInit()
     {
+        Window::DrawingWindow = nullptr;
+        Window::MainWindow = nullptr;
         InitBasic();
         // Initializes the SDL.
         if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -45,21 +47,18 @@ namespace Particule::Essential
         // Initializes the font library.
         if (TTF_Init() == -1)
             error_exit(EXIT_FAILURE, "error TTF_Init %s", TTF_GetError());
-
-        input = new InputManager();
         new VirtualResources();
     }
 
     void ParticuleEssentialQuit()
     {
-        if (window != nullptr)
-            delete window;
+        if (Window::MainWindow != nullptr)
+            delete Window::MainWindow;
         // Quits the font library.
         TTF_Quit();
         // Quits the image library.
         IMG_Quit();
         SDL_Quit();
-        delete input;
         delete VirtualResources::Instance;
     }
 }

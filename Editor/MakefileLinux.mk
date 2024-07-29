@@ -7,7 +7,7 @@ LDLIBS = -lm
 
 OUTPUT = bin
 EXEC = $(OUTPUT)/ParticuleEditor
-Scrs_dir = srcs libs/DearImGui
+Scrs_dir = srcs
 
 # Find all .cpp files in the src directory
 SRCS = $(shell find $(Scrs_dir) -name "*.cpp")
@@ -28,9 +28,6 @@ LDLIBS += `pkg-config --libs sdl2 SDL2_image SDL2_ttf`
 
 CFLAGS += -I ./includes
 LDLIBS += -L ./includes
-
-CFLAGS += -I ./libs
-LDLIBS += -L ./libs
 
 # Default target
 #all: $(EXEC)

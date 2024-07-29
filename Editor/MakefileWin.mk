@@ -9,7 +9,7 @@ OUTPUT = bin
 
 EXEC = $(OUTPUT)/ParticuleEditor.exe
 
-Scrs_dir = srcs libs/DearImGui
+Scrs_dir = srcs
 
 SRCS = $(shell find $(Scrs_dir) -name "*.cpp")
 
@@ -24,9 +24,6 @@ LDLIBS += -L${LIBRARY_PATH}/lib/SDL2 -lmingw32 -lSDL2 -lgdi32 -luser32 -lole32 -
 
 CFLAGS += -I ./includes
 LDLIBS += -L ./includes
-
-CFLAGS += -I ./libs
-LDLIBS += -L ./libs
 
 all: $(EXEC)
 

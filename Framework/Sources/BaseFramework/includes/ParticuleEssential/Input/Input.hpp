@@ -5,31 +5,39 @@
 
 namespace Particule::Essential
 {
+    class InputManager;
+
     class Mouse
     {
+    private:
+        InputManager* input;
     public:
-        Mouse();
+        Mouse(InputManager* input);
         ~Mouse();
         Vector2Int position;
-        static bool IsButtonPressed(int button);
-        static bool IsButtonDown(int button);
-        static bool IsButtonUp(int button);
+        bool IsButtonPressed(int button);
+        bool IsButtonDown(int button);
+        bool IsButtonUp(int button);
     };
+
+    class Window;
 
     class InputManager
     {
+    private:
+        Window* window;
     public:
-        static Mouse* mouse;
-        InputManager();
+        InputManager(Window* window);
         ~InputManager();
-        void Update();
-        static bool IsKeyPressed(int key);
-        static bool IsKeyDown(int key);
-        static bool IsKeyUp(int key);
-        static Vector2 GetAnalogStick(int stick);
-    };
 
-    extern InputManager* input;
+        Mouse* mouse;
+
+        void Update();
+        bool IsKeyPressed(int key);
+        bool IsKeyDown(int key);
+        bool IsKeyUp(int key);
+        Vector2 GetAnalogStick(int stick);
+    };
 }
 
 #endif // INPUT_HPP

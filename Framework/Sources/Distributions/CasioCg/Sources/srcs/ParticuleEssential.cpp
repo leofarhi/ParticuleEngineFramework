@@ -13,16 +13,16 @@ namespace Particule::Essential
 {
     void ParticuleEssentialInit()
     {
+        Window::DrawingWindow = nullptr;
+        Window::MainWindow = nullptr;
         InitBasic();
-        input = new InputManager();
         new VirtualResources();
     }
 
     void ParticuleEssentialQuit()
     {
-        if (window != nullptr)
-            delete window;
-        delete input;
+        if (Window::MainWindow != nullptr)
+            delete Window::MainWindow;
         delete VirtualResources::Instance;
     }
 }

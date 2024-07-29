@@ -19,7 +19,7 @@ if platform == "win32":
 curent_dir = os.path.dirname(os.path.realpath(__file__))
 
 def MatchDistribution(distribution):
-    lst = os.listdir("Distributions")
+    lst = os.listdir(os.path.join("Sources","Distributions"))
     for item in lst:
         if item.lower() == distribution.lower():
             return item

@@ -6,10 +6,9 @@
 #include <unistd.h>
 namespace Particule::Essential
 {
-    InputManager* input = nullptr;
-
-    Mouse::Mouse()
+    Mouse::Mouse(InputManager* input)
     {
+        (void)input;
         position = {0, 0};
     }
 
@@ -19,20 +18,25 @@ namespace Particule::Essential
 
     bool Mouse::IsPressed(int button)
     {
-        return input->IsKeyPressed(button);
+        return InputManager::Instance->IsKeyPressed(button);
     }
 
     bool Mouse::IsDown(int button)
     {
-        return input->IsKeyDown(button);
+        return InputManager::Instance->IsKeyDown(button);
     }
 
     bool Mouse::IsUp(int button)
     {
-        return input->IsKeyUp(button);
+        return InputManager::Instance->IsKeyUp(button);
     }
 
-    InputManager::InputManager(){}
+    InputManager* InputManager::Instance = nullptr;
+
+    InputManager::InputManager(Window* window){
+        (void)window;
+        InputManager::Instance = this;
+    }
 
     InputManager::~InputManager(){}
 
@@ -57,7 +61,7 @@ namespace Particule::Essential
 
     bool InputManager::IsKeyDown(int key)
     {
-        for (ListNode<key_event_t> *cur=nullptr; input->GetInputEvents()->ForEach(&cur);)
+        for (ListNode<key_event_t> *cur=nullptr; this->GetInputEvents()->ForEach(&cur);)
         {
             key_event_t event = cur->data;
             if (event.type == KEYEV_DOWN && event.key == key)
@@ -68,7 +72,7 @@ namespace Particule::Essential
 
     bool InputManager::IsKeyUp(int key)
     {
-        for (ListNode<key_event_t> *cur=nullptr; input->GetInputEvents()->ForEach(&cur);)
+        for (ListNode<key_event_t> *cur=nullptr; this->GetInputEvents()->ForEach(&cur);)
         {
             key_event_t event = cur->data;
             if (event.type == KEYEV_UP && event.key == key)

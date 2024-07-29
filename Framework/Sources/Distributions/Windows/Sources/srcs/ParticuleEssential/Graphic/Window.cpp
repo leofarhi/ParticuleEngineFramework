@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 
 void error_exit(int exitcode, const char* format, ...)
 {
@@ -17,10 +16,17 @@ void error_exit(int exitcode, const char* format, ...)
 
 namespace Particule::Essential
 {
-    Window* window = nullptr;
+    Window* Window::DrawingWindow = nullptr;
+    Window* Window::MainWindow = nullptr;
     //Calls the constructor with the default values.
     Window::Window()
     {
+        if (Window::MainWindow == nullptr)
+        {
+            Window::DrawingWindow = this;
+            Window::MainWindow = this;
+        }
+        this->input = new InputManager(this);
         this->width = 800;
         this->height = 600;
         this->window = SDL_CreateWindow("Engine", 50, 50, this->width, this->height, SDL_WINDOW_SHOWN);// | SDL_WINDOW_RESIZABLE);
@@ -37,6 +43,12 @@ namespace Particule::Essential
 
     Window::Window(int width, int height, const char* title)
     {
+        if (Window::MainWindow == nullptr)
+        {
+            Window::DrawingWindow = this;
+            Window::MainWindow = this;
+        }
+        this->input = new InputManager(this);
         // Creates a window.
         this->window = SDL_CreateWindow(title, 50, 50, width, height, SDL_WINDOW_SHOWN);// | SDL_WINDOW_RESIZABLE);
         if (this->window == NULL)
@@ -57,9 +69,8 @@ namespace Particule::Essential
 
     Window::~Window()
     {
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(window);
-        SDL_Quit();
+        if (runnig)
+            this->Destroy();
     }
 
     void Window::Update()
@@ -84,9 +95,16 @@ namespace Particule::Essential
         return this->runnig;
     }
 
-    void Window::Close()
+    void Window::Destroy()
     {
         runnig = false;
+        delete input;
+        if (DrawingWindow == this)
+            DrawingWindow = nullptr;
+        if (MainWindow == this)
+            MainWindow = nullptr;
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
     }
 
     int Window::GetWidth()

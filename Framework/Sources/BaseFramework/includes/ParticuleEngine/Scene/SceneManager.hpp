@@ -25,7 +25,7 @@ namespace Particule::SceneManagement
 
         void CallAllComponents(void (Component::*method)(), bool includeInactive);
 
-        int MainLoop();
+        void MainLoop();
     };
 
     extern SceneManager *sceneManager;
