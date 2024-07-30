@@ -213,3 +213,4 @@ Framework/.vscode/settings.json
 /Editor/bin
 /Framework/Distributions/CasioCg/Demos/Demo1/bin
 Framework/.vscode/settings.json
+Framework/Tests/*
