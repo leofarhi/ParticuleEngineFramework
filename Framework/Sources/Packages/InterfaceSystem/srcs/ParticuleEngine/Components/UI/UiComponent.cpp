@@ -24,6 +24,10 @@ namespace Particule::Core::UI
         {
             GameObject *child = cur->data->gameObject;
             List<UiComponent *> uiComponents = child->GetComponents<UiComponent>();
+            for (ListNode<UiComponent *> *cur2 = nullptr; uiComponents.ForEach(&cur2);)
+            {
+                cur2->data->OnRenderUI(canvas, cur2->data->rectTransform);
+            }
         }
     }
 }

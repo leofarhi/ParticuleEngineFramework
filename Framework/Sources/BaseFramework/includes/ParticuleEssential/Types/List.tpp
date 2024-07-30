@@ -240,3 +240,14 @@ template <typename T>
 const T& List<T>::Last() const {
     return tail->data;
 }
+
+template <typename T>
+T* List<T>::ToArray() {
+    T* array = new T[size];
+    ListNode<T>* current = head;
+    for (size_t i = 0; i < size; i++) {
+        array[i] = current->data;
+        current = current->next;
+    }
+    return array;
+}

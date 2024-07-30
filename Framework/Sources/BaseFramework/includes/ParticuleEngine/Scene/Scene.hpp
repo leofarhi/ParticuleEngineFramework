@@ -17,7 +17,7 @@ namespace Particule::SceneManagement
 
         Scene(String name);
         ~Scene();
-        void AddGameObject(GameObject *gameObject);
+        GameObject* AddGameObject(GameObject *gameObject);
         void RemoveGameObject(GameObject *gameObject);
         GameObject* FindGameObject(String name);
         

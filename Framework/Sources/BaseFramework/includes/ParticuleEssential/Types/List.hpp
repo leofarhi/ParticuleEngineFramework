@@ -49,6 +49,8 @@ public:
     T& Last();
     const T& Last() const;
 
+    T* ToArray();
+
     // Iterator class
     class Iterator {
     private:

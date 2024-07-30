@@ -13,11 +13,13 @@ namespace Particule::SceneManagement
         {
             delete cur->data;
         }
+        this->gameObjects.Clear();
     }
 
-    void Scene::AddGameObject(GameObject *gameObject)
+    GameObject* Scene::AddGameObject(GameObject *gameObject)
     {
         gameObjects.Append(gameObject);
+        return gameObject;
     }
 
     void Scene::RemoveGameObject(GameObject *gameObject)

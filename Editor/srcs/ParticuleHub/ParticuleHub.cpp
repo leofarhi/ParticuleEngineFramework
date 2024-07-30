@@ -20,11 +20,9 @@ Scene* SceneHub()
 {
     printf("SceneHub\n");
     Scene* scene = new Scene("Hub");
-    GameObject* cam_go = new GameObject(scene, "Camera");
-    scene->AddGameObject(cam_go);
+    GameObject* cam_go = scene->AddGameObject(new GameObject(scene, "Camera"));
     Camera* cam = cam_go->AddComponent<Camera>();
-    GameObject *canvas_go = new GameObject(scene, "Canvas");
-    scene->AddGameObject(canvas_go);
+    GameObject *canvas_go = scene->AddGameObject(new GameObject(scene, "Canvas"));
     Canvas* canvas = canvas_go->AddComponent<Canvas>();
 
     (void)cam;
@@ -39,17 +37,11 @@ int main() {
     Window* window = new Window();//800, 600, "Demo");
     printf("Hello World\n");
 
-    window->Clear();
-    window->input->Update();
-    window->Update();
-
     SceneManager::sceneManager->AddScene(&SceneHub);
     SceneManager::sceneManager->LoadScene(0);
-    //printf("objs: %u\n",SceneManager::sceneManager->activeScene()->gameObjects.Size());
     while(true){
         window->Clear();
         window->input->Update();
-        //DrawRectFill(5, 5, 80, 80, Color(255,0,0,255));
         SceneManager::sceneManager->MainLoop();
         window->Update();
     }
