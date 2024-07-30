@@ -23,15 +23,14 @@ namespace Particule::Core::UI
 
         UiComponent(GameObject *gameObject);
         ~UiComponent() override;
-        virtual const String __class__() { return "UiComponent";}
 
         virtual void OnRenderUI(Canvas* canvas, RectTransform rectTransform) {
             (void)canvas;
             (void)rectTransform;
         };
 
-        /*static void CallOnRenderUI_InChildren(GameObject *gameObject,
-                        Canvas* canvas, RectTransform rectTransform);*/
+        static void ChildrenRenderUI(GameObject *gameObject,
+                        Canvas* canvas, RectTransform rectTransform);
     };
 }
 

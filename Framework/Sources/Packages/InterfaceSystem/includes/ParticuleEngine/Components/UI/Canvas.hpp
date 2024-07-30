@@ -13,7 +13,6 @@ namespace Particule::Core::UI
 
         Canvas(GameObject *gameObject);
         ~Canvas() override;
-        virtual const String __class__() { return "Canvas";}
         
         void OnRenderObject() override;
     };

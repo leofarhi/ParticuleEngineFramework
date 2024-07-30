@@ -13,7 +13,6 @@ namespace Particule::Core::UI
         
         Button(GameObject *gameObject);
         ~Button() override;
-        virtual const String __class__() { return "Button";}
     };
 }
 

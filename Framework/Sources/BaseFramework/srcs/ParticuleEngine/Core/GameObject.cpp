@@ -82,18 +82,6 @@ namespace Particule::Core
         this->m_activeSelf = value;
     }
 
-    Component *GameObject::GetComponent(String className)
-    {
-        for (ListNode<Component *> *cur=nullptr; this->components.ForEach(&cur);)
-        {
-            if (cur->data->__class__() == className)
-            {
-                return cur->data;
-            }
-        }
-        return nullptr;
-    }
-
     void GameObject::CallComponent(void (Component::*method)())
     {
         for (ListNode<Component *> *cur=nullptr; this->components.ForEach(&cur);)

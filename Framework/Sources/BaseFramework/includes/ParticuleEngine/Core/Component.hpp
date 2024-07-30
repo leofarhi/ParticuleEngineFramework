@@ -13,7 +13,6 @@ namespace Particule::Core
         Component(GameObject *gameObject);
 
         virtual ~Component() = default;
-        virtual const String __class__() { return "Component";}
         Transform *transform();
 
         virtual void Awake() {};
@@ -36,6 +35,31 @@ namespace Particule::Core
         T_Component *component = new T_Component(this, args...);
         components.Append(component);
         return component;
+    }
+
+    template <typename T_Component>
+    T_Component *GameObject::GetComponent()
+    {
+        for (ListNode<Component *> *cur = nullptr; components.ForEach(&cur);)
+        {
+            T_Component *component = dynamic_cast<T_Component *>(cur->data);
+            if (component != nullptr)
+                return component;
+        }
+        return nullptr;
+    }
+
+    template <typename T_Component>
+    List<T_Component *> GameObject::GetComponents()
+    {
+        List<T_Component *> list;
+        for (ListNode<Component *> *cur = nullptr; components.ForEach(&cur);)
+        {
+            T_Component *component = dynamic_cast<T_Component *>(cur->data);
+            if (component != nullptr)
+                list.Append(component);
+        }
+        return list;
     }
 }
 

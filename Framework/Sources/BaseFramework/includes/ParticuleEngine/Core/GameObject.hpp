@@ -34,7 +34,6 @@ namespace Particule::Core
         GameObject(Scene *scene);
         GameObject(Scene *scene, String name);
         ~GameObject() override;
-        virtual const String __class__() { return "GameObject";}
 
         bool activeInHierarchy();
         Transform *transform();
@@ -43,7 +42,10 @@ namespace Particule::Core
 
         template <typename T_Component, typename... Args>
         T_Component *AddComponent(Args... args);
-        Component *GetComponent(String className);
+        template <typename T_Component>
+        T_Component *GetComponent();
+        template <typename T_Component>
+        List<T_Component *> GetComponents();
 
         void CallComponent(void (Component::*method)());
     };

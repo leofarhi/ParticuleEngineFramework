@@ -16,7 +16,6 @@ namespace Particule::Core::UI
 
         Image(GameObject *gameObject);
         ~Image() override;
-        virtual const String __class__() { return "Image";}
     };
 }
 

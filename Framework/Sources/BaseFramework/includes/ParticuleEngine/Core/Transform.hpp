@@ -23,7 +23,6 @@ namespace Particule::Core
         Transform(GameObject *gameObject);
         Transform(GameObject *gameObject, Vector3 position, Vector3 rotation, Vector3 scale);
         ~Transform() = default;
-        virtual const String __class__() { return "Transform";}
         
         void SetParent(Transform *parent);
         Transform *parent();

@@ -26,6 +26,7 @@ Scene* SceneHub()
     GameObject *canvas_go = new GameObject(scene, "Canvas");
     scene->AddGameObject(canvas_go);
     Canvas* canvas = canvas_go->AddComponent<Canvas>();
+
     (void)cam;
     (void)canvas;
     return scene;

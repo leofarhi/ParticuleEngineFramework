@@ -10,7 +10,6 @@ namespace Particule::Core::UI
     public:
         Mask(GameObject *gameObject);
         ~Mask() override;
-        virtual const String __class__() { return "Mask";}
     };
 }
 

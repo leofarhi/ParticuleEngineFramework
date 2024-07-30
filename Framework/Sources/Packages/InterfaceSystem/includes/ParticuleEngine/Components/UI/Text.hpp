@@ -15,7 +15,6 @@ namespace Particule::Core::UI
 
         Text(GameObject *gameObject);
         ~Text() override;
-        virtual const String __class__() { return "Text";}
     };
 }
 

@@ -14,7 +14,7 @@ namespace Particule::Core::UI
     {
     }
 
-    /*void UiComponent::CallOnRenderUI_InChildren(GameObject *gameObject,
+    void UiComponent::ChildrenRenderUI(GameObject *gameObject,
                                 Canvas* canvas, RectTransform rectTransform)
     {
         (void)canvas;
@@ -25,5 +25,5 @@ namespace Particule::Core::UI
             GameObject *child = cur->data->gameObject;
             //UiComponent *uiComponent = child->GetComponent<UiComponent>();
         }
-    }*/
+    }
 }

@@ -9,7 +9,6 @@ namespace Particule::Core
     public:
         Object() = default;
         virtual ~Object() = default;
-        virtual const String __class__() { return "Object";}
     };
 }
 

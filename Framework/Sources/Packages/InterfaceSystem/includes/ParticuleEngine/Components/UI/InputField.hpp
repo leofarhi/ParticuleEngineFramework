@@ -12,7 +12,6 @@ namespace Particule::Core::UI
 
         InputField(GameObject *gameObject);
         ~InputField() override;
-        virtual const String __class__() { return "InputField";}
     };
 }
 
