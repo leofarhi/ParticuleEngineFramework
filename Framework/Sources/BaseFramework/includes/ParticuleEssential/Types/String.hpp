@@ -17,6 +17,10 @@ public:
     String &operator=(const char *data);
     String &operator+=(const String &other);
     String &operator+=(const char *data);
+    String &operator+=(const int number);
+    String operator+(const String &other) const;
+    String operator+(const char *data) const;
+    String operator+(const int number) const;
     bool operator==(const String &other) const;
     bool operator==(const char *data) const;
     bool operator!=(const String &other) const;

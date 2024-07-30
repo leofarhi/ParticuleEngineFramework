@@ -1,6 +1,7 @@
 #ifndef LIST_HPP
 #define LIST_HPP
 #include <cstddef>
+#include <initializer_list>
 
 template <typename T>
 struct ListNode
@@ -18,6 +19,12 @@ private:
     size_t size;
 public:
     List();
+    //Operator cast  = {...,...}
+    List(std::initializer_list<T> list) : List() {
+        for (const T& item : list) {
+            Append(item);
+        }
+    }
     ~List();
 
     void Append(const T& data);
@@ -41,8 +48,47 @@ public:
     const T& First() const;
     T& Last();
     const T& Last() const;
+
+    // Iterator class
+    class Iterator {
+    private:
+        ListNode<T>* current;
+
+    public:
+        Iterator(ListNode<T>* node) : current(node) {}
+
+        T& operator*() const {
+            return current->data;
+        }
+
+        Iterator& operator++() {
+            current = current->next;
+            return *this;
+        }
+
+        bool operator!=(const Iterator& other) const {
+            return current != other.current;
+        }
+    };
+
+    Iterator begin() const {
+        return Iterator(head);
+    }
+
+    Iterator end() const {
+        return Iterator(nullptr);
+    }   
 };
 
 #include "List.tpp"
+
+/*
+Example:
+List<int> list = {1, 2, 3, 4, 5};
+
+for (auto& item : list) {
+    printf("%d\n", item);
+}
+*/
 
 #endif // LIST_HPP

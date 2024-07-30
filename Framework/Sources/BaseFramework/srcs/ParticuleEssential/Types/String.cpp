@@ -1,4 +1,5 @@
 #include "../../../includes/ParticuleEssential/Types/String.hpp"
+#include <cstdio>
 
 String::String()
 {
@@ -68,6 +69,41 @@ String &String::operator+=(const char *data)
     this->data = newData;
     length += otherLength;
     return *this;
+}
+
+String &String::operator+=(const int number)
+{
+    char buffer[20];
+    sprintf(buffer, "%d", number);
+    return *this += buffer;
+}
+
+String String::operator+(const String &other) const
+{
+    String result;
+    result.length = length + other.length;
+    result.data = new char[result.length + 1];
+    strcpy(result.data, data);
+    strcpy(result.data + length, other.data);
+    return result;
+}
+
+String String::operator+(const char *data) const
+{
+    size_t otherLength = strlen(data);
+    String result;
+    result.length = length + otherLength;
+    result.data = new char[result.length + 1];
+    strcpy(result.data, this->data);
+    strcpy(result.data + length, data);
+    return result;
+}
+
+String String::operator+(const int number) const
+{
+    char buffer[20];
+    sprintf(buffer, "%d", number);
+    return *this + buffer;
 }
 
 bool String::operator==(const String &other) const
