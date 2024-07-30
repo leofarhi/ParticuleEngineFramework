@@ -26,7 +26,7 @@ args = sys.argv[1:]
 if len(args) < 1:
     print_error()
 
-cmd_available = ["install", "build", "demo"]
+cmd_available = ["install", "build"]
 
 command = args[0].lower()
 if command == "help":
