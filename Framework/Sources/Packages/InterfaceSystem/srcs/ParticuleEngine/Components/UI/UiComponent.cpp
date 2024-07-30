@@ -23,7 +23,7 @@ namespace Particule::Core::UI
         for (ListNode<Transform *> *cur = nullptr; gameObject->transform()->children().ForEach(&cur);)
         {
             GameObject *child = cur->data->gameObject;
-            //UiComponent *uiComponent = child->GetComponent<UiComponent>();
+            List<UiComponent *> uiComponents = child->GetComponents<UiComponent>();
         }
     }
 }
