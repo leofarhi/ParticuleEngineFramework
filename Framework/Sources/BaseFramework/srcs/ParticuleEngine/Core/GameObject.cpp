@@ -25,6 +25,14 @@ namespace Particule::Core
         this->m_activeSelf = true;
     }
 
+    GameObject::GameObject(Scene *scene, String name)
+    {
+        this->name = name;
+        this->m_transform = new Transform(this);
+        this->scene = scene;
+        this->m_activeSelf = true;
+    }
+
     GameObject::~GameObject()
     {
         for (ListNode<Component *> *cur=nullptr; this->components.ForEach(&cur);)

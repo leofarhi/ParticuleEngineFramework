@@ -11,6 +11,7 @@ namespace Particule::Core
     {
     public:
         static Camera *mainCamera;
+        static Camera *renderCamera;
 
         Camera(GameObject *gameObject);
         ~Camera() override;

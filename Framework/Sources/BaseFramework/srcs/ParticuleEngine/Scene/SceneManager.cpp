@@ -2,6 +2,7 @@
 #include <ParticuleEngine/Core/GameObject.hpp>
 #include <ParticuleEngine/Core/Component.hpp>
 #include <ParticuleEssential/Graphic/Window.hpp>
+#include <stdio.h>
 
 namespace Particule::SceneManagement
 {
@@ -28,6 +29,11 @@ namespace Particule::SceneManagement
 
     void SceneManager::LoadScene(int index)
     {
+        if (index < 0 || index >= availableScenes.Size())
+        {
+            printf("Scene index out of range (%d)\n", index);
+            return;
+        }
         Scene *scene = availableScenes[index]();
         loadedScenes.Append(scene);
         scene->CallAllComponents(&Component::Awake, true);

@@ -32,6 +32,7 @@ namespace Particule::Core
 
         GameObject();
         GameObject(Scene *scene);
+        GameObject(Scene *scene, String name);
         ~GameObject() override;
         virtual const String __class__() { return "GameObject";}
 

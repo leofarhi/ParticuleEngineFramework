@@ -1,8 +1,13 @@
 #include <ParticuleEngine/Components/Core/Camera.hpp>
+#include <ParticuleEssential/ParticuleEssential.hpp>
+#include <ParticuleEngine/ParticuleEngine.hpp>
+
 
 namespace Particule::Core
 {
+    using namespace Particule::SceneManagement;
     Camera *Camera::mainCamera = nullptr;
+    Camera *Camera::renderCamera = nullptr;
 
     Camera::Camera(GameObject *gameObject) : Component(gameObject)
     {
@@ -19,6 +24,8 @@ namespace Particule::Core
     {
         if (Camera::mainCamera != this)
             return;
-        //TODO: Implement OnRenderImage
+        Camera::renderCamera = this;
+        SceneManager::sceneManager->CallAllComponents(&Component::OnRenderObject,false);
+        Camera::renderCamera = nullptr;
     }
 }
