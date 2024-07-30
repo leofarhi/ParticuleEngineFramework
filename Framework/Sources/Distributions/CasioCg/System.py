@@ -27,6 +27,16 @@ def process(cmdLinux,cmdWSL,cwd=None):
     else:
         subprocess.Popen(cmdLinux, shell=True, cwd=cwd).wait()
 
+def valProcess(cmdLinux,cmdWSL,cwd=None):
+    if cmdWSL == None:
+        cmdWSL = cmdLinux
+    if wsl:
+        cmd = f'wsl -e bash -lic "{cmdWSL}"'
+        p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, cwd=cwd)
+    else:
+        p = subprocess.Popen(cmdLinux, shell=True, stdout=subprocess.PIPE, cwd=cwd)
+    return p.stdout.read().decode().strip()
+
 def getWslPath(path):
     cmd = f'wsl -e bash -lic "pwd"'
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,cwd=path)
@@ -58,6 +68,15 @@ def install(base_path, build_path, output_path, args):
     process(cmd,cmd, cwd=curent_dir)
     print("\033[92mAll the dependencies have been installed.\033[0m")
 
+def update(base_path, build_path, output_path, args):
+    cmd = "pwd"
+    pwd = valProcess(cmd,cmd, cwd=curent_dir)
+    cmd = "fxsdk path lib"
+    path_lib = valProcess(cmd,cmd, cwd=curent_dir) + "/libsupc++.a"
+    #shutil.copy(path_lib, os.path.join(curent_dir, "libsupc++.a"))
+    cmd = "cp " + path_lib + " " + pwd+"/libsupc++.a"
+    process(cmd,cmd, cwd=curent_dir)
+
 def build_packages(base_path, build_path, output_path, packages):
     package_dir = os.path.join(os.path.dirname(os.path.realpath(base_path)),"Packages")
     dispo = [i.lower() for i in os.listdir(package_dir)]
@@ -80,6 +99,12 @@ def build(base_path, build_path, output_path, args):
             packages = [x.strip() for x in packages]
         else:
             print("\033[91mInvalid packages format.\033[0m")
+            exit(1)
+    #check if libsupc++.a exist
+    if not os.path.exists(os.path.join(curent_dir, "libsupc++.a")):
+        update(base_path, build_path, output_path, args)
+        if not os.path.exists(os.path.join(curent_dir, "libsupc++.a")):
+            print("\033[91mlibsupc++.a not found.\033[0m")
             exit(1)
     print("Building...")
     #clean the build folder

@@ -44,7 +44,7 @@ int main() {
 
     SceneManager::sceneManager->AddScene(&SceneHub);
     SceneManager::sceneManager->LoadScene(0);
-    printf("objs: %u\n",SceneManager::sceneManager->activeScene()->gameObjects.Size());
+    //printf("objs: %u\n",SceneManager::sceneManager->activeScene()->gameObjects.Size());
     while(true){
         window->Clear();
         window->input->Update();

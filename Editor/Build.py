@@ -33,7 +33,7 @@ def process(cmd,cwd=None):
 
 if distribution == "Windows":
     print("Building Windows Framework...")
-    #process("python Framework.py build Windows",cwd=framework_path)
+    #process("python Framework.py build Windows \"[InterfaceSystem]\"",cwd=framework_path)
     #delete the old build folder
     shutil.rmtree(os.path.join(dir_path, "bin"), ignore_errors=True)
     os.makedirs(os.path.join(dir_path, "bin"), exist_ok=True)
@@ -47,7 +47,7 @@ if distribution == "Windows":
 
 elif distribution == "Linux":
     print("Building Linux Framework...")
-    process("python Framework.py build Linux",cwd=framework_path)
+    process("python Framework.py build Linux \"[InterfaceSystem]\"",cwd=framework_path)
     #delete the old build folder
     shutil.rmtree(os.path.join(dir_path, "bin"), ignore_errors=True)
     os.makedirs(os.path.join(dir_path, "bin"), exist_ok=True)
