@@ -69,3 +69,7 @@ elif distribution == "Linux":
             subprocess.Popen(cmd, shell=True, cwd=cwd).wait()
     process("make -f MakefileLinux.mk clean",cwd=dir_path)
     process("make -f MakefileLinux.mk",cwd=dir_path)
+    if wsl:
+        subprocess.Popen('wsl "./ParticuleEditor"', shell=True, cwd=bin_path).wait()
+    else:
+        process("./ParticuleEditor",cwd=bin_path)
