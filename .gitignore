@@ -214,3 +214,4 @@ Framework/.vscode/settings.json
 /Framework/Distributions/CasioCg/Demos/Demo1/bin
 Framework/.vscode/settings.json
 Framework/Tests/*
+Framework/ProjectBuilder/tests/*
