@@ -7,7 +7,7 @@ namespace Particule::Essential
 {
     InternalFont::InternalFont()
     {
-        char* path = nullptr;
+        path = nullptr;
         font = nullptr;
     }
 

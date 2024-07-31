@@ -1,6 +1,6 @@
 CC = g++
 CPPFLAGS = -MMD
-CFLAGS = #-Wall -Wextra #-fsanitize=address
+CFLAGS = -Wall -Wextra #-fsanitize=address
 LDFLAGS = -fsanitize=address
 LDLIBS = -lm
 OUTPUT = .

@@ -63,6 +63,9 @@ def install(base_path, build_path, output_path, args):
     print("\033[92mAll the dependencies have been installed.\033[0m")
     return
 
+def update(base_path, build_path, output_path, args):
+    pass
+
 def build_packages(base_path, build_path, output_path, packages):
     package_dir = os.path.join(os.path.dirname(os.path.realpath(base_path)),"Packages")
     dispo = [i.lower() for i in os.listdir(package_dir)]

@@ -12,6 +12,8 @@ public:
 
     Vector3();
     Vector3(float x, float y, float z);
+    // Constructeur de copie explicite
+    Vector3(const Vector3 &other);
     ~Vector3();
 
     Vector3 &operator=(const Vector3 &other);

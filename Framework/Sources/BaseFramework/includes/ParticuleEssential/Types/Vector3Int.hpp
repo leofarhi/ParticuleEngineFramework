@@ -12,6 +12,8 @@ public:
 
     Vector3Int();
     Vector3Int(int x, int y, int z);
+    // Constructeur de copie explicite
+    Vector3Int(const Vector3Int &other);
     ~Vector3Int();
 
     Vector3Int &operator=(const Vector3Int &other);

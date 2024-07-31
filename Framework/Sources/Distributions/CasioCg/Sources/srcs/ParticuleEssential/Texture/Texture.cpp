@@ -305,11 +305,17 @@ namespace Particule::Essential
     void Texture::WritePixel(int x, int y, Color color)
     {
         //TODO
+        (void)x;
+        (void)y;
+        (void)color;
     }
 
     void Texture::WritePixelInt(int x, int y, long long color)
     {
         //TODO
+        (void)x;
+        (void)y;
+        (void)color;
     }
 
     Color Texture::ReadPixel(int x, int y)
@@ -333,17 +339,24 @@ namespace Particule::Essential
     long long Texture::ReadPixelInt(int x, int y)
     {
         //TODO
+        (void)x;
+        (void)y;
         return 0;
     }
 
     void Texture::SetPixel(int x, int y, Color color)
     {
         //TODO
+        (void)x;
+        (void)y;
+        (void)color;
     }
 
     Color Texture::GetPixel(int x, int y)
     {
         //TODO
+        (void)x;
+        (void)y;
         return COLOR_WHITE;
     }
 
@@ -367,12 +380,16 @@ namespace Particule::Essential
     Texture* Texture::Create(int width, int height)
     {
         //TODO
+        (void)width;
+        (void)height;
         return nullptr;
     }
 
     Sprite* Texture::CreateSprite(Texture* texture, Rect rect)
     {
         //TODO
+        (void)texture;
+        (void)rect;
         return nullptr;
     }
 

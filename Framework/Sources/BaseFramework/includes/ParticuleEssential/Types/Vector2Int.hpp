@@ -11,6 +11,8 @@ public:
 
     Vector2Int();
     Vector2Int(int x, int y);
+    // Constructeur de copie explicite
+    Vector2Int(const Vector2Int &other);
     ~Vector2Int();
 
     Vector2Int &operator=(const Vector2Int &other);

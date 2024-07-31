@@ -5,7 +5,7 @@ project(Particule)
 include(GenerateG1A)
 include(GenerateG3A)
 include(Fxconv)
-find_package(Gint 2.1 REQUIRED)
+find_package(Gint 2.11 REQUIRED)
 
 # Définition des variables
 set(CFLAGS -I ./includes)
@@ -24,7 +24,7 @@ include_directories(
 )
 
 # Configuration des options de compilation et de liaison
-add_compile_options(${CPPFLAGS} ${CFLAGS})
+add_compile_options(${CPPFLAGS} ${CFLAGS} -Wall -Wextra -Os -std=c++20 -fno-freestanding)
 link_libraries(${LDFLAGS} ${LDLIBS} Gint::Gint ${CMAKE_CURRENT_SOURCE_DIR}/lib/libsupc++.a)
 
 # Générer les fichiers objets

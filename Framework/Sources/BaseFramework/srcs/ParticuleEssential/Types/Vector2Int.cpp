@@ -14,6 +14,12 @@ Vector2Int::Vector2Int(int x, int y)
     this->y = y;
 }
 
+Vector2Int::Vector2Int(const Vector2Int &other)
+{
+    x = other.x;
+    y = other.y;
+}
+
 Vector2Int::~Vector2Int()
 {
 }

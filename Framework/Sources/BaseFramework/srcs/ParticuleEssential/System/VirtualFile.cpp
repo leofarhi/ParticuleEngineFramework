@@ -27,11 +27,10 @@ namespace Particule::Essential
 
     VirtualFile* VirtualResources::GetFile(String path)
     {
-        for (int i = 0; i < files.Size(); i++)
-        {
-            if (files[i].Path() == path)
+        for (auto& item : files) {
+            if (item.Path() == path)
             {
-                return &files[i];
+                return &item;
             }
         }
         return nullptr;
@@ -39,25 +38,28 @@ namespace Particule::Essential
 
     void VirtualResources::RemoveFile(String path)
     {
-        for (int i = 0; i < files.Size(); i++)
-        {
-            if (files[i].Path() == path)
+        size_t i = 0;
+        for (auto& item : files) {
+            if (item.Path() == path)
             {
                 files.RemoveAt(i);
                 return;
             }
+            i++;
         }
     }
 
     void VirtualResources::RemoveFile(VirtualFile* file)
     {
-        for (int i = 0; i < files.Size(); i++)
+        size_t i = 0;
+        for (ListNode<VirtualFile> *cur = nullptr; files.ForEach(&cur);)
         {
-            if (&files[i] == file)
+            if (&cur->data == file)
             {
                 files.RemoveAt(i);
                 return;
             }
+            i++;
         }
     }
 

@@ -16,6 +16,13 @@ Vector3::Vector3(float x, float y, float z)
     this->z = z;
 }
 
+Vector3::Vector3(const Vector3 &other)
+{
+    x = other.x;
+    y = other.y;
+    z = other.z;
+}
+
 Vector3::~Vector3()
 {
 }

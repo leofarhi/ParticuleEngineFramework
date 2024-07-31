@@ -29,7 +29,7 @@ namespace Particule::SceneManagement
 
     void SceneManager::LoadScene(int index)
     {
-        if (index < 0 || index >= availableScenes.Size())
+        if (index < 0 || index >= (int)availableScenes.Size())
         {
             printf("Scene index out of range (%d)\n", index);
             return;

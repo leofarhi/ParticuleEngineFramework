@@ -16,6 +16,13 @@ Vector3Int::Vector3Int(int x, int y, int z)
     this->z = z;
 }
 
+Vector3Int::Vector3Int(const Vector3Int &other)
+{
+    x = other.x;
+    y = other.y;
+    z = other.z;
+}   
+
 Vector3Int::~Vector3Int()
 {
 }

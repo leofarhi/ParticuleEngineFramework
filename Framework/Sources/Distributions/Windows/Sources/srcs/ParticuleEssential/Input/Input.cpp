@@ -186,6 +186,7 @@ namespace Particule::Essential
 
     Vector2 InputManager::GetAnalogStick(int stick)
     {
+        (void)stick;
         return {0, 0};
     }
 }
