@@ -1,6 +1,7 @@
 from ProjectEnv import *
 
 def Build(args):
+    global framework_out_path
     if len(args) == 0:
         path = input("Veuillez entrer le chemin du projet :")
         distribution = input("Veuillez entrer la distribution :")
@@ -39,4 +40,17 @@ def Build(args):
     if res.returncode != 0:
         ErrorMsg("Erreur lors de la construction du framework")
     #Build Project
-    #TODO
+    try:
+        #builder = importlib.import_module(f"..Sources.Distributions.{distribution}.ProjectBuilder.Build")
+        distributions_path = os.path.join(framework_path,"Sources","Distributions", distribution, "ProjectBuilder")
+        spec=importlib.util.spec_from_file_location("Build",os.path.join(distributions_path,"Build.py"))
+        builder = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(builder)
+    except ModuleNotFoundError:
+        ErrorMsg("Erreur lors de l'importation du Builder")
+    #real path of path and framework_out_path
+    framework_out_path = os.path.realpath(framework_out_path)
+    path = os.path.realpath(path)
+    res = builder.build(framework_out_path, path)
+    if res.returncode != 0:
+        ErrorMsg("Erreur lors de la construction du projet")

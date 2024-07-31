@@ -1,38 +1,48 @@
 from ProjectEnv import *
+import time
 
 def DefaultConfig(name):
     return {
         "version_framework": "1.0",
         "version": "1.0",
         "name": name,
+        "description": "Description du projet",
+        "author": "Auteur du projet",
+        "date": time.strftime("%d/%m/%Y"),
+        "debug": False,
         "flags": "-Wall -Wextra -Werror",
-        "srcs": ["srcs/main.cpp"],
+        "sources": ["srcs/main.cpp"],
         "includes": ["includes"],
-        "output":"./bin",
-        "build":"./build",
+        "output":"bin",
+        "build":"build",
         "packages": ["InterfaceSystem"],
         "distributions":
         {
             "Windows":
             {
-                "executable": [name+".exe"],
+                "debug-flags": "",
+                "executable": name+".exe",
                 "resources": {
                     "ico": "assets/WinLinux/icon.ico",
                     "icon": "assets/WinLinux/icon.png",
-                    "images": [],
+                    "asset_dir": "assets",
+                    "images": [],#format : (path, dest_path) ex : ("assets/WinLinux/img.png", "assets/img.png")
                 }
             },
             "Linux":
             {
-                "executable": [name],
+                "debug-flags": "-fsanitize=address -g3 -std=c99 -O0",
+                "executable": name,
                 "resources": {
                     "icon": "assets/WinLinux/icon.png",
-                    "images": [],
+                    "asset_dir": "assets",
+                    "images": [],#format : (path, dest_path)
                 }
             },
             "CasioCg":
             {
-                "executable": [name[:8]+".g3a"],
+                "debug-flags": "",
+                "executable": name[:8]+".g3a",
                 "resources": {
                     "icon-uns": "assets/CasioCg/icon-uns.png",
                     "icon-sel": "assets/CasioCg/icon-sel.png",

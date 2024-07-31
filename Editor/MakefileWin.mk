@@ -6,14 +6,16 @@ CFLAGS = -Wall -Wextra -Werror# -fsanitize=address -g3 -std=c99 -O0
 LDLIBS = -lm
 
 OUTPUT = bin
+BUILD_DIR = build
 
 EXEC = $(OUTPUT)/ParticuleEditor.exe
 
 Scrs_dir = srcs
 
-SRCS = $(shell find $(Scrs_dir) -name "*.cpp")
+SRCS = $(shell find $(Scrs_dir) -name "*.cpp") $(shell find $(Scrs_dir) -name "*.c")
 
-OBJS = $(SRCS:.cpp=.o)
+OBJS = $(patsubst $(Scrs_dir)/%, $(BUILD_DIR)/%, $(SRCS:.cpp=.o))
+OBJS := $(patsubst $(Scrs_dir)/%, $(BUILD_DIR)/%, $(OBJS:.c=.o))
 DEPS = $(OBJS:.o=.d)
 
 CFLAGS += -I ${LIBRARY_PATH}/includes
@@ -32,8 +34,14 @@ $(EXEC): $(OBJS)
 	$(CC) $(LDFLAGS) $(OBJS) -o $(EXEC) $(LDLIBS)
 	@echo "done !"
 
-%.o: %.cpp
-	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDLIBS) -c $< -o $@
+$(BUILD_DIR)/%.o: $(Scrs_dir)/%.cpp
+	mkdir -p $(dir $@)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/%.o: $(Scrs_dir)/%.c
+	mkdir -p $(dir $@)
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+
 
 -include $(DEPS)
 
@@ -43,3 +51,5 @@ clean:
 	rm -f $(EXEC)
 
 re: clean all
+
+.PHONY: all clean re
