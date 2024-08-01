@@ -17,13 +17,15 @@ def build(framework_out_path, project_path):
     os.makedirs(output_path, exist_ok=True)
     #copy the output lib bin folder
     shutil.copytree(os.path.join(framework_out_path, "bin"), os.path.join(output_path), dirs_exist_ok=True)
-    makefile_path = os.path.join(build_path, "Makefile")
+    makefile_path = os.path.join(project_path, "Makefile")
     makefile = BuildMakefile(framework_out_path, project_path, project)
     with open(makefile_path, "w") as f:
         f.write(makefile)
     #build the project
-    res = subprocess.Popen("make", shell=True, cwd=build_path)
+    res = subprocess.Popen("make", shell=True, cwd=project_path)
     res.wait()
+    #remove Makefile
+    os.remove(makefile_path)
     return res
 
 
@@ -31,18 +33,14 @@ def BuildMakefile(framework_out_path, project_path, project):
     windows = project["distributions"]["Windows"]
     srcs = ""
     for src in project["sources"]:
-        src = str(src).replace("\\","/")
         if os.path.isabs(src):
             src = os.path.relpath(src, project_path)
-        src = "../"+src
         src = str(src).replace("\\","/")
         srcs += src+ " "
     includes = ""
     for include in project["includes"]:
-        include = str(include).replace("\\","/")
         if os.path.isabs(include):
             include = os.path.relpath(include, project_path)
-        include = "../"+include
         include = str(include).replace("\\","/")
         includes += "CPPFLAGS += -I "+include+"\n"
         includes += "LDLIBS += -L "+include+"\n"
@@ -55,17 +53,18 @@ CPPFLAGS = -MMD
 CPPFLAGS += {project["flags"]} {windows["debug-flags"] if project["debug"] else ""}
 LDLIBS = -lm
 
-OUTPUT = ../{project["output"]}
-BUILD_DIR = {project["build"]}
+OUTPUT = {project["output"]}
+BUILD_DIR = {project["build"]}/objs
 
 EXEC = $(OUTPUT)/{windows["executable"]}
 
 SRCS = {srcs}
 
-Scrs_dir = ..
+SRCS_CPP = $(filter %.cpp, $(SRCS))
+SRCS_C = $(filter %.c, $(SRCS))
 
-OBJS = $(patsubst $(Scrs_dir)/%, $(BUILD_DIR)/%, $(SRCS:.cpp=.o))
-OBJS := $(patsubst $(Scrs_dir)/%, $(BUILD_DIR)/%, $(OBJS:.c=.o))
+OBJS = $(patsubst %, $(BUILD_DIR)/%, $(SRCS_CPP:.cpp=.o))
+OBJS += $(patsubst %, $(BUILD_DIR)/%, $(SRCS_C:.c=.o))
 DEPS = $(OBJS:.o=.d)
 
 CPPFLAGS += -I $(LIBRARY_PATH)/includes
@@ -83,11 +82,11 @@ $(EXEC): $(OBJS)
 	$(CC) $(LDFLAGS) $(OBJS) -o $(EXEC) $(LDLIBS)
 	@echo "done !"
 
-$(BUILD_DIR)/%.o: $(Scrs_dir)/%.cpp
+$(BUILD_DIR)/%.o: %.cpp
 	mkdir -p $(dir $@)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c "$<" -o "$@"
 
-$(BUILD_DIR)/%.o: $(Scrs_dir)/%.c
+$(BUILD_DIR)/%.o: %.c
 	mkdir -p $(dir $@)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c "$<" -o "$@"
 

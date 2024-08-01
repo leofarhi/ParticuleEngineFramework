@@ -1,4 +1,5 @@
 #include "../../../includes/ParticuleEssential/Input/Input.hpp"
+#include "../../../includes/ParticuleEssential/Graphic/Window.hpp"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,6 +37,7 @@ namespace Particule::Essential
     InputManager::InputManager(Window* window){
         (void)window;
         InputManager::Instance = this;
+        mouse = new Mouse(this);
     }
 
     InputManager::~InputManager(){}
@@ -51,7 +53,13 @@ namespace Particule::Essential
         InputEvents.Clear();
         key_event_t ev;
         while((ev = pollevent()).type != KEYEV_NONE)
+        {
             InputEvents.Append(ev);
+            if (ev.type == KEYEV_DOWN && ev.key == KEY_MENU)//TODO: Change this to a more general way to exit the program
+            {
+                exit(0);
+            }
+        }
     }
 
     bool InputManager::IsKeyPressed(int key)

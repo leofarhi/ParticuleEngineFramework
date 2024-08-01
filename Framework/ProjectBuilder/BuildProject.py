@@ -1,5 +1,14 @@
 from ProjectEnv import *
+import time
 
+def BuildInfo(path, distribution, project):
+    dico = {
+        "distribution": distribution,
+        "date": time.strftime("%d/%m/%Y"),
+        "output": project["output"]
+    }
+    with open(os.path.join(path,"build_info.json"),"w") as f:
+        json.dump(dico,f)
 def Build(args):
     global framework_out_path
     if len(args) == 0:
@@ -34,11 +43,12 @@ def Build(args):
     file = "."+os.sep+"Framework.py"
     cmd = sys.executable +" "+file+" build "+distribution+" "+packages_arg
     print(cmd)
-    res = subprocess.Popen(cmd, shell=True, cwd=framework_path)
-    res.wait()
-    #check if success
-    if res.returncode != 0:
-        ErrorMsg("Erreur lors de la construction du framework")
+    if True:
+        res = subprocess.Popen(cmd, shell=True, cwd=framework_path)
+        res.wait()
+        #check if success
+        if res.returncode != 0:
+            ErrorMsg("Erreur lors de la construction du framework")
     #Build Project
     try:
         #builder = importlib.import_module(f"..Sources.Distributions.{distribution}.ProjectBuilder.Build")
@@ -48,6 +58,7 @@ def Build(args):
         spec.loader.exec_module(builder)
     except ModuleNotFoundError:
         ErrorMsg("Erreur lors de l'importation du Builder")
+    BuildInfo(path, distribution, project)
     #real path of path and framework_out_path
     framework_out_path = os.path.realpath(framework_out_path)
     path = os.path.realpath(path)

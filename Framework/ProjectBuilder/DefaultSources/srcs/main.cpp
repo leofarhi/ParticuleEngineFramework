@@ -43,6 +43,7 @@ int main() {
         window->Update();
     }
     window->Destroy();
+    delete window;
     ParticuleEngineQuit();
     ParticuleEssentialQuit();
     printf("Goodbye World\n");

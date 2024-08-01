@@ -43,6 +43,7 @@ def DefaultConfig(name):
             {
                 "debug-flags": "",
                 "executable": name[:8]+".g3a",
+                "display_name": name[:8],
                 "resources": {
                     "icon-uns": "assets/CasioCg/icon-uns.png",
                     "icon-sel": "assets/CasioCg/icon-sel.png",
@@ -80,4 +81,10 @@ def CreateProject(args):
     #json dump
     with open(os.path.join(projectpath,"project.json"), "w") as f:
         json.dump(config, f, indent=4)
+    #replace first line of Project.py
+    with open(os.path.join(projectpath,"Project.py"), "r") as f:
+        lines = f.readlines()
+        lines[0] = "ProjectBuilderPath = " + repr(dir_path) + "\n"
+    with open(os.path.join(projectpath,"Project.py"), "w") as f:
+        f.writelines(lines)
     
