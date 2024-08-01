@@ -54,19 +54,20 @@ def install(base_path, build_path, output_path, args):
     process(cmd,cmd, cwd=curent_dir)
     cmd = 'sudo apt install libudisks2-dev libglib2.0-dev'
     process(cmd,cmd, cwd=curent_dir)
-    cmd = 'giteapc install Lephenixnoir/fxsdk Lephenixnoir/sh-elf-binutils Lephenixnoir/sh-elf-gcc'
+    cmd = 'giteapc install Lephenixnoir/fxsdk Lephenixnoir/sh-elf-binutils Lephenixnoir/sh-elf-gcc -y'
     process(cmd,cmd, cwd=curent_dir)
-    cmd = 'giteapc install Lephenixnoir/sh-elf-gdb'
+    cmd = 'giteapc install Lephenixnoir/sh-elf-gdb -y'
     process(cmd,cmd, cwd=curent_dir)
-    cmd = 'giteapc install Lephenixnoir/OpenLibm Vhex-Kernel-Core/fxlibc'
+    cmd = 'giteapc install Lephenixnoir/OpenLibm Vhex-Kernel-Core/fxlibc -y'
     process(cmd,cmd, cwd=curent_dir)
-    cmd = 'giteapc install Lephenixnoir/sh-elf-gcc'
+    cmd = 'giteapc install Lephenixnoir/sh-elf-gcc -y'
     process(cmd,cmd, cwd=curent_dir)
-    cmd = 'giteapc install Lephenixnoir/gint'
+    cmd = 'giteapc install Lephenixnoir/gint -y'
     process(cmd,cmd, cwd=curent_dir)
-    cmd = 'giteapc install Lephenixnoir/libprof'
+    cmd = 'giteapc install Lephenixnoir/libprof -y'
     process(cmd,cmd, cwd=curent_dir)
     print("\033[92mAll the dependencies have been installed.\033[0m")
+    update(base_path, build_path, output_path, args)
 
 def update(base_path, build_path, output_path, args):
     cmd = "pwd"
