@@ -30,12 +30,9 @@ def Run(args):
     distribution = MatchDistribution(distribution)
     if distribution == None:
         ErrorMsg("La distribution spécifiée n'existe pas")
-    try:
-        distributions_path = os.path.join(framework_path,"Sources","Distributions", distribution, "ProjectBuilder")
-        spec=importlib.util.spec_from_file_location("Run",os.path.join(distributions_path,"Run.py"))
-        runner = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(runner)
-    except ModuleNotFoundError:
+    distributions_path = os.path.join(framework_path,"Sources","Distributions", distribution, "ProjectBuilder")
+    runner = load_module("Run",os.path.join(distributions_path,"Run.py"))
+    if runner == None:
         ErrorMsg("Erreur lors de l'importation du Runner")
     output = os.path.join(path,output)
     runner.run(output, project)

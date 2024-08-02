@@ -26,7 +26,14 @@
                 "ico": "assets/WinLinux/icon.ico",
                 "icon": "assets/WinLinux/icon.png",
                 "asset_dir": "assets",
-                "images": []
+                "images": [
+                    [
+                        "assets/WinLinux/icon.png",
+                        "assets/icon.png"
+                    ]
+                ],
+                "internal_fonts": [],
+                "fonts": []
             }
         },
         "Linux": {
@@ -35,7 +42,14 @@
             "resources": {
                 "icon": "assets/WinLinux/icon.png",
                 "asset_dir": "assets",
-                "images": []
+                "images": [
+                    [
+                        "assets/WinLinux/icon.png",
+                        "assets/icon.png"
+                    ]
+                ],
+                "internal_fonts": [],
+                "fonts": []
             }
         },
         "CasioCg": {
@@ -45,7 +59,15 @@
             "resources": {
                 "icon-uns": "assets/CasioCg/icon-uns.png",
                 "icon-sel": "assets/CasioCg/icon-sel.png",
-                "images": []
+                "images": [
+                    [
+                        "assets/WinLinux/icon.png",
+                        "assets/icon.png",
+                        "p4_rgb565a_bopti-image"
+                    ]
+                ],
+                "internal_fonts": [],
+                "fonts": []
             }
         }
     }

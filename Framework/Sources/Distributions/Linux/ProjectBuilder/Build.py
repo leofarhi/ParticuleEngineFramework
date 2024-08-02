@@ -2,6 +2,7 @@ import os, sys
 import json
 import shutil
 import subprocess
+import Resources
 
 platform = sys.platform
 print(platform)
@@ -30,7 +31,7 @@ def getPath(path):
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,cwd=path)
     return p.stdout.read().decode().strip()
 
-def build(framework_out_path, project_path):
+def build(framework_out_path, project_path, projectbuilder_path):
     with open(os.path.join(project_path,"project.json")) as f:
         project = json.load(f)
     output_path = os.path.join(project_path, project["output"])
@@ -47,6 +48,7 @@ def build(framework_out_path, project_path):
     with open(makefile_path, "w") as f:
         f.write(makefile)
     #build the project
+    Resources.build_resources(framework_out_path, project_path, projectbuilder_path)
     res = process("make", cwd=project_path)
     res.wait()
     #remove Makefile

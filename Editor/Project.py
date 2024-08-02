@@ -33,7 +33,8 @@ def GetRes(vinput, lst):
 
 commandes_valid = {
     "build": "Construit le projet",
-    "run": "Exécute le projet"
+    "run": "Exécute le projet",
+    "edit": "Edite le projet"
 }
 
 print("Sélectionnez la commande à exécuter:")
@@ -47,6 +48,9 @@ if commande == "build":
     cmd = sys.executable + f" .{os.sep}ProjectBuilder.py build \"" + dir_path + "\" " + distribution + " " +rebuildFramework
 elif commande == "run":
     cmd = sys.executable + f" .{os.sep}ProjectBuilder.py run \"" + dir_path + '"'
+elif commande == "edit":
+    distribution = input("Veuillez entrer la distribution :")
+    cmd = sys.executable + f" .{os.sep}ProjectBuilder.py resources \"" + dir_path + '" '+ distribution
 print(cmd)
 subprocess.Popen(cmd, shell=True, cwd=ProjectBuilderPath).wait()
 

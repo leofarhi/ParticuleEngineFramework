@@ -2,6 +2,7 @@ import os, sys
 import json
 import shutil
 import subprocess
+import Resources
 
 def ErrorMsg(msg):
     print("\033[91m"+msg+"\033[0m")
@@ -17,7 +18,7 @@ def CheckWindres():
     except FileNotFoundError:
         ErrorMsg("Windres n'est pas installé")
 
-def build(framework_out_path, project_path):
+def build(framework_out_path, project_path, projectbuilder_path):
     CheckWindres()
     with open(os.path.join(project_path,"project.json")) as f:
         project = json.load(f)
@@ -44,6 +45,7 @@ def build(framework_out_path, project_path):
     with open(rc_path, "w") as f:
         f.write("1 ICON \"../"+windows["resources"]["ico"]+"\"")
     #build the project
+    Resources.build_resources(framework_out_path, project_path, projectbuilder_path)
     res = subprocess.Popen("make", shell=True, cwd=project_path)
     res.wait()
     #remove Makefile

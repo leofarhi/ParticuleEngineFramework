@@ -2,11 +2,13 @@ from ProjectEnv import *
 import NewProject
 import BuildProject
 import RunProject
+import ResourcesProject
 
 commandes_valid = {
-    "new": ((NewProject.CreateProject),"Crée un nouveau projet"),
-    "build": ((BuildProject.Build),"Construit le projet"),
-    "run": ((RunProject.Run),"Exécute le projet")
+    "new": (NewProject.CreateProject,"Crée un nouveau projet"),
+    "build": (BuildProject.Build,"Construit le projet"),
+    "run": (RunProject.Run,"Exécute le projet"),
+    "resources": ((ResourcesProject.Resources),"Permet de modifier les ressources du projet"),
 }
 
 if len(sys.argv) <= 1:

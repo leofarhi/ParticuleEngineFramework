@@ -71,18 +71,15 @@ def Build(args):
     distribution = MatchDistribution(distribution)
     if distribution == None:
         ErrorMsg("La distribution spécifiée n'existe pas")
-    try:
-        #builder = importlib.import_module(f"..Sources.Distributions.{distribution}.ProjectBuilder.Build")
-        distributions_path = os.path.join(framework_path,"Sources","Distributions", distribution, "ProjectBuilder")
-        spec=importlib.util.spec_from_file_location("Build",os.path.join(distributions_path,"Build.py"))
-        builder = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(builder)
-    except ModuleNotFoundError:
+
+    distributions_path = os.path.join(framework_path,"Sources","Distributions", distribution, "ProjectBuilder")
+    builder = load_module("Build",os.path.join(distributions_path,"Build.py"))
+    if builder == None:
         ErrorMsg("Erreur lors de l'importation du Builder")
     BuildInfo(path, distribution, project)
     #real path of path and framework_out_path
     framework_out_path = os.path.realpath(framework_out_path)
     path = os.path.realpath(path)
-    res = builder.build(framework_out_path, path)
+    res = builder.build(framework_out_path, path, dir_path)
     if res.returncode != 0:
         ErrorMsg("Erreur lors de la construction du projet")

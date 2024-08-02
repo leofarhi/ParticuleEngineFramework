@@ -2,6 +2,7 @@ import os, sys
 import subprocess
 import importlib
 import importlib.util
+from pathlib import Path
 import shutil
 import json
 
@@ -42,3 +43,16 @@ def MatchDistribution(distribution):
         if item.lower() == distribution.lower():
             return item
     return None
+
+def load_module(name, filepath):
+    try:
+        spec = importlib.util.spec_from_file_location(name, filepath)
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[name] = module
+        #add path to sys.path
+        sys.path.append(os.path.dirname(filepath))
+        spec.loader.exec_module(module)
+        return module
+    except Exception as e:
+        print("\033[91m"+e+"\033[0m")
+        return None

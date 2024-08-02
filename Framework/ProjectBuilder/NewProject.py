@@ -27,6 +27,8 @@ def DefaultConfig(name):
                     "icon": "assets/WinLinux/icon.png",
                     "asset_dir": "assets",
                     "images": [],#format : (path, dest_path) ex : ("assets/WinLinux/img.png", "assets/img.png")
+                    "internal_fonts": [],#format : (path .ttf, dest_path)
+                    "fonts": [],#format : (path .ttf, dest_path, max_resolution)
                 }
             },
             "Linux":
@@ -37,6 +39,8 @@ def DefaultConfig(name):
                     "icon": "assets/WinLinux/icon.png",
                     "asset_dir": "assets",
                     "images": [],#format : (path, dest_path)
+                    "internal_fonts": [],#format : (path .ttf, dest_path)
+                    "fonts": [],#format : (path .ttf, dest_path, max_resolution)
                 }
             },
             "CasioCg":
@@ -47,7 +51,9 @@ def DefaultConfig(name):
                 "resources": {
                     "icon-uns": "assets/CasioCg/icon-uns.png",
                     "icon-sel": "assets/CasioCg/icon-sel.png",
-                    "images": [],
+                    "images": [],#format : (path, dest_virtualpath, profile)
+                    "internal_fonts": [],
+                    "fonts": [],#format : (.ttf, dest_virtualpath, max_resolution)
                 }
             }
         }

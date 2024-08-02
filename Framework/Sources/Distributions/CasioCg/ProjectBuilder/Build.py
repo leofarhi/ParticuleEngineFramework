@@ -2,6 +2,7 @@ import os, sys
 import json
 import shutil
 import subprocess
+import Resources
 
 platform = sys.platform
 print(platform)
@@ -30,7 +31,7 @@ def getPath(path):
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,cwd=path)
     return p.stdout.read().decode().strip()
 
-def build(framework_out_path, project_path):
+def build(framework_out_path, project_path, projectbuilder_path):
     with open(os.path.join(project_path,"project.json")) as f:
         project = json.load(f)
     output_path = os.path.join(project_path, project["output"])
@@ -43,7 +44,8 @@ def build(framework_out_path, project_path):
     os.makedirs(build_path, exist_ok=True)
     os.makedirs(output_path, exist_ok=True)
     makefile_path = os.path.join(project_path, "CMakeLists.txt")
-    makefile = BuildMakefile(framework_out_path, project_path, project)
+    resources_data = Resources.build_resources(framework_out_path, project_path, projectbuilder_path)
+    makefile = BuildMakefile(framework_out_path, project_path, project, resources_data)
     with open(makefile_path, "w") as f:
         f.write(makefile)
     #build the project
@@ -51,9 +53,10 @@ def build(framework_out_path, project_path):
     res.wait()
     #remove Makefile
     os.remove(makefile_path)
+    Resources.clear_resources(project_path, project)
     return res
 
-def BuildMakefile(framework_out_path, project_path, project):
+def BuildMakefile(framework_out_path, project_path, project, resources_data):
     casio = project["distributions"]["CasioCg"]
     srcs = ""
     for src in project["sources"]:
@@ -68,6 +71,9 @@ def BuildMakefile(framework_out_path, project_path, project):
         include = str(include).replace("\\","/")
         includes += "include_directories("+include+")\n"
         includes += "link_directories("+include+")\n"
+    ASSETS_cg = ""
+    for key, value in resources_data["assets"].items():
+        ASSETS_cg += key +"\n"
     framework_out_path = getPath(os.path.abspath(framework_out_path))
     txt = f"""
 cmake_minimum_required(VERSION 3.15)
@@ -91,7 +97,8 @@ set(ASSETS
 )
 set(ASSETS_fx
 )
-set(ASSETS_cg
+set(ASSETS_cg 
+{ASSETS_cg}
 )
 
 include_directories(${{LIBRARY_PATH}}/includes)
