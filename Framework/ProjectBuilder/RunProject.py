@@ -27,6 +27,9 @@ def Run(args):
         build_info = json.load(f)
     output = build_info["output"]
     distribution = build_info["distribution"]
+    distribution = MatchDistribution(distribution)
+    if distribution == None:
+        ErrorMsg("La distribution spécifiée n'existe pas")
     try:
         distributions_path = os.path.join(framework_path,"Sources","Distributions", distribution, "ProjectBuilder")
         spec=importlib.util.spec_from_file_location("Run",os.path.join(distributions_path,"Run.py"))

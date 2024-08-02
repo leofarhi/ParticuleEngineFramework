@@ -15,6 +15,7 @@ namespace Particule::Core
         this->m_transform = new Transform(this);
         this->scene = (Scene *)SceneManager::sceneManager->activeScene();
         this->m_activeSelf = true;
+        this->components = List<Component*>();
     }
 
     GameObject::GameObject(Scene *scene)
@@ -23,6 +24,7 @@ namespace Particule::Core
         this->m_transform = new Transform(this);
         this->scene = scene;
         this->m_activeSelf = true;
+        this->components = List<Component*>();
     }
 
     GameObject::GameObject(Scene *scene, String name)
@@ -31,6 +33,7 @@ namespace Particule::Core
         this->m_transform = new Transform(this);
         this->scene = scene;
         this->m_activeSelf = true;
+        this->components = List<Component*>();
     }
 
     GameObject::~GameObject()
@@ -68,8 +71,8 @@ namespace Particule::Core
                gameObject->CallComponent(&Component::OnEnable);
            else
                gameObject->CallComponent(&Component::OnDisable);
-            List<Transform *> children = gameObject->transform()->children();
-            for (ListNode<Transform *> *cur=nullptr; children.ForEach(&cur);)
+            List<Transform *>* children = gameObject->transform()->children();
+            for (ListNode<Transform *> *cur=nullptr; children->ForEach(&cur);)
                 UpdateActive(cur->data->gameObject, value);
        }
     }

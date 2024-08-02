@@ -26,7 +26,7 @@ namespace Particule::Core
         
         void SetParent(Transform *parent);
         Transform *parent();
-        List<Transform *> children();
+        List<Transform *>* children();
     };
 }
 

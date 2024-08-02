@@ -14,9 +14,27 @@ def Build(args):
     if len(args) == 0:
         path = input("Veuillez entrer le chemin du projet :")
         distribution = input("Veuillez entrer la distribution :")
+        rebuildFramework = input("Voulez-vous reconstruire le framework ? (y/n) :")
+        if rebuildFramework.lower() in ["y","yes","oui"]:
+            rebuildFramework = True
+        elif rebuildFramework.lower() in ["n","no","non"]:
+            rebuildFramework = False
+        else:
+            ErrorMsg("Réponse invalide")
+
     elif len(args) == 2:
         path = args[0]
         distribution = args[1]
+        rebuildFramework = True
+    elif len(args) == 3:
+        path = args[0]
+        distribution = args[1]
+        if args[2].lower() in ["y","yes","oui"]:
+            rebuildFramework = True
+        elif args[2].lower() in ["n","no","non"]:
+            rebuildFramework = False
+        else:
+            ErrorMsg("Réponse invalide")
     else:
         ErrorMsg("Nombre d'arguments invalide")
     #check if path exists and is a directory
@@ -43,13 +61,16 @@ def Build(args):
     file = "."+os.sep+"Framework.py"
     cmd = sys.executable +" "+file+" build "+distribution+" "+packages_arg
     print(cmd)
-    if True:
+    if rebuildFramework:
         res = subprocess.Popen(cmd, shell=True, cwd=framework_path)
         res.wait()
         #check if success
         if res.returncode != 0:
             ErrorMsg("Erreur lors de la construction du framework")
     #Build Project
+    distribution = MatchDistribution(distribution)
+    if distribution == None:
+        ErrorMsg("La distribution spécifiée n'existe pas")
     try:
         #builder = importlib.import_module(f"..Sources.Distributions.{distribution}.ProjectBuilder.Build")
         distributions_path = os.path.join(framework_path,"Sources","Distributions", distribution, "ProjectBuilder")

@@ -36,9 +36,9 @@ namespace Particule::Core
         return this->m_parent;
     }
 
-    List<Transform *> Transform::children()
+    List<Transform *>* Transform::children()
     {
-        return this->m_children;
+        return &this->m_children;
     }
 
 }

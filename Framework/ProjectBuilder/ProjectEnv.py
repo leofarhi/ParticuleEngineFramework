@@ -35,3 +35,10 @@ def GetRes(vinput, lst):
     if vinput == -1:
         return None
     return lst[vinput-1]
+
+def MatchDistribution(distribution):
+    lst = os.listdir(os.path.join(framework_path,"Sources","Distributions"))
+    for item in lst:
+        if item.lower() == distribution.lower():
+            return item
+    return None

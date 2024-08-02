@@ -16,6 +16,8 @@ namespace Particule::Core::UI
 
         Image(GameObject *gameObject);
         ~Image() override;
+
+        void OnRenderUI(Canvas* canvas, RectTransform rectTransform) override;
     };
 }
 

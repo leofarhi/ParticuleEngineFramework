@@ -24,9 +24,17 @@ Scene* SceneHub()
     Camera* cam = cam_go->AddComponent<Camera>();
     GameObject *canvas_go = scene->AddGameObject(new GameObject(scene, "Canvas"));
     Canvas* canvas = canvas_go->AddComponent<Canvas>();
+    GameObject *image_go = scene->AddGameObject(new GameObject(scene, "Image"));
+    Image* image = image_go->AddComponent<Image>();
+
+    image_go->transform()->SetParent(canvas->transform());
+
+    //canvas->defaultScreenSize.x /= 2;
+    //canvas->defaultScreenSize.y /= 2;
 
     (void)cam;
     (void)canvas;
+    (void)image;
     return scene;
 }
 

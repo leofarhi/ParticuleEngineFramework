@@ -3,7 +3,8 @@
 
 #include <ParticuleEngine/Core/Object.hpp>
 #include <ParticuleEngine/Core/GameObject.hpp>
-
+#include <ParticuleEngine/Core/Component.hpp>
+#include <stdio.h>
 namespace Particule::Core
 {
     class Component : public Object
