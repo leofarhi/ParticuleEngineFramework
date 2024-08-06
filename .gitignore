@@ -215,3 +215,4 @@ Framework/.vscode/settings.json
 Framework/.vscode/settings.json
 Framework/Tests/*
 Framework/ProjectBuilder/tests/*
+Framework/Sources/Distributions/Psp/tests/*

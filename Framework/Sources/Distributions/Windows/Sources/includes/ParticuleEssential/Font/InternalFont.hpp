@@ -7,22 +7,20 @@
 
 namespace Particule::Essential
 {
-    class InternalFont : public Font
+    class InternalFont
     {
     private:
         char* path;
         TTF_Font* font;
     public:
-        static InternalFont* currentFont;
-
         InternalFont();
         InternalFont(const char* path, int size);
         ~InternalFont();
-        void SetSize(int size) override;
-        int GetSize() override;
-        void DrawText(const char* text, int x, int y) override;
-        void DrawTextColor(const char* text, int x, int y, Color color) override;
-        Vector2Int GetTextSize(const char* text) override;
+        void SetSize(int size);
+        int GetSize();
+        void DrawText(const char* text, int x, int y);
+        void DrawTextColor(const char* text, int x, int y, Color color);
+        Vector2Int GetTextSize(const char* text);
     };
 }
 
