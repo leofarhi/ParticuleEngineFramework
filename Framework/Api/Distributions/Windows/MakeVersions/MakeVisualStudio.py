@@ -1,5 +1,7 @@
 import os, sys
 import json
+import subprocess
+import shutil
 
 local_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -27,13 +29,42 @@ class MakeVisualStudio:
             config = json.load(f)
         return config
     
+    def __CreateRedefine__(self, path_build):
+        #create redefine.h
+        redefine_path = os.path.join(path_build, "include", "ParticuleApi", "System", "Redefine.hpp")
+        os.makedirs(os.path.dirname(redefine_path), exist_ok=True)
+        PlayerInput = ""
+        for key, value in self.builder["inputs"].items():
+            PlayerInput += f'\n(__builtin_constant_p(str) && __builtin_strcmp(str, "{key}") == 0) ? Input(sdl2::{value}) : \\'
+        dt = """#ifndef REDEFINE_HPP
+#define REDEFINE_HPP
+#include <ParticuleApi/System/Resource.hpp>
+#include <ParticuleApi/System/Input.hpp>
+#include <ParticuleApi/System/sdl2.hpp>
+
+namespace Particule::Api
+{
+    #ifndef PlayerInput
+    #define PlayerInput(str)(\\"""+PlayerInput+"""
+    Input())
+    #endif
+
+    #ifndef GetResource
+    #define GetResource(str)(Resource(str))
+    #endif
+}
+
+#endif"""
+        with open(redefine_path, "w") as f:
+            f.write(dt)
+    
     def __Makefile__(self):
         path_lib = os.path.join(os.path.dirname(local_path),"Config","SDL2_Project","Lib",self.builder["architecture"])
         self.LIBS = ['"'+normalize_path(os.path.join(path_lib,lib))+'"' for lib in LIBS]
         self.DLLS = ['"'+normalize_path(os.path.join(path_lib,lib))+'"' for lib in DLLS]
         src_files = []
         source_dir = os.path.join(os.path.dirname(local_path), "Sources", "src")
-        include_dirs = [normalize_path(os.path.join(os.path.dirname(local_path), "Sources", "Include")),
+        include_dirs = [".\include",normalize_path(os.path.join(os.path.dirname(local_path), "Sources", "Include")),
                         normalize_path(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(local_path))), "Interface", "include"))]
         for root, _, files in os.walk(source_dir):
             for f in files:
@@ -121,7 +152,6 @@ if not exist %VCVARS% (
 call %VCVARS%
 
 nmake /f Makefile
-pause
 endlocal
 """
         return buildfile
@@ -129,7 +159,10 @@ endlocal
     def Make(self):
         makefile = self.__Makefile__()
         buildfile = self.__Buildfile__()
+        self.__CreateRedefine__(self.path_build)
         with open(os.path.join(self.path_build, "Makefile"), "w") as f:
             f.write(makefile)
         with open(os.path.join(self.path_build, "Build.bat"), "w") as f:
             f.write(buildfile)
+        #executer le fichier batch
+        subprocess.run([".\\Build.bat"], shell=True, check=True, cwd=self.path_build)

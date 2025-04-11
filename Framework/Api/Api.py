@@ -93,7 +93,7 @@ sys.argv.append('--build')
 sys.argv.append('--debug')
 #sys.argv.append('--makefile=C:\\Users\\leo\\Desktop\\CASIO\\Projets\\UltimateParticuleEngine\\Framework\\Api\\TestSolo\\CasioCg\\Test2\\Make.json')
 #sys.argv.append('--target=CasioCg')
-sys.argv.append('--makefile=C:\\Users\\leo\\Desktop\\CASIO\\Projets\\ParticuleEngine\\Framework\\Api\\Distributions\\Windows\\test\\Make.json')
+sys.argv.append('--makefile=C:\\Users\\leo\\Desktop\\CASIO\\Projets\\ParticuleEngine\\Framework\\Api\\TestSolo\\Windows\\test2\\Make.json')
 sys.argv.append('--target=Windows')
 #############################
 
