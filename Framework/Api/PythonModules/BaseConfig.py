@@ -128,6 +128,8 @@ class VarDict(Var):
     def __init__(self, dict_of_instance, default_value=None, *args, **kwargs):
         if default_value is None:
             default_value = {}
+            for key, value in dict_of_instance.items():
+                default_value[key] = value.Clone()
         super().__init__("dict", default_value, *args, **kwargs)
         if not isinstance(dict_of_instance, dict):
             raise ValueError("dict_of_instance must be a dictionary")

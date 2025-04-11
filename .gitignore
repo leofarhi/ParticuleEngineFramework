@@ -48,3 +48,5 @@
 *__pycache__/
 *.vscode/
 /Framework/.vscode
+/Framework/Api/Distributions/Windows/Config/SDL2_Project
+Framework/Api/Distributions/Windows/Config/config.json

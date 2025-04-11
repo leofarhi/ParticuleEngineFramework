@@ -19,7 +19,7 @@ for dist_name in os.listdir(os.path.join(local_path, "Distributions")):
     if os.path.exists(file):
         module_name = f"Distributions.{dist_name}.Distribution"
         module = importlib.import_module(module_name)
-        class_names = ["MakeAppConfig", "MakeLibConfig"]
+        class_names = ["MakeAppConfig", "MakeLibConfig", "Installer"]
         attrs = {}
         for class_name in class_names:
             if hasattr(module, class_name):
@@ -91,11 +91,17 @@ class MakefileParser:
 #test :
 sys.argv.append('--build')
 sys.argv.append('--debug')
-sys.argv.append('--makefile=C:\\Users\\leo\\Desktop\\CASIO\\Projets\\UltimateParticuleEngine\\Framework\\Api\\TestSolo\\CasioCg\\Test2\\Make.json')
-sys.argv.append('--target=CasioCg')
+#sys.argv.append('--makefile=C:\\Users\\leo\\Desktop\\CASIO\\Projets\\UltimateParticuleEngine\\Framework\\Api\\TestSolo\\CasioCg\\Test2\\Make.json')
+#sys.argv.append('--target=CasioCg')
+sys.argv.append('--makefile=C:\\Users\\leo\\Desktop\\CASIO\\Projets\\ParticuleEngine\\Framework\\Api\\Distributions\\Windows\\test\\Make.json')
+sys.argv.append('--target=Windows')
 #############################
 
-parser = argparse.ArgumentParser(description="Build a project")
+parser = argparse.ArgumentParser(description="")
+parser.add_argument('--install', action='store_true', help='Install distribution')
+parser.add_argument('--update', action='store_true', help='Update distribution')
+parser.add_argument('--configure', action='store_true', help='Configure distribution')
+parser.add_argument('--uninstall', action='store_true', help='Uninstall distribution')
 parser.add_argument('--build', action='store_true', help='Build the project')
 #parser.add_argument('--clean', action='store_true', help='Clean the project')
 parser.add_argument('--create', action='store_true', help='Create a new project')
@@ -108,7 +114,22 @@ args = parser.parse_args()
 
 
 def exec():
-    if args.build:
+    if args.install or args.update or args.configure or args.uninstall:
+        if args.target and args.target in Distributions:
+            print(f"Installing {args.target} distribution...")
+            classes = Distributions[args.target]
+            installer = classes["Installer"]()
+            if args.install:
+                installer.install()
+            elif args.update:
+                installer.update()
+            elif args.configure:
+                installer.configure()
+            elif args.uninstall:
+                installer.uninstall()
+        else:
+            raise ValueError("Error: --target is required when using --install, --update, --configure or --uninstall")
+    elif args.build:
         if args.makefile and args.target:
             with open(args.makefile, 'r') as f:
                 config = json.load(f)
@@ -119,13 +140,8 @@ def exec():
             cwd = os.path.abspath(cwd)
             os.chdir(cwd)
             makefile.SetCwd(cwd)
-            #if args.clean:
-            #    print("Cleaning... TODO")
-            #    #makefile.makefiles[args.target].Clean()
-            #else:
-            if True:
-                print("Building...")
-                makefile.makefiles[args.target].Make()
+            print("Building...")
+            makefile.makefiles[args.target].Make()
         else:
             raise ValueError("Error: --makefile and --target are required when using --build")
     elif args.create:

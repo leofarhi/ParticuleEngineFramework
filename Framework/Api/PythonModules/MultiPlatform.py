@@ -37,6 +37,11 @@ if platform == "win32":
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,cwd=cwd)
         return p.stdout.read().decode().strip()
     
+    def ProcessLinux(cmd,cwd=None):
+        cmd = f'wsl -e bash -lic "{cmd}"'
+        p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,cwd=cwd)
+        return p
+    
     def ProcessLinuxValue(cmd,cwd=None):
         cmd = f'wsl -e bash -lic "{cmd}"'
         ret = subprocess.Popen(cmd, shell=True, cwd=cwd).wait()
@@ -51,6 +56,10 @@ elif platform == "linux":
     def ProcessLinuxStdout(cmd,cwd=None):
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,cwd=cwd)
         return p.stdout.read().decode().strip()
+    
+    def ProcessLinux(cmd,cwd=None):
+        p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,cwd=cwd)
+        return p
     
     def ProcessLinuxValue(cmd,cwd=None):
         ret = subprocess.Popen(cmd, shell=True, cwd=cwd).wait()

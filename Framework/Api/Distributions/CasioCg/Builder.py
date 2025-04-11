@@ -24,9 +24,11 @@ class MakeAppConfig(BaseMakeConfig):
                 "reference_path": VarString("","(*.*)"),
                 "resolution": VarInt(8, "Resolution of the font"),
             }),[], "Font files"),
-            #"audio": VarList(VarPath("","(*.wav, *.mp3)"),[], "Audio files"),
-            "other": VarList(VarPath("","(*.*)"),[], "Other files")
-        }, {}, "Assets files to be included in the build")
+            "other": VarList(VarDict({
+                "path": VarPath("","(*.*)"),
+                "reference_path": VarString("","(*.*)"),
+            }),[], "Other files")
+        }, None, "Assets files to be included in the build")
         self.inputs = VarFreeDict(VarString("","key name"),VarEnum(KEY_INPUTS, "KEY_EXE", "input key"),{}, "Input files to be included in the build")
         self.display_name = VarString("MyApp", "Display name of the application (8 characters max)")
         self.icon_uns = VarPath("icon-uns.png", "Icon file for unselected application")
